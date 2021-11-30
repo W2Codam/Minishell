@@ -1,2 +1,2 @@
 # Minishell
-This project aims to make you understand a bit deeper two concepts that you already know: the redirections and the pipes.
+The objective of this project is for you to create a simple shell.
