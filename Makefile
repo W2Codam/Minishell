@@ -6,14 +6,14 @@
 #    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2021/11/30 13:26:00 by lde-la-h      ########   odam.nl          #
+#    Updated: 2021/11/30 14:59:28 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 # //= Variables =// #
 
 NAME 	= minishell
-CFLAGS	= -Wextra -Werror -Wall -Wunreachable-code -O3 -g
+CFLAGS	= -Wextra -Werror -Wall -Wunreachable-code -O3
 
 # //= Colors =// #
 BOLD	= \e[1m
@@ -22,12 +22,12 @@ RESET	= \033[0m
 RED		= \x1b[31m
 
 # Define the header location
-HEADERS = -I ./include
+HEADERS = -I ./libs/libft
 
 # //= Files =// #
 
-TODO: Add files.
-SRCS	=	\
+TODO: Add files, remove shell command.
+SRCS	=	$(shell find ./src -iname "*.c")
 			
 OBJS	= ${SRCS:.c=.o}
 
@@ -37,7 +37,7 @@ all: $(NAME)
 
 %.o: %.c
 	@printf	"$(GREEN)$(BOLD)\rCompiling: $(notdir $<) 🔨$(RESET)"
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) -O3
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(HEADERS) -o $@

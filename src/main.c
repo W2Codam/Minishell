@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/11/30 13:33:56 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/11/30 14:59:56 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 t_i32	main(t_i32 argc, char const **argv, char const **envp)
 {
-	return (0);
+	exit(EXIT_SUCCESS);
 }
