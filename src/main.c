@@ -27,9 +27,11 @@ int32_t	main(void)
 {
 	char				*s;
 
+	rl_catch_signals = 0;
+	signal(SIGINT, handle);
+	signal(SIGQUIT, handle);
 	while (true)
 	{
-		signal(SIGINT, handle);
 		s = readline(TITLE);
 		if (s == NULL)
 			exit(0);
