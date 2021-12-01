@@ -6,7 +6,7 @@
 #    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2021/12/01 14:42:29 by lde-la-h      ########   odam.nl          #
+#    Updated: 2021/12/01 14:51:45 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ all: libft $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) -o $@ ./libs/libft/libft.a
+	@$(CC) $(OBJS) $(HEADERS) -lreadline -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 
 libft:
