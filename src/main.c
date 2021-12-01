@@ -14,7 +14,11 @@
 
 bool	checkbuiltins(char **argv)
 {
+	int	len;
 
+	len = ft_strlen(argv[1]);
+	if (ft_strnstr(argv[1], "echo", len))
+		return (false);
 }
 
 int32_t	main(int32_t argc, char const **argv, char const **envp)
