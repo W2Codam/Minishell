@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 14:26:07 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/01 14:35:39 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <sys/stat.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
+# define SHUTFUCK(var) (void)var
 /**
  * Refactored piping for ft_pipe.
  * 

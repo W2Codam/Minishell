@@ -1,21 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   main.c                                             :+:    :+:            */
+/*   pipe_function.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 14:35:57 by lde-la-h      ########   odam.nl         */
+/*   Created: 2021/12/01 14:29:36 by lde-la-h      #+#    #+#                 */
+/*   Updated: 2021/12/01 14:29:37 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
-
-int32_t	main(int32_t argc, char const **argv, char const **envp)
-{
-	SHUTFUCK(argc);
-	SHUTFUCK(argv);
-	SHUTFUCK(envp);
-	exit(EXIT_SUCCESS);
-}

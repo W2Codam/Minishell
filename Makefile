@@ -6,7 +6,7 @@
 #    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2021/11/30 14:59:28 by lde-la-h      ########   odam.nl          #
+#    Updated: 2021/12/01 14:42:29 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ RESET	= \033[0m
 RED		= \x1b[31m
 
 # Define the header location
-HEADERS = -I ./libs/libft
+HEADERS = -I ./libs/libft -I ./include
 
 # //= Files =// #
 
@@ -33,15 +33,18 @@ OBJS	= ${SRCS:.c=.o}
 
 # //= Rules =// #
 ## //= Compile =// #
-all: $(NAME)
+all: libft $(NAME)
 
 %.o: %.c
 	@printf	"$(GREEN)$(BOLD)\rCompiling: $(notdir $<) 🔨$(RESET)"
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) -o $@
+	@$(CC) $(OBJS) $(HEADERS) -o $@ ./libs/libft/libft.a
 	@echo "$(GREEN)Done ✅$(RESET)"
+
+libft:
+	@$(MAKE) -C libs/libft
 
 ## //= Commands =// #
 
