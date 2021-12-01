@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 17:18:34 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/01 18:47:16 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # include <readline/readline.h>
 # define SHUTFUCK(var) (void)var
 # define TITLE "\e[104m MongolShell \e[49m\e[94m\n\e[92m❱ \e[0m"
+
 /**
  * Refactored piping for ft_pipe.
  * 
@@ -70,7 +71,7 @@ typedef struct s_file
 typedef struct s_cmd
 {
 	char	*cmd_name;
-	char	*args;
+	char	**args;
 	t_file	in;
 	t_file	out;
 	t_file	err;
