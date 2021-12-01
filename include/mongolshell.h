@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 14:35:39 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/01 17:18:34 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # define SHUTFUCK(var) (void)var
+# define TITLE "\e[104m MongolShell \e[49m\e[94m\n\e[92m❱ \e[0m"
 /**
  * Refactored piping for ft_pipe.
  * 
@@ -46,6 +47,34 @@ typedef enum e_pipe
 	WRITE = 0,
 	READ = 1
 }	t_pipe;
+
+/**
+ * A file is someform out 'file' that can be read from or
+ * written to.
+ * @param fd	The file descriptor.
+ * @param path	The path to the file, null if stdin, stdout or stderr.
+ */
+typedef struct s_file
+{
+	int32_t	fd;
+	char	*path;
+}	t_file;
+
+/**
+ * An entry to the command table, an entry consists of the executable
+ * name, its arguments and where its IO is directed.
+ * @param cmd_name	The command name.
+ * @param args		The arguments being passed to the command.
+ * @param 
+ */
+typedef struct s_cmd
+{
+	char	*cmd_name;
+	char	*args;
+	t_file	in;
+	t_file	out;
+	t_file	err;
+}	t_cmd;
 
 //= Unix Utils =//
 
