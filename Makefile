@@ -35,7 +35,8 @@ OBJS	= ${SRCS:.c=.o}
 # //= Rules =// #
 ## //= Compile =// #
 all: libft $(NAME)
-
+	@/bin/stty -echoctl
+	
 %.o: %.c
 	@printf	"$(GREEN)$(BOLD)\rCompiling: $(notdir $<) 🔨$(RESET)"
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 

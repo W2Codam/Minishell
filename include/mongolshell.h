@@ -33,7 +33,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # define SHUTFUCK(var) (void)var
-# define TITLE "\e[104m MongolShell \e[49m\e[94m\n\e[92m❱ \e[0m"
+# define TITLE "\e[104m MongolShell \e[49m\e[94m\n\e[92m❱\e[0m"
 /**
  * Refactored piping for ft_pipe.
  * 

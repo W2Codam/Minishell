@@ -12,19 +12,32 @@
 
 #include "mongolshell.h"
 
-bool	checkbuiltins(char **argv)
+void	handle(int sig)
 {
-	int	len;
-
-	len = ft_strlen(argv[1]);
-	if (ft_strnstr(argv[1], "echo", len))
-		return (false);
+	if (sig == SIGINT)
+	{	
+		write(1, "\n", 2);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-int32_t	main(int32_t argc, char const **argv, char const **envp)
+int32_t	main(void)
 {
-	SHUTFUCK(argc);
-	SHUTFUCK(argv);
-	SHUTFUCK(envp);
+	char				*s;
+
+	while (true)
+	{
+		signal(SIGINT, handle);
+		s = readline(TITLE);
+		if (s == NULL)
+			exit(0);
+		if (ft_strnstr(s, "quit", 4))
+			break ;
+		if (*s != 0)
+			add_history(s);
+		free(s);
+	}
 	exit(EXIT_SUCCESS);
 }
