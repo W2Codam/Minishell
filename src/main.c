@@ -6,38 +6,27 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 14:35:57 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/01 20:50:21 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mongolshell.h"
 
-void	handle(int sig)
-{
-	if (sig == SIGINT)
-	{	
-		write(1, "\n", 2);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
-int32_t	main(void)
+int32_t	main(int32_t argc, char **argv, char **envp)
 {
 	char				*s;
 
 	rl_catch_signals = 0;
-	signal(SIGINT, handle);
-	signal(SIGQUIT, handle);
+	SHUTFUCK(argc);
+	SHUTFUCK(argv);
+	signal(SIGINT, sig_handle);
+	signal(SIGQUIT, sig_handle);
 	while (true)
 	{
 		s = readline(TITLE);
-		if (s == NULL)
-			exit(0);
-		if (ft_strnstr(s, "quit", 4))
+		if (s == NULL || ft_strnstr(s, "exit", 4))
 			break ;
-		if (*s != 0)
+		if (!lexer(s, envp))
 			add_history(s);
 		free(s);
 	}

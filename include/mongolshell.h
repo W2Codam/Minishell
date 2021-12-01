@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 18:48:49 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/01 20:27:44 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,13 @@ typedef struct s_cmd
 
 char	*ft_getvar(const char *var, char **envp);
 char	*ft_getexec(const char *cmd, char **envp);
+
+void	sig_handle(int sig);
+
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_pipe(int32_t fds[2]);
+
 int32_t	ft_fork(pid_t *pid);
+int32_t	lexer(char *s, char **envp);
 
 #endif
