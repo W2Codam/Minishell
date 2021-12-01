@@ -22,8 +22,8 @@ RESET	= \033[0m
 RED		= \x1b[31m
 
 # Define the header location
-HEADERS = -I ./libs/libft -I ./include
-ARCHIVES = ./libs/libft/libft.a
+HEADERS = -I ./libs/libft -I ./include -I ~/.brew/opt/readline/include
+ARCHIVES = ./libs/libft/libft.a -lreadline -L ~/.brew/opt/readline/lib 
 
 # //= Files =// #
 
@@ -35,13 +35,14 @@ OBJS	= ${SRCS:.c=.o}
 # //= Rules =// #
 ## //= Compile =// #
 all: libft $(NAME)
-
+	@/bin/stty -echoctl
+	
 %.o: %.c
 	@printf	"$(GREEN)$(BOLD)\rCompiling: $(notdir $<) 🔨$(RESET)"
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -lreadline -o $(NAME)
+	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME) 
 	@echo "$(GREEN)Done ✅$(RESET)"
 
 libft:
