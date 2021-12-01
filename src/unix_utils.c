@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/22 09:25:28 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 14:20:01 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/01 15:00:17 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ char	*ft_getexec(const char *cmd, char **envp)
 		temp = ft_strjoin(paths[path_index], "/");
 		path = ft_strjoin(temp, cmd);
 		free(temp);
-		if (ft_access(path, F_OK & X_OK))
+		if (ft_access(path, F_OK | X_OK))
 			break ;
 		free(path);
+		path = NULL;
 	}
 	path_index = -1;
 	while (paths[++path_index])
