@@ -12,6 +12,11 @@
 
 #include "mongolshell.h"
 
+bool	checkbuiltins(char **argv)
+{
+
+}
+
 int32_t	main(int32_t argc, char const **argv, char const **envp)
 {
 	SHUTFUCK(argc);
