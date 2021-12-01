@@ -22,7 +22,7 @@ RESET	= \033[0m
 RED		= \x1b[31m
 
 # Define the header location
-HEADERS = -I ./libs/libft
+HEADERS = -I ./libs/libft -I ./include
 
 # //= Files =// #
 
@@ -40,7 +40,7 @@ all: $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) -o $@
+	@$(CC) $(OBJS) $(HEADERS) -lreadline -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 
 ## //= Commands =// #
