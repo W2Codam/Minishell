@@ -23,6 +23,7 @@ RED		= \x1b[31m
 
 # Define the header location
 HEADERS = -I ./libs/libft -I ./include
+ARCHIVES = ./libs/libft/libft.a
 
 # //= Files =// #
 
@@ -40,7 +41,7 @@ all: libft $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) -lreadline -o $(NAME)
+	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -lreadline -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 
 libft:
@@ -51,11 +52,13 @@ libft:
 # Clean
 clean:
 	@echo "$(RED)Cleaning 🧹$(RESET)"
+	@$(MAKE) -C libs/libft clean
 	@rm -f $(OBJS)
 
 # Full clean
 fclean: clean
 	@rm -f $(NAME)
+	@rm -f ./libs/libft/libft.a
 
 # Re-compile
 re:	fclean all
