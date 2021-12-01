@@ -26,7 +26,7 @@ HEADERS = -I ./libs/libft
 
 # //= Files =// #
 
-TODO: Add files, remove shell command.
+# TODO: Add files, remove shell command.
 SRCS	=	$(shell find ./src -iname "*.c")
 			
 OBJS	= ${SRCS:.c=.o}
