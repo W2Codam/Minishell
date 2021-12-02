@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 14:35:57 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 14:05:54 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int32_t	main(void)
 {
 	char				*s;
 
-	rl_catch_signals = 0;
+	rl_catch_signals = false;
 	signal(SIGINT, handle);
 	signal(SIGQUIT, handle);
 	while (true)
@@ -35,7 +35,7 @@ int32_t	main(void)
 		s = readline(TITLE);
 		if (s == NULL)
 			exit(0);
-		if (ft_strnstr(s, "quit", 4))
+		if (ft_strnstr(s, "exit", 4))
 			break ;
 		if (*s != 0)
 			add_history(s);
