@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 20:27:44 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 14:08:40 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 # define MONGOLSHELL_H
 # include "libft.h"
 # include <errno.h>
-# include <signal.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include <stdint.h>
+# include <signal.h>
 # include <limits.h>
 # include <dirent.h>
 # include <sys/wait.h>
@@ -66,28 +67,33 @@ typedef struct s_file
  * name, its arguments and where its IO is directed.
  * @param cmd_name	The command name.
  * @param args		The arguments being passed to the command.
- * @param 
+ * @param build_in	Is the command a built-in command.
  */
 typedef struct s_cmd
 {
 	char	*cmd_name;
 	char	**args;
+	bool	built_in;
 	t_file	in;
 	t_file	out;
 	t_file	err;
 }	t_cmd;
 
+//= Unix File Utils
+
+int32_t	ft_openfile(char *path, bool isoutput);
+bool	ft_access(const char *path, int32_t flags);
+bool	ft_valid_file(t_file *file);
+
 //= Unix Utils =//
 
 char	*ft_getvar(const char *var, char **envp);
 char	*ft_getexec(const char *cmd, char **envp);
-
-void	sig_handle(int sig);
-
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_pipe(int32_t fds[2]);
-
+void	sig_handle(int sig);
 int32_t	ft_fork(pid_t *pid);
+void	ft_assert(const char *msg);
 int32_t	lexer(char *s, char **envp);
 
 #endif

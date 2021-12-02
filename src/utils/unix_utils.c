@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/22 09:25:28 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/01 15:00:17 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 11:53:54 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	*ft_getvar(const char *var, char **envp)
 }
 
 /**
+ * TODO: Leak proof this.
  * Get the absolute executable path of a command.
  * 
  * @param cmd The command like 'ls' or 'grep'.
@@ -67,19 +68,6 @@ char	*ft_getexec(const char *cmd, char **envp)
 		free(paths[path_index]);
 	free(paths);
 	return (path);
-}
-
-/** 
- * Simplified wrapper for access to return proper boolean.
- * @param path The path to the file.
- * @param flags The flags to use for checking.
- * @returns Depending on the flag wether the condition is met or not.
- */
-bool	ft_access(const char *path, int32_t flags)
-{
-	if (access(path, flags) != -1)
-		return (true);
-	return (false);
 }
 
 /** 
