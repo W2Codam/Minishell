@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/01 21:40:34 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 14:03:42 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ int32_t	lexonecmd(char *s, char **envp, t_cmd table)
 	}
 	printf("cmd: %s\n", table.cmd_name);
 	for (int x = 0; x < count; x++)
+	{
 		printf("args: %s\n", table.args[x]);
-	return(0);
+		free(table.args[x]);
+	}
+	return (0);
 }
 
 int32_t	lexer(char *s, char **envp)
@@ -79,7 +82,7 @@ int32_t	lexer(char *s, char **envp)
 		j++;
 		i++;
 	}
-
+	free(table);
 	return (0);
 }
 
