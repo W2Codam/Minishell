@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/02 17:03:08 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 18:05:28 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@ void printfunc(t_cmd nt, int count)
 {
 	printf("cmd: %s\n", nt.cmd_name);
 	for (int x = 0; x < count; x++)
-	{
 		printf("args: %s\n", nt.args[x]);
-		free(nt.args[x]);
-	}
 	if (nt.in.path)
 		printf("pathin: %s\n", nt.in.path);
 	else
@@ -39,7 +36,7 @@ void printfunc(t_cmd nt, int count)
  * @param table 
  * @return int32_t 
  */
-int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
+int32_t	lexonecmd(char *s, char **envp, t_cmd **table)
 {
 	int		i;
 	int		j;
@@ -76,7 +73,7 @@ int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
 	}
 	printfunc(newtable, count);
 	newtable.next = NULL;
-	table = &newtable;
+	*table = &newtable;
 	return (0);
 }
 
@@ -86,37 +83,30 @@ int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
  * 
  * @param s 
  * @param envp 
- * @return t_cmd
+ * @return t_cmd *
  */
 t_cmd	*lexer(char *s, char **envp)
 {
 	t_cmd	*table;
-	int		i;
-	int		count;
+	//t_cmd	*start;
 	int		j;
 	int		k;
 
-	count = 1;
-	i = 0;
-	while (s[i++])
-		if (s[i] == '|')
-			count++;
-	table = (t_cmd *)malloc(sizeof(t_cmd));
-	i = 0;
-	j = 0;
+	j = 1;
 	k = 0;
-	while (i < count)
+	while (strchr(s + j - 1, '|'))
 	{
+		table = (t_cmd *)malloc(sizeof(t_cmd));
 		while (s[j] != '|' && s[j])
 			j++;
-		if (lexonecmd(ft_substr(s, k, j - k), envp, table))
+		if (lexonecmd(ft_substr(s, k, j - k), envp, &table))
 			return (NULL);
+		printf("%s\n", table->cmd_name);
 		table = table->next;
 		k = j;
 		while (s[k] == ' ' || s[k] == '|')
 			k++;
 		j++;
-		i++;
 	}
 	return (table);
 }
