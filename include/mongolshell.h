@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:55:16 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 20:26:43 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,7 @@ char	*find_inout(char *s, t_cmd *nt);
 int32_t	ft_fork(pid_t *pid);
 void	ft_assert(const char *msg);
 t_cmd	*lexer(char *s, char **envp);
+void	cmd_lstadd_back(t_cmd **lst, t_cmd *new);
+t_cmd	*cmd_lstlast(t_cmd *lst);
 
 #endif
