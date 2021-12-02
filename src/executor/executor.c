@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 19:39:02 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:34:57 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 16:43:42 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	ft_exec_child(t_cmd *cmds, char **envp)
 	if (!ft_pipe(fds) || !ft_fork(&pid))
 	{
 		ft_assert("Pipe/Fork failure!");
-		return (false);
+		return ;
 	}
 	if (pid == 0)
 	{
