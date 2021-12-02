@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/02 15:27:42 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:30:39 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 16:38:35 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,20 @@ char	*remove_out(char *s)
 	return (s);
 }
 
+/**
+ * Finds in and out redirects and updates them in the cmd table. 
+ * Return s which in this case is one command, 
+ * which is defined as a line of text between any of these:
+ * 		The start of the input and the end of the input.
+ * 		The start of the input and a pipe.
+ * 		Two pipes.
+ * 		A pipe and the end of the input.
+ * 		
+ * 
+ * @param s 
+ * @param nt 
+ * @return char* 
+ */
 char	*find_inout(char *s, t_cmd *nt)
 {
 	find_in(s, nt);

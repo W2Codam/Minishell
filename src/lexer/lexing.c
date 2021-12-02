@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:31:30 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 16:55:02 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@
 // 		printf("pathotu: STDOUT\n");
 // }
 
+/**
+ * Lexes one command. Returns 0 on succes.
+ * Doesn't handle qoutes yet.
+ * 
+ * @param s 
+ * @param envp 
+ * @param table 
+ * @return int32_t 
+ */
 int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
 {
 	int		i;
@@ -71,7 +80,15 @@ int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
 	return (0);
 }
 
-int32_t	lexer(char *s, char **envp)
+/**
+ * Finds the amount of commands and sends them to lexonecmd.
+ * Returns the populated cmdtable.
+ * 
+ * @param s 
+ * @param envp 
+ * @return t_cmd
+ */
+t_cmd	*lexer(char *s, char **envp)
 {
 	t_cmd	*table;
 	int		i;
@@ -100,7 +117,7 @@ int32_t	lexer(char *s, char **envp)
 		j++;
 		i++;
 	}
-	return (0);
+	return (table);
 }
 
 // TODO: norm everything, possible rewrites, remove printfunc when needed
