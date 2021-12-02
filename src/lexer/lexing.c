@@ -6,26 +6,26 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/02 20:37:55 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 21:21:50 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mongolshell.h"
 
-void printfunc(t_cmd *nt, int count)
-{
-	printf("cmd: %s\n", nt->cmd_name);
-	for (int x = 0; x < count; x++)
-		printf("args: %s\n", nt->args[x]);
-	if (nt->in.path)
-		printf("pathin: %s\n", nt->in.path);
-	else
-		printf("pathin: STDIN\n");
-	if (nt->out.path)
-		printf("pathout: %s\n", nt->out.path);
-	else
-		printf("pathotu: STDOUT\n");
-}
+// void printfunc(t_cmd *nt, int count)
+// {
+// 	printf("cmd: %s\n", nt->cmd_name);
+// 	for (int x = 0; x < count; x++)
+// 		printf("args: %s\n", nt->args[x]);
+// 	if (nt->in.path)
+// 		printf("pathin: %s\n", nt->in.path);
+// 	else
+// 		printf("pathin: STDIN\n");
+// 	if (nt->out.path)
+// 		printf("pathout: %s\n", nt->out.path);
+// 	else
+// 		printf("pathotu: STDOUT\n");
+// }
 
 /**
  * Lexes one command. Returns 0 on succes.
@@ -72,7 +72,7 @@ t_cmd	*lexonecmd(char *s, char **envp)
 		}
 		i++;
 	}
-	printfunc(newtable, count);
+	newtable->args[count] = NULL;
 	newtable->next = NULL;
 	return (newtable);
 }
@@ -108,8 +108,7 @@ t_cmd	*lexer(char *s, char **envp)
 		while (s[k] == ' ' || s[k] == '|')
 			k++;
 		j++;
-	}		
-	printf("%s\n", table->cmd_name);
+	}
 	return (table);
 }
 
