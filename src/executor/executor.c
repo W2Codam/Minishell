@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 19:39:02 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:02:20 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 16:34:57 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,74 @@ static void	ft_redir_fds(int32_t fds[3], t_cmd *cmd)
 	}
 }
 
+/**
+ * Executes the given shell command.
+ * Command can be given as an absolute path like "/bin/ls" or
+ * by just typing "ls". If command does not exists
+ * 
+ * @param cmd The whole command with args.
+ * @param envp Enviroment pointer.
+ */
+static void	ft_exec(t_cmd *cmds, char **envp)
+{
+	if (!cmds->built_in)
+		execve(ft_getexec(cmds->cmd_name, envp), cmds->args, envp);
+	ft_assert("Command does not exist");
+}
+
+/**
+ * Executes a child process with the given cmd.
+ * Creating a pipe to the parent process.
+ * 
+ * @param cmds A single command that will store its output in the pipe.
+ * @param envp The environment pointer.
+ */
+static void	ft_exec_child(t_cmd *cmds, char **envp)
+{
+	pid_t	pid;
+	int32_t	fds[2];
+
+	if (!ft_pipe(fds) || !ft_fork(&pid))
+	{
+		ft_assert("Pipe/Fork failure!");
+		return (false);
+	}
+	if (pid == 0)
+	{
+		close(fds[READ]);
+		dup2(fds[WRITE], STDOUT_FILENO);
+		ft_exec(cmds, envp);
+	}
+	else
+	{
+		close(fds[WRITE]);
+		dup2(fds[READ], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
+	}
+}
+
 /** 
  * The executor, takes in an array of "commands"
  * and executes them as instructed.
+ * TODO: This might not be setup just right.
  */
 bool	ft_run_executor(t_cmd *cmds, char **envp)
 {	
-	SHUTFUCK(envp);
-	t_cmd	*orig;
-	int32_t	fds[3];
+	int32_t		fds[3];
+	const t_cmd	*cmd_orig = cmds;
 
-	orig = cmds;
 	while (cmds)
 	{
 		ft_redir_fds(fds, cmds);
-		if (cmds->built_in)
-		{
-			/* code */
-		}
-		else
-			execve(ft_getexec(cmds->cmd_name, envp), cmds->args, envp);
+		if (cmds->next) // Theres a pipe, execute child!
+			ft_exec_child(cmds, envp);
+		else // Just a single command. with a probable re-director.
+			ft_exec(cmds, envp);
 		cmds++;
 	}
+	free((void *)cmd_orig);
 	close(fds[0]);
 	close(fds[1]);
-	close(fds[1]);
+	close(fds[2]);
 	return (true);
 }
