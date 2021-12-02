@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:32:31 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 16:35:22 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,18 @@ typedef struct s_file
  */
 typedef struct s_cmd
 {
-	char	*cmd_name;
-	char	**args;
-	bool	built_in;
-	t_file	in;
-	t_file	out;
-	t_file	err;
-	t_cmd	*next;
+	char			*cmd_name;
+	char			**args;
+	bool			built_in;
+	t_file			in;
+	t_file			out;
+	t_file			err;
+	struct s_cmd	*next;
 }	t_cmd;
+
+//= Src =//
+
+bool	ft_run_executor(t_cmd *cmds, char **envp);
 
 //= Unix File Utils
 
