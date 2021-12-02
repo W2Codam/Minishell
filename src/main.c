@@ -6,9 +6,10 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:21:21 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 14:31:35 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "mongolshell.h"
 
@@ -26,6 +27,8 @@ int32_t	main(int32_t argc, char **argv, char **envp)
 		s = readline(TITLE);
 		if (s == NULL || ft_strnstr(s, "exit", 4))
 			break ;
+		if (*s == 0)
+			continue ;
 		if (!lexer(s, envp))
 			add_history(s);
 		free(s);
