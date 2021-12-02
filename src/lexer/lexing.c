@@ -6,11 +6,29 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:29:42 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 16:31:30 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mongolshell.h"
+
+// void printfunc(t_cmd nt, int count)
+// {
+// 	printf("cmd: %s\n", nt.cmd_name);
+// 	for (int x = 0; x < count; x++)
+// 	{
+// 		printf("args: %s\n", nt.args[x]);
+// 		free(nt.args[x]);
+// 	}
+// 	if (nt.in.path)
+// 		printf("pathin: %s\n", nt.in.path);
+// 	else
+// 		printf("pathin: STDIN\n");
+// 	if (nt.out.path)
+// 		printf("pathout: %s\n", nt.out.path);
+// 	else
+// 		printf("pathotu: STDOUT\n");
+// }
 
 int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
 {
@@ -22,6 +40,7 @@ int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
 
 	i = 0;
 	temp = 0;
+	s = find_inout(s, &newtable);
 	while (s[i] != ' ')
 		i++;
 	newtable.cmd_name = ft_getexec(ft_substr(s, 0, i), envp);
@@ -46,12 +65,7 @@ int32_t	lexonecmd(char *s, char **envp, t_cmd *table)
 		}
 		i++;
 	}
-	printf("cmd: %s\n", newtable.cmd_name);
-	for (int x = 0; x < count; x++)
-	{
-		printf("args: %s\n", newtable.args[x]);
-		free(newtable.args[x]);
-	}
+	printfunc(newtable, count);
 	newtable.next = NULL;
 	table = &newtable;
 	return (0);
@@ -89,5 +103,4 @@ int32_t	lexer(char *s, char **envp)
 	return (0);
 }
 
-//allocate for amount of cmd
-//lex command by command, substr between start and pipe, pipes, and pipe and \0
+// TODO: norm everything, possible rewrites, remove printfunc when needed

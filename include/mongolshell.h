@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:29:06 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 15:37:29 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	*ft_getexec(const char *cmd, char **envp);
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_pipe(int32_t fds[2]);
 void	sig_handle(int sig);
+char	*find_inout(char *s, t_cmd *nt);
 int32_t	ft_fork(pid_t *pid);
 void	ft_assert(const char *msg);
 int32_t	lexer(char *s, char **envp);
