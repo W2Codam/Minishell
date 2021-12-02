@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:09:13 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 14:21:21 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int32_t	main(int32_t argc, char **argv, char **envp)
 {
 	char				*s;
 
-	rl_catch_signals = 0;
+	rl_catch_signals = false;
 	SHUTFUCK(argc);
 	SHUTFUCK(argv);
 	signal(SIGINT, sig_handle);

@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:08:40 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2021/12/02 14:30:04 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,10 @@ typedef struct s_file
  * @param cmd_name	The command name.
  * @param args		The arguments being passed to the command.
  * @param build_in	Is the command a built-in command.
+ * @param in		The input file.
+ * @param out		The output file.
+ * @param err		The error file.
+ * @param next		Optional, if next is not null then output will be piped to next.
  */
 typedef struct s_cmd
 {
@@ -77,6 +81,7 @@ typedef struct s_cmd
 	t_file	in;
 	t_file	out;
 	t_file	err;
+	t_cmd	*next;
 }	t_cmd;
 
 //= Unix File Utils
