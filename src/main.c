@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:56:24 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/02 17:05:58 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int32_t	handlecmd(char *s, char **envp)
 {
 	const t_cmd	*cmdtable = lexer(s, envp);
 
+	if (!cmdtable)
+		return (1);
 	return (0);
 }
 
