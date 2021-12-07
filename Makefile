@@ -6,7 +6,7 @@
 #    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2021/12/02 16:08:10 by pvan-dij      ########   odam.nl          #
+#    Updated: 2021/12/02 16:59:39 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,13 +37,12 @@ OBJS	= ${SRCS:.c=.o}
 all: libft $(NAME)
 	
 %.o: %.c
-	@printf	"$(GREEN)$(BOLD)\rCompiling: $(notdir $<) 🔨$(RESET)"
+	@printf	"$(GREEN)$(BOLD)\rCompiling: $(notdir $<) 🔨 $(RESET)"
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME) 
 	@echo "$(GREEN)Done ✅$(RESET)"
-
 libft:
 	@$(MAKE) -C libs/libft
 
