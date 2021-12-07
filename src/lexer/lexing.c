@@ -6,26 +6,11 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/02 21:21:50 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/07 14:15:51 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mongolshell.h"
-
-// void printfunc(t_cmd *nt, int count)
-// {
-// 	printf("cmd: %s\n", nt->cmd_name);
-// 	for (int x = 0; x < count; x++)
-// 		printf("args: %s\n", nt->args[x]);
-// 	if (nt->in.path)
-// 		printf("pathin: %s\n", nt->in.path);
-// 	else
-// 		printf("pathin: STDIN\n");
-// 	if (nt->out.path)
-// 		printf("pathout: %s\n", nt->out.path);
-// 	else
-// 		printf("pathotu: STDOUT\n");
-// }
 
 /**
  * Lexes one command. Returns 0 on succes.
@@ -95,12 +80,22 @@ t_cmd	*lexer(char *s, char **envp)
 	j = 1;
 	k = 0;
 	table = NULL;
+	if (!(strchr(s + j - 1, '|')))
+	{
+		temp = (t_cmd *)malloc(sizeof(t_cmd));
+		while (s[j] != '|' && s[j])
+			j++;
+		temp = lexonecmd(ft_substr(s, k, j - k), envp);	
+		if (!temp)
+			return (NULL);
+		cmd_lstadd_back(&table, temp);
+	}
 	while (strchr(s + j - 1, '|'))
 	{	
 		temp = (t_cmd *)malloc(sizeof(t_cmd));
 		while (s[j] != '|' && s[j])
 			j++;
-		temp = lexonecmd(ft_substr(s, k, j - k), envp);
+		temp = lexonecmd(ft_substr(s, k, j - k), envp);	
 		if (!temp)
 			return (NULL);
 		cmd_lstadd_back(&table, temp);
@@ -112,4 +107,4 @@ t_cmd	*lexer(char *s, char **envp)
 	return (table);
 }
 
-// TODO: norm everything, possible rewrites, remove printfunc when needed
+// TODO: norm everything, possible rewrites
