@@ -6,17 +6,37 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 17:28:43 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/07 14:11:10 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mongolshell.h"
 
+void	printfunc(t_cmd *nt)
+{
+	printf("cmd: %s\n", nt->cmd_name);
+	for (int x = 0; nt->args[x]; x++)
+		printf("arg: %s\n", nt->args[x]);
+	if (nt->in.path)
+		printf("pathin: %s\n", nt->in.path);
+	else
+		printf("pathin: STDIN\n");
+	if (nt->out.path)
+		printf("pathout: %s\n", nt->out.path);
+	else
+		printf("pathotu: STDOUT\n");
+	if (nt->next)
+		printfunc(nt->next);
+}
+
 int32_t	handlecmd(char *s, char **envp)
 {
-	const t_cmd	*cmdtable = lexer(s, envp);
+	t_cmd	*cmdtable = lexer(s, envp);
 
-	SHUTFUCK(cmdtable);
+	if (cmdtable)
+		printfunc(cmdtable);
+	else
+		printf("error\n");
 	return (0);
 }
 
