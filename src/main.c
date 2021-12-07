@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/07 14:11:10 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/07 14:51:17 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	printfunc(t_cmd *nt)
 	if (nt->out.path)
 		printf("pathout: %s\n", nt->out.path);
 	else
-		printf("pathotu: STDOUT\n");
+		printf("pathout: STDOUT\n");
 	if (nt->next)
 		printfunc(nt->next);
 }
