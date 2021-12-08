@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/07 14:15:51 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/08 20:09:50 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_cmd	*lexonecmd(char *s, char **envp)
 	temp = 0;
 	newtable = (t_cmd *)malloc(sizeof(t_cmd));
 	s = find_inout(s, newtable);
-	while (s[i] != ' ')
+	while (s[i] != ' ' && s[i])
 		i++;
 	newtable->cmd_name = ft_getexec(ft_substr(s, 0, i), envp);
 	if (!newtable->cmd_name)

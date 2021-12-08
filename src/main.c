@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/07 14:51:17 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/08 20:05:29 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ int32_t	main(int32_t argc, char **argv, char **envp)
 	while (true)
 	{
 		s = readline(TITLE);
-		if (s == NULL || ft_strnstr(s, "exit", 4))
+		if ((s == NULL) || ft_strnstr(s, "exit", 4))
+		{
+			write(1, "exit\n", 5);
 			break ;
+		}
 		if (*s == 0)
 			continue ;
 		if (!handlecmd(s, envp))
@@ -62,3 +65,5 @@ int32_t	main(int32_t argc, char **argv, char **envp)
 	}
 	exit(EXIT_SUCCESS);
 }
+
+// TODO: refactor EVERYTHING
