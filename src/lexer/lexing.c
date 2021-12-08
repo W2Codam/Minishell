@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/08 20:09:50 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/08 20:16:49 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,19 @@ t_cmd	*lexer(char *s, char **envp)
 {
 	t_cmd	*temp;
 	t_cmd	*table;
+	int		count;
 	int		j;
 	int		k;
 
 	j = 1;
 	k = 0;
 	table = NULL;
-	if (!(strchr(s + j - 1, '|')))
-	{
-		temp = (t_cmd *)malloc(sizeof(t_cmd));
-		while (s[j] != '|' && s[j])
-			j++;
-		temp = lexonecmd(ft_substr(s, k, j - k), envp);	
-		if (!temp)
-			return (NULL);
-		cmd_lstadd_back(&table, temp);
-	}
-	while (strchr(s + j - 1, '|'))
+	count = 1;
+	while (s[k++])
+		if (s[k] == '|')
+			count++;
+	k = 0;
+	while (count--)
 	{	
 		temp = (t_cmd *)malloc(sizeof(t_cmd));
 		while (s[j] != '|' && s[j])
@@ -100,7 +96,7 @@ t_cmd	*lexer(char *s, char **envp)
 			return (NULL);
 		cmd_lstadd_back(&table, temp);
 		k = j;
-		while (s[k] == ' ' || s[k] == '|')
+		while ((s[k] == ' ' || s[k] == '|') && s[k])
 			k++;
 		j++;
 	}
