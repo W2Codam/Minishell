@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 20:13:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/08 20:16:49 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2021/12/08 20:17:58 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_cmd	*lexer(char *s, char **envp)
 		temp = (t_cmd *)malloc(sizeof(t_cmd));
 		while (s[j] != '|' && s[j])
 			j++;
-		temp = lexonecmd(ft_substr(s, k, j - k), envp);	
+		temp = lexonecmd(ft_substr(s, k, j - k), envp);
 		if (!temp)
 			return (NULL);
 		cmd_lstadd_back(&table, temp);

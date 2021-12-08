@@ -6,7 +6,7 @@
 #    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2021/12/08 20:06:31 by pvan-dij      ########   odam.nl          #
+#    Updated: 2021/12/08 20:22:50 by pvan-dij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,9 @@ $(NAME): $(OBJS)
 	@echo "$(GREEN)Done ✅$(RESET)"
 libft:
 	@$(MAKE) -C libs/libft
+mongol: all
+	@open https://youtu.be/6WlI24rv__g?t=27
+	@osascript -e "set Volume 5"
 
 ## //= Commands =// #
 
