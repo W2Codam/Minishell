@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 20:26:43 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/25 16:41:36 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # define SHUTFUCK(var) (void)var
-# define TITLE "\e[104m MongolShell \e[49m\e[94m\n\e[92m❱ \e[0m"
+# define TITLE "\e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
 
 /**
  * Refactored piping for ft_pipe.

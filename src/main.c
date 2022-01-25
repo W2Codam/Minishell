@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/25 15:57:15 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/25 16:21:49 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int32_t	handlecmd(char *s, char **envp)
 	if (cmdtable)
 		ft_run_executor(cmdtable, envp);
 	else
-		printf("error\n");
+		printf("command not found\n");
 	return (0);
 }
 
