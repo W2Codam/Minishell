@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 19:39:02 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 16:43:42 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/01/25 16:03:11 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,17 @@ static void	ft_redir_fds(int32_t fds[3], t_cmd *cmd)
  */
 static void	ft_exec(t_cmd *cmds, char **envp)
 {
-	if (!cmds->built_in)
-		execve(ft_getexec(cmds->cmd_name, envp), cmds->args, envp);
-	ft_assert("Command does not exist");
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (!cmds->built_in)
+			execve(cmds->cmd_name, cmds->args, envp);
+		else
+			ft_assert("Command does not exist");
+	}
+	wait(&pid);
 }
 
 /**
@@ -101,7 +109,7 @@ bool	ft_run_executor(t_cmd *cmds, char **envp)
 			ft_exec_child(cmds, envp);
 		else // Just a single command. with a probable re-director.
 			ft_exec(cmds, envp);
-		cmds++;
+		cmds = cmds->next;
 	}
 	free((void *)cmd_orig);
 	close(fds[0]);

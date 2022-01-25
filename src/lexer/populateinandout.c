@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/02 15:27:42 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2021/12/07 14:10:42 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/25 15:18:52 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ char	*find_inout(char *s, t_cmd *nt)
 		s = remove_in(s);
 	if (nt->out.path)
 		s = remove_out(s);
+	nt->err.fd = STDERR_FILENO;
+	nt->err.path = NULL;
 	return (s);
 }
 

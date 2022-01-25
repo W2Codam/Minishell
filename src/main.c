@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/08 20:05:29 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/25 15:57:15 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int32_t	handlecmd(char *s, char **envp)
 	t_cmd	*cmdtable = lexer(s, envp);
 
 	if (cmdtable)
-		printfunc(cmdtable);
+		ft_run_executor(cmdtable, envp);
 	else
 		printf("error\n");
 	return (0);
