@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/26 16:11:51 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/01/26 20:55:32 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # define SHUTFUCK(var) (void)var
-# define TITLE "\e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
+# define TITLE "\e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
 
 /**
  * Refactored piping for ft_pipe.
@@ -102,6 +102,7 @@ char	*ft_getexec(const char *cmd, char **envp);
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_pipe(int32_t fds[2]);
 void	sig_handle(int sig);
+void	exitout(char *s);
 char	*find_inout(char *s, t_cmd *nt);
 int32_t	ft_fork(pid_t *pid);
 void	ft_assert(const char *msg);
