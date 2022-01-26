@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:21:49 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/26 16:22:06 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int32_t	main(int32_t argc, char **argv, char **envp)
 		s = readline(TITLE);
 		if ((s == NULL) || ft_strnstr(s, "exit", 4))
 		{
-			write(1, "exit\n", 5);
+			write(2, "\x1b[A\x1b[15Cexit\n", 13);
 			break ;
 		}
 		if (*s == 0)
