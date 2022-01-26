@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:41:36 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/26 16:11:51 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <stdint.h>
+# include <stdbool.h>
 # include <signal.h>
 # include <limits.h>
 # include <dirent.h>
