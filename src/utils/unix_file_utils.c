@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 19:56:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2021/12/02 14:03:00 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/01/27 12:46:43 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@
  */
 bool	ft_access(const char *path, int32_t flags)
 {
-	if (access(path, flags) != -1)
-		return (true);
-	return (false);
+	return (access(path, flags) != -1);
 }
 
 /**
@@ -34,12 +32,12 @@ bool	ft_access(const char *path, int32_t flags)
  */
 bool	ft_valid_file(t_file *file)
 {
-	if (file->fd == STDIN_FILENO || file->fd == STDOUT_FILENO || file->fd == STDERR_FILENO)
+	if (file->fd == STDIN_FILENO || file->fd == STDOUT_FILENO || \
+		file->fd == STDERR_FILENO)
 		return (true);
 	if (!file->path || file->fd < 0)
 		return (false);
 	return (ft_access(file->path, F_OK));
-	
 }
 
 /**

@@ -6,17 +6,20 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/26 16:10:44 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/26 16:38:25 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/01/27 12:53:20 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mongolshell.h"
 
-static void	ft_print_args(int32_t argc, char **argv, bool newline)
+static void	ft_print_args(int32_t argc, char **argv)
 {
+	int32_t	i;
+
+	i = 1;
 	while (argc >= 3 & i < argc - 1)
 	{
-		write(STDOUT_FILENO, argv[i], ft_strlen(argv[i]))
+		write(STDOUT_FILENO, argv[i], ft_strlen(argv[i]));
 		i++;
 	}
 }
@@ -31,10 +34,9 @@ static void	ft_print_args(int32_t argc, char **argv, bool newline)
  */
 int32_t	ft_echo(int32_t argc, char **argv, char **envp)
 {
-	int32_t	i;
 	bool	newline;
 
-	i = 1;
+	SHUTFUCK(envp);
 	newline = true;
 	if (argc < 2)
 	{
@@ -48,7 +50,7 @@ int32_t	ft_echo(int32_t argc, char **argv, char **envp)
 		if (argc < 3)
 			write(STDOUT_FILENO, "", 1);
 	}
-	ft_print_args(argc, argv, newline);
+	ft_print_args(argc, argv);
 	if (newline)
 		write(STDOUT_FILENO, "\n", 1);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 #    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2022/01/25 15:28:20 by pvan-dij      ########   odam.nl          #
+#    Updated: 2022/01/27 13:07:40 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ all: libft $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME) -fsanitize=address
+	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 libft:
 	@$(MAKE) -C libs/libft
