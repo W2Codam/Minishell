@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 13:55:59 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/26 20:55:32 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:50:09 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,12 @@ typedef struct s_file
 	char	*path;
 }	t_file;
 
+typedef struct s_env
+{
+	char			*env;
+	struct s_env	*next;
+}	t_env;
+
 /**
  * An entry to the command table, an entry consists of the executable
  * name, its arguments and where its IO is directed.
@@ -109,5 +115,6 @@ void	ft_assert(const char *msg);
 t_cmd	*lexer(char *s, char **envp);
 void	cmd_lstadd_back(t_cmd **lst, t_cmd *new);
 t_cmd	*cmd_lstlast(t_cmd *lst);
+t_env	*processenv(char **envp);
 
 #endif

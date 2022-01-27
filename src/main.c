@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/26 16:24:47 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:49:30 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,15 @@ int32_t	handlecmd(char *s, char **envp)
 
 int32_t	main(int32_t argc, char **argv, char **envp)
 {
-	char				*s;
+	char	*s;
+	t_env	*env;
 
 	rl_catch_signals = false;
 	SHUTFUCK(argc);
 	SHUTFUCK(argv);
 	signal(SIGINT, sig_handle);
-	signal(SIGQUIT, sig_handle);
+	signal(SIGQUIT, sig_handle);	
+	env = processenv(envp);
 	while (true)
 	{
 		s = readline(TITLE);
