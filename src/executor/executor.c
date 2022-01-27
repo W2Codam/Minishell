@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/01 19:39:02 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:03:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/27 12:44:57 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,23 +71,23 @@ static void	ft_exec(t_cmd *cmds, char **envp)
 static void	ft_exec_child(t_cmd *cmds, char **envp)
 {
 	pid_t	pid;
-	int32_t	fds[2];
+	int32_t	pipe[2];
 
-	if (!ft_pipe(fds) || !ft_fork(&pid))
+	if (!ft_pipe(pipe) || !ft_fork(&pid))
 	{
 		ft_assert("Pipe/Fork failure!");
 		return ;
 	}
 	if (pid == 0)
 	{
-		close(fds[READ]);
-		dup2(fds[WRITE], STDOUT_FILENO);
+		close(pipe[READ]);
+		dup2(pipe[WRITE], STDOUT_FILENO);
 		ft_exec(cmds, envp);
 	}
 	else
 	{
-		close(fds[WRITE]);
-		dup2(fds[READ], STDIN_FILENO);
+		close(pipe[WRITE]);
+		dup2(pipe[READ], STDIN_FILENO);
 		waitpid(pid, NULL, 0);
 	}
 }

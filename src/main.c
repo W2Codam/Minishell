@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/30 13:23:11 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:49:30 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:52:54 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int32_t	handlecmd(char *s, char **envp)
 	return (0);
 }
 
+extern char	**environ;
+
 int32_t	main(int32_t argc, char **argv, char **envp)
 {
 	char	*s;
@@ -54,6 +56,11 @@ int32_t	main(int32_t argc, char **argv, char **envp)
 	while (true)
 	{
 		s = readline(TITLE);
+		for (char **env = environ; *env != 0; env++)
+		{
+			char *thisEnv = *env;
+			printf("%s\n", thisEnv);    
+		}
 		if ((s == NULL) || ft_strnstr(s, "exit", 4))
 		{
 			exitout(s);

@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/26 16:10:46 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/26 17:48:43 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/01/27 12:52:15 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
  */
 int32_t	ft_cd(int32_t argc, char **argv, char **envp)
 {
+	SHUTFUCK(envp);
 	if (argc == 1)
 		return (EXIT_SUCCESS);
 	return (argc >= 2 && chdir(argv[2]) != -1);
