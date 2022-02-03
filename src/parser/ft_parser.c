@@ -104,7 +104,7 @@ t_list *ft_parser(char **input, t_list *envp)
 	(void) envp;
 	while (input[i] != NULL)
 	{		
-		j = 0;
+		j = 1;
 		temp = (t_cmd *)malloc(sizeof(t_cmd));
 		if (!temp)
 			return (NULL); // cleanup of possible previous mallocs
@@ -120,7 +120,7 @@ t_list *ft_parser(char **input, t_list *envp)
 		if (input[i][0] == '|')
 		{
 			temp->cmd_name = NULL;
-			temp->argv[j] = NULL;
+			temp->argv[0] = NULL;
 			handlepaths(&temp);
 			ft_lstadd_back(&out, ft_lstnew(temp));
 			i++;
@@ -128,6 +128,7 @@ t_list *ft_parser(char **input, t_list *envp)
 		}
 		else
 			temp->cmd_name = input[i];
+		temp->argv[0] = NULL;
 		while (input[++i] != NULL)
 		{
 			if (input[i][0] == '|')
@@ -145,6 +146,7 @@ t_list *ft_parser(char **input, t_list *envp)
 				temp->argv[j++] = ft_strdup(input[i]);
 		}
 		temp->argv[j] = NULL;
+		temp->argc = j - 1;
 		handlepaths(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
