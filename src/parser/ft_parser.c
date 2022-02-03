@@ -40,6 +40,19 @@ bool	check(char *cmd)
 	return (true);
 }
 
+int handleallpaths(t_file *var, bool write)
+{
+	if (var->fd == STDIN_FILENO || var->fd == STDOUT_FILENO)
+		var->path = NULL;
+	else 
+	{
+		var->fd = ft_openfile(var->path, write);
+		if (var->fd == -1)
+			return (-1); // something went wrong during open
+	}
+	return (0);
+}
+
 bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 {
 	if (direct[0] == '<')
@@ -48,6 +61,7 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 		{
 			(*temp)->in.path = filename;
 			(*temp)->in.fd = -1;
+			handleallpaths(&((*temp)->in), false);
 		}
 		else
 			return (false);
@@ -58,32 +72,12 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 		{
 			(*temp)->out.path = filename;
 			(*temp)->out.fd = -1;
+			handleallpaths(&((*temp)->out), true);
 		}
 		else
 			return (false);
 	}
 	return (true);
-}
-
-int	handlepaths(t_cmd **temp)
-{
-	if ((*temp)->in.fd == STDIN_FILENO)
-		(*temp)->in.path = NULL;
-	else
-	{
-		if (!access((*temp)->in.path, F_OK))
-			if (access((*temp)->in.path, R_OK))
-				return (1); // failed to acces error
-	}
-	if ((*temp)->out.fd == STDOUT_FILENO)
-		((*temp)->out.path = NULL);
-	else
-	{
-		if (!access((*temp)->out.path, F_OK))
-			if (access((*temp)->out.path, W_OK))
-				return (1); // failed to acces error
-	}
-	return (0);
 }
 
 /**
@@ -121,7 +115,6 @@ t_list *ft_parser(char **input, t_list *envp)
 		{
 			temp->cmd_name = NULL;
 			temp->argv[0] = NULL;
-			handlepaths(&temp);
 			ft_lstadd_back(&out, ft_lstnew(temp));
 			i++;
 			continue ;
@@ -147,11 +140,10 @@ t_list *ft_parser(char **input, t_list *envp)
 		}
 		temp->argv[j] = NULL;
 		temp->argc = j;
-		handlepaths(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);
 }
 
 //TODO: norm, fucking norm
-//TODO: constructor function || malloc protect
+//TODO: constructor || mallocs || error return
