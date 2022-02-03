@@ -42,14 +42,9 @@ bool	check(char *cmd)
 
 int handleallpaths(t_file *var, bool write)
 {
-	if (var->fd == STDIN_FILENO || var->fd == STDOUT_FILENO)
-		var->path = NULL;
-	else 
-	{
-		var->fd = ft_openfile(var->path, write);
-		if (var->fd == -1)
-			return (-1); // something went wrong during open
-	}
+	var->fd = ft_openfile(var->path, write);
+	if (var->fd == -1)
+		return (-1); // something went wrong during open
 	return (0);
 }
 
@@ -78,6 +73,14 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 			return (false);
 	}
 	return (true);
+}
+
+void handlepaths(t_cmd **temp)
+{
+	if ((*temp)->in.fd == STDIN_FILENO)
+		(*temp)->in.path = NULL;
+	if ((*temp)->out.fd == STDOUT_FILENO)
+		(*temp)->out.path = NULL;
 }
 
 /**
@@ -116,6 +119,7 @@ t_list *ft_parser(char **input, t_list *envp)
 			temp->cmd_name = NULL;
 			temp->argv[0] = NULL;
 			ft_lstadd_back(&out, ft_lstnew(temp));
+			handlepaths(&temp);
 			i++;
 			continue ;
 		}
@@ -140,6 +144,7 @@ t_list *ft_parser(char **input, t_list *envp)
 		}
 		temp->argv[j] = NULL;
 		temp->argc = j;
+		handlepaths(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);
