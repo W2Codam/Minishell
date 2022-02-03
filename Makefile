@@ -3,27 +3,34 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: lde-la-h <lde-la-h@student.codam.nl>         +#+                      #
+#    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2021/11/30 13:24:16 by lde-la-h      #+#    #+#                  #
-#    Updated: 2022/01/27 13:07:40 by lde-la-h      ########   odam.nl          #
+#    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
+#    Updated: 2022/02/02 19:22:59 by w2wizard      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
+
 
 # //= Variables =// #
 
 NAME 	= minishell
-CFLAGS	= -Wextra -Werror -Wall -Wunreachable-code -g
+CFLAGS	= -Wextra -Werror -Wunreachable-code -g
 
 # //= Colors =// #
-BOLD	= \e[1m
-GREEN	= \x1b[32m
+BOLD	= \033[1m
+BLACK	= \033[30;1m
+RED		= \033[31;1m
+GREEN	= \033[32;1m
+YELLOW	= \033[33;1m
+BLUE	= \033[34;1m
+MAGENTA	= \033[35;1m
+CYAN	= \033[36;1m
+WHITE	= \033[37;1m
 RESET	= \033[0m
-RED		= \x1b[31m
 
 # Define the header location
-HEADERS = -I ./libs/libft -I ./include -I ~/.brew/opt/readline/include
-ARCHIVES = ./libs/libft/libft.a -lreadline -L ~/.brew/opt/readline/lib 
+HEADERS = -I ./libs/libft -I ./include
+ARCHIVES = ./libs/libft/libft.a -lreadline
 
 # //= Files =// #
 
