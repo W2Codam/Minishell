@@ -36,7 +36,7 @@ static bool	ft_tokencheck(char *cmd)
 	}
 	else
 		while (cmd[i++])
-			if (!isalnum(cmd[i]) && cmd[i] != '\0' && cmd[i] != '=')
+			if (!isalnum(cmd[i]) && cmd[i] != '\0' && cmd[i] != '=' && cmd[i] != '.')
 				return (true);
 	return (false);
 }
