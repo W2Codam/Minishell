@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 17:03:44 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/03 22:12:58 by w2wizard      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	ft_child(t_cmd *cmd, int32_t fds[2], t_list *env)
 	const char	*exe_path = ft_getexec(cmd->cmd_name, env);
 	
 	close(fds[READ]);				 // We don't need to read
+	dup2(cmd->in.fd, STDIN_FILENO);
 	dup2(fds[WRITE], STDOUT_FILENO); // STDOUT goes into write of pipe
+	//dup2(fds[WRITE], STDIN_FILENO); // STDOUT goes into write of pipe
 
 	cmd->argv[0] = (char *)exe_path;
 	if (cmd->argv[0])
@@ -92,6 +94,7 @@ void	ft_parent(t_list *cmds, int32_t fds[2], t_list *env, pid_t pid)
 	char		buf[256] = {0}; 
 	const t_cmd *cmd = cmds->content;
 
+	// Do we need it ? I don't know but better safe than sorry.
 	dup2(g_shell.stdin_fd, STDIN_FILENO);
 	dup2(g_shell.stdout_fd, STDOUT_FILENO);
 
@@ -102,6 +105,7 @@ void	ft_parent(t_list *cmds, int32_t fds[2], t_list *env, pid_t pid)
 
 	if (waitpid(pid, &exitval, 0) == -1) 
 		ft_error(-1, "shell", NULL);
+
 	printf("EXIT CODE: %d\n", exitval);
 	close(fds[READ]); // We finished doing our job!
 }
@@ -117,8 +121,6 @@ void	ft_demo(t_list *cmds, t_list *env)
 	while (cmds_cpy)
 	{
 		cmd = cmds->content;
-		// Establish STDIN!
-		//dup2(FILE DESCIRPTOR, STDIN_FILENO);
 		if (!ft_pipe(fds))
 		{
 			ft_error(-1, "shell", NULL);
@@ -130,7 +132,7 @@ void	ft_demo(t_list *cmds, t_list *env)
 			return ;
 		}
 		if (pid == 0)
-			ft_child(cmds_cpy->content, fds, env); // Child will always exit anyway
+			ft_child(cmds_cpy->content, fds, env);
 		ft_parent(cmds_cpy, fds, env, pid);
 		cmds_cpy = cmds_cpy->next;
 	}
