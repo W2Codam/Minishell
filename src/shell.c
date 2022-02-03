@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 16:08:58 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/03 17:03:44 by w2wizard      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,16 @@ void	ft_child(t_cmd *cmd, int32_t fds[2], t_list *env)
 	close(fds[READ]);				 // We don't need to read
 	dup2(fds[WRITE], STDOUT_FILENO); // STDOUT goes into write of pipe
 
-	arr = ft_split("/usr/bin/make clean", ' ');
-	execve(exe_path, arr, environ); // Exec
-	
-	// Error handling: Error num on missing file, re-intrept as no command.
-	ft_error(ENOENT, cmd->cmd_name, "command not found\n");
-	if (errno == ENOENT) 
+	cmd->argv[0] = (char *)exe_path;
+	if (cmd->argv[0])
+		execve(exe_path, cmd->argv, environ);
+	else
+	{
+		// No command.
+		ft_error(ENOENT, cmd->cmd_name, "command not found\n");
 		exit (EXIT_NOTFOUND);
-
+	}
+	ft_error(-1, "shell", NULL);
 	close(STDOUT_FILENO);
 	exit (EXIT_FAILURE); // We don't need to free, exit takes care of that.
 }
@@ -109,10 +111,12 @@ void	ft_demo(t_list *cmds, t_list *env)
 	pid_t	pid;
 	t_list	*cmds_cpy;
 	int32_t	fds[2];
+	t_cmd 	*cmd;
 
 	cmds_cpy = cmds;
 	while (cmds_cpy)
 	{
+		cmd = cmds->content;
 		// Establish STDIN!
 		//dup2(FILE DESCIRPTOR, STDIN_FILENO);
 		if (!ft_pipe(fds))
