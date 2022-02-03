@@ -146,7 +146,7 @@ t_list *ft_parser(char **input, t_list *envp)
 				temp->argv[j++] = ft_strdup(input[i]);
 		}
 		temp->argv[j] = NULL;
-		temp->argc = j - 1;
+		temp->argc = j;
 		handlepaths(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
