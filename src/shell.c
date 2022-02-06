@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 22:12:58 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/06 14:34:30 by w2wizard      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,29 +51,6 @@
 
 extern char **environ;
 
-void	ft_child(t_cmd *cmd, int32_t fds[2], t_list *env)
-{
-	char		**arr;
-	const char	*exe_path = ft_getexec(cmd->cmd_name, env);
-	
-	close(fds[READ]);				 // We don't need to read
-	dup2(cmd->in.fd, STDIN_FILENO);
-	dup2(fds[WRITE], STDOUT_FILENO); // STDOUT goes into write of pipe
-	//dup2(fds[WRITE], STDIN_FILENO); // STDOUT goes into write of pipe
-
-	cmd->argv[0] = (char *)exe_path;
-	if (cmd->argv[0])
-		execve(exe_path, cmd->argv, environ);
-	else
-	{
-		// No command.
-		ft_error(ENOENT, cmd->cmd_name, "command not found\n");
-		exit (EXIT_NOTFOUND);
-	}
-	ft_error(-1, "shell", NULL);
-	close(STDOUT_FILENO);
-	exit (EXIT_FAILURE); // We don't need to free, exit takes care of that.
-}
 
 /**
  * Parent job is to just direct the read end of the pipe
@@ -90,6 +67,17 @@ void	ft_child(t_cmd *cmd, int32_t fds[2], t_list *env)
  */
 void	ft_parent(t_list *cmds, int32_t fds[2], t_list *env, pid_t pid)
 {
+	int32_t		exitval;
+
+	close(fds[WRITE]);
+	dup2(fds[READ], STDIN_FILENO);
+	if (waitpid(pid, &exitval, 0) == -1) 
+		ft_error(-1, "shell", NULL);
+	printf("EXIT CODE: %d\n", exitval);
+}
+
+/*
+
 	int32_t		exitval;
 	char		buf[256] = {0}; 
 	const t_cmd *cmd = cmds->content;
@@ -108,35 +96,99 @@ void	ft_parent(t_list *cmds, int32_t fds[2], t_list *env, pid_t pid)
 
 	printf("EXIT CODE: %d\n", exitval);
 	close(fds[READ]); // We finished doing our job!
+
+*/
+
+
+void	ft_child(t_cmd *cmd, t_list *env)
+{
+	char		**arr;
+	
+	cmd->argv[0] = (char *)ft_getexec(cmd->cmd_name, env);
+	if (cmd->argv[0])
+		execve(cmd->argv[0], cmd->argv, environ);
+	ft_error(ENOENT, cmd->cmd_name, "command not found\n");
+	exit (EXIT_NOTFOUND);
 }
 
-void	ft_demo(t_list *cmds, t_list *env)
+/**
+ * 
+ * 
+ * @param cmds 
+ * @param env 
+ */
+void	ft_exec_tbl(t_list *cmds, t_list *env)
 {
 	pid_t	pid;
+	int32_t	pipe[2];
+	int32_t	exitval;
+	t_cmd	*cmd;
 	t_list	*cmds_cpy;
-	int32_t	fds[2];
-	t_cmd 	*cmd;
 
 	cmds_cpy = cmds;
 	while (cmds_cpy)
 	{
-		cmd = cmds->content;
-		if (!ft_pipe(fds))
-		{
-			ft_error(-1, "shell", NULL);
-			return ;
-		}
-		if (!ft_fork(&pid))
-		{
-			ft_error(-1, "shell", NULL);
-			return ;
-		}
+		cmd = cmds_cpy->content;
+		ft_pipe(pipe);
+		ft_fork(&pid);
 		if (pid == 0)
-			ft_child(cmds_cpy->content, fds, env);
-		ft_parent(cmds_cpy, fds, env, pid);
+		{
+			dup2(cmd->in.fd, STDIN_FILENO);
+			dup2(pipe[WRITE], STDOUT_FILENO);
+			close(cmd->in.fd);
+			close(pipe[READ]);
+			ft_child(cmds_cpy->content, env);
+		}
+		else
+		{
+			close(pipe[WRITE]);
+			if (waitpid(pid, &exitval, 0) == -1) 
+				ft_error(-1, "shell", NULL);
+			if (cmd->out.fd == STDOUT_FILENO && cmds_cpy->next)
+				dup2(pipe[READ], STDIN_FILENO); // Pass it on, how though ?
+			else
+			{
+				char buf[256] = {0}; 
+				for (int n = 0; (n = read(pipe[READ], buf, sizeof(buf))) > 0;)
+					write(cmd->out.fd, buf, n);
+			}
+			printf("EXIT CODE: %d\n", exitval);
+			close(pipe[READ]);
+		}
 		cmds_cpy = cmds_cpy->next;
 	}
+	//ft_lstclear(&cmds, &free);
 }
+
+/**
+ * The behaviour loop for the shell itself.
+ * 
+ * @param env The environment variable.
+ */
+void	ft_shell(t_list *env)
+{
+	t_list	*cmds;
+	char	*line; 	// Current input line
+
+	while (true)
+	{
+		line = readline(TITLE); // TODO: CTRL-'\' FUCKS!
+		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
+		{
+			printf("exit\n");
+			return ; // Exit shell
+		}
+		cmds = ft_lexer(line, env);
+		//dup2(g_shell.stdin_fd, STDIN_FILENO);
+		//dup2(g_shell.stdout_fd, STDOUT_FILENO);
+		ft_exec_tbl(cmds, env);
+		ft_lstclear(&cmds, &free);
+		add_history(line);
+		free (line);
+	}
+}
+
+
 
 /*
 
@@ -170,31 +222,6 @@ void	ft_demo(t_list *cmds, t_list *env)
 }
 */
 
-/**
- * The behaviour loop for the shell itself.
- * 
- * @param env The environment variable.
- */
-void	ft_shell(t_list *env)
-{
-	t_list	*cmds;
-	char	*line; 	// Current input line
-
-	while (true)
-	{
-		line = readline(TITLE); // TODO: CTRL-'\' FUCKS!
-		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
-		{
-			printf("exit\n");
-			return ; // Exit shell
-		}
-		cmds = ft_lexer(line, env);
-		ft_demo(cmds, env);
-		ft_lstclear(&cmds, &free);
-		add_history(line);
-		free (line);
-	}
-}
 
 /*
 
