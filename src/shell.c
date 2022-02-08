@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:07:37 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:40:46 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,18 +173,26 @@ void	ft_shell(t_list *env)
 
 	while (true)
 	{
-		line = readline(TITLE); // TODO: CTRL-'\' FUCKS!
+		line = readline(TITLE);
 		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
 		{
 			printf("exit\n");
 			return ; // Exit shell
 		}
-		cmds = ft_lexer(line, env);
-		//dup2(g_shell.stdin_fd, STDIN_FILENO);
-		//dup2(g_shell.stdout_fd, STDOUT_FILENO);
-		ft_exec_tbl(cmds, env);
-		ft_lstclear(&cmds, &free);
-		add_history(line);
+		if (*line)
+		{
+			cmds = ft_lexer(line, env);
+			if (!cmds)
+			{
+				printf("(temp) error during lexing\n");
+				continue ;
+			}
+			//dup2(g_shell.stdin_fd, STDIN_FILENO);
+			//dup2(g_shell.stdout_fd, STDOUT_FILENO);
+			ft_exec_tbl(cmds, env);
+			ft_lstclear(&cmds, &free);
+			add_history(line);
+		}
 		free (line);
 	}
 }

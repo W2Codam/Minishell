@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 00:22:34 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:37:45 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int handleallpaths(t_file *var, bool write)
 
 bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 {
+	if (!filename)
+		return (false);
 	if (direct[0] == '<')
 	{
 		if (check(filename))
@@ -75,12 +77,20 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 	return (true);
 }
 
-void handlepaths(t_cmd **temp)
+t_cmd *constructor(t_cmd *temp, int len)
 {
-	if ((*temp)->in.fd == STDIN_FILENO)
-		(*temp)->in.path = NULL;
-	if ((*temp)->out.fd == STDOUT_FILENO)
-		(*temp)->out.path = NULL;
+	temp = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!temp)
+		return (NULL);
+	temp->argv = malloc(len * sizeof(char *));
+	if (!temp->argv)
+	{
+		free(temp);
+		return (NULL);
+	}
+	temp->in.fd = STDIN_FILENO;
+	temp->out.fd = STDOUT_FILENO;
+	return (temp);
 }
 
 /**
@@ -102,16 +112,13 @@ t_list *ft_parser(char **input, t_list *envp)
 	while (input[i] != NULL)
 	{		
 		j = 1;
-		temp = (t_cmd *)malloc(sizeof(t_cmd));
+		temp = constructor(temp, ft_arrlen(input));
 		if (!temp)
-			return (NULL); // cleanup of possible previous mallocs
-		temp->argv = malloc(ft_arrlen(input) * sizeof(char *));
-		temp->in.fd = STDIN_FILENO;
-		temp->out.fd = STDOUT_FILENO;
+			return (NULL); // failed malloc, free possible previous mallocs in out
 		if (input[i][0] == '<' || input[i][0] == '>')
 		{
 			if (!handleredirect(&temp, input[i], input[i + 1]))
-				return (NULL);
+				return (NULL); // NULL after </> or invalid filename
 			i += 2;
 		}
 		if (input[i][0] == '|')
@@ -119,7 +126,6 @@ t_list *ft_parser(char **input, t_list *envp)
 			temp->cmd_name = NULL;
 			temp->argv[0] = NULL;
 			ft_lstadd_back(&out, ft_lstnew(temp));
-			handlepaths(&temp);
 			i++;
 			continue ;
 		}
@@ -136,7 +142,7 @@ t_list *ft_parser(char **input, t_list *envp)
 			if (input[i][0] == '<' || input[i][0] == '>')
 			{
 				if (!handleredirect(&temp, input[i], input[i + 1]))
-					return (NULL);
+					return (NULL);  // NULL after </> or invalid filename
 				i++;
 			}
 			else
@@ -144,7 +150,6 @@ t_list *ft_parser(char **input, t_list *envp)
 		}
 		temp->argv[j] = NULL;
 		temp->argc = j;
-		handlepaths(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);
