@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/02/02 19:22:59 by w2wizard      ########   odam.nl          #
+#    Updated: 2022/02/08 11:09:42 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 # //= Variables =// #
 
 NAME 	= minishell
-CFLAGS	= -Wextra -Werror -Wunreachable-code -g
+CFLAGS	= -g #-Wextra -Werror -Wunreachable-code
 
 # //= Colors =// #
 BOLD	= \033[1m
@@ -29,8 +29,8 @@ WHITE	= \033[37;1m
 RESET	= \033[0m
 
 # Define the header location
-HEADERS = -I ./libs/libft -I ./include
-ARCHIVES = ./libs/libft/libft.a -lreadline
+HEADERS = -I ./libs/libft  -I ./include -I ~/.brew/opt/readline/include
+ARCHIVES = ./libs/libft/libft.a -lreadline -L ~/.brew/opt/readline/lib 
 
 # //= Files =// #
 

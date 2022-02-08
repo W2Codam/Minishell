@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/06 14:34:30 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:07:37 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,11 @@ void	ft_child(t_cmd *cmd, t_list *env)
 }
 
 /**
+ * We need to forward our pipe output to the next process so it can listen/read from it as stdin
+ * then we continue down this chain. Until the last process.
  * 
+ * So we want to run basically each command and just make them forward their pipe's output
+ * to the next command.
  * 
  * @param cmds 
  * @param env 
@@ -120,12 +124,14 @@ void	ft_child(t_cmd *cmd, t_list *env)
 void	ft_exec_tbl(t_list *cmds, t_list *env)
 {
 	pid_t	pid;
+	int32_t	prev_input;
 	int32_t	pipe[2];
-	int32_t	exitval;
 	t_cmd	*cmd;
 	t_list	*cmds_cpy;
 
 	cmds_cpy = cmds;
+	cmd = cmds_cpy->content;
+	prev_input = cmd->in.fd;
 	while (cmds_cpy)
 	{
 		cmd = cmds_cpy->content;
@@ -133,31 +139,26 @@ void	ft_exec_tbl(t_list *cmds, t_list *env)
 		ft_fork(&pid);
 		if (pid == 0)
 		{
-			dup2(cmd->in.fd, STDIN_FILENO);
+			close(pipe[READ]); // We don't need this pipes read. As we want the read of the previous pipe
+			dup2(prev_input, STDIN_FILENO);
 			dup2(pipe[WRITE], STDOUT_FILENO);
-			close(cmd->in.fd);
-			close(pipe[READ]);
-			ft_child(cmds_cpy->content, env);
+			ft_child(cmd, env);
 		}
 		else
 		{
 			close(pipe[WRITE]);
-			if (waitpid(pid, &exitval, 0) == -1) 
-				ft_error(-1, "shell", NULL);
+			prev_input = pipe[READ];
 			if (cmd->out.fd == STDOUT_FILENO && cmds_cpy->next)
-				dup2(pipe[READ], STDIN_FILENO); // Pass it on, how though ?
+				prev_input = pipe[READ];
 			else
 			{
 				char buf[256] = {0}; 
 				for (int n = 0; (n = read(pipe[READ], buf, sizeof(buf))) > 0;)
 					write(cmd->out.fd, buf, n);
 			}
-			printf("EXIT CODE: %d\n", exitval);
-			close(pipe[READ]);
 		}
 		cmds_cpy = cmds_cpy->next;
 	}
-	//ft_lstclear(&cmds, &free);
 }
 
 /**
