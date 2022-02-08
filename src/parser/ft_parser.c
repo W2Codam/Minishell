@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:37:45 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/08 17:39:37 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int handleallpaths(t_file *var, bool write)
 {
 	var->fd = ft_openfile(var->path, write);
 	if (var->fd == -1)
+	{
 		return (-1); // something went wrong during open
+	}
 	return (0);
 }
 
@@ -58,7 +60,8 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 		{
 			(*temp)->in.path = filename;
 			(*temp)->in.fd = -1;
-			handleallpaths(&((*temp)->in), false);
+			if (handleallpaths(&((*temp)->in), false) < 0)
+				return (false);
 		}
 		else
 			return (false);
@@ -69,7 +72,8 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 		{
 			(*temp)->out.path = filename;
 			(*temp)->out.fd = -1;
-			handleallpaths(&((*temp)->out), true);
+			if (handleallpaths(&((*temp)->out), false) < 0)
+				return (false);
 		}
 		else
 			return (false);
@@ -82,12 +86,13 @@ t_cmd *constructor(t_cmd *temp, int len)
 	temp = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!temp)
 		return (NULL);
-	temp->argv = malloc(len * sizeof(char *));
+	temp->argv = malloc((len + 1) * sizeof(char *));
 	if (!temp->argv)
 	{
 		free(temp);
 		return (NULL);
 	}
+	temp->cmd_name = NULL;
 	temp->in.fd = STDIN_FILENO;
 	temp->out.fd = STDOUT_FILENO;
 	return (temp);
@@ -115,45 +120,38 @@ t_list *ft_parser(char **input, t_list *envp)
 		temp = constructor(temp, ft_arrlen(input));
 		if (!temp)
 			return (NULL); // failed malloc, free possible previous mallocs in out
-		if (input[i][0] == '<' || input[i][0] == '>')
-		{
-			if (!handleredirect(&temp, input[i], input[i + 1]))
-				return (NULL); // NULL after </> or invalid filename
-			i += 2;
-		}
-		if (input[i][0] == '|')
-		{
-			temp->cmd_name = NULL;
-			temp->argv[0] = NULL;
-			ft_lstadd_back(&out, ft_lstnew(temp));
-			i++;
-			continue ;
-		}
-		else
-			temp->cmd_name = input[i];
 		temp->argv[0] = NULL;
-		while (input[++i] != NULL)
+		while (input[i] != NULL)
 		{
-			if (input[i][0] == '|')
-			{
-				i++;
-				break ;
-			}	
 			if (input[i][0] == '<' || input[i][0] == '>')
 			{
 				if (!handleredirect(&temp, input[i], input[i + 1]))
-					return (NULL);  // NULL after </> or invalid filename
-				i++;
+					return (NULL); // NULL after </> or invalid filename
+				i += 2;
+				if (input[i] != NULL && input[i][0] != '<' && input[i][0] != '>' && input[i][0] != '|')
+					temp->cmd_name = input[i++];
+				continue ;
 			}
+			if (input[i][0] == '|')
+			{
+				if (i == 0 || input[i + 1][0] == '|')
+					return (NULL); //invalid pipe location
+				i++;
+				break ;
+			}
+			if (i == 0 || input[i - 1][0] == '|')
+				temp->cmd_name = input[i];
 			else
 				temp->argv[j++] = ft_strdup(input[i]);
+			i++;
+
 		}
 		temp->argv[j] = NULL;
-		temp->argc = j;
+		temp->argc = j;			
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);
 }
 
 //TODO: norm, fucking norm
-//TODO: constructor || mallocs || error return
+//TODO: mallocs || error return

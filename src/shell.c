@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 16:04:04 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/08 17:45:35 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,7 @@ void	ft_shell(t_list *env)
 		line = readline(TITLE);
 		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
 		{
-			printf("exit\n");
-			return ; // Exit shell
+			return(exitout(line));
 		}
 		if (*line)
 		{
@@ -194,6 +193,7 @@ void	ft_shell(t_list *env)
 			add_history(line);
 		}
 		free (line);
+		write(1, "\r", 1);
 	}
 }
 
