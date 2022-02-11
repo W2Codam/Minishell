@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 00:21:35 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/10 18:43:08 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static bool	ft_tokencheck(char *cmd)
 	}
 	else
 		while (cmd[i++])
-			if (!isalnum(cmd[i]) && cmd[i] != '\0' && cmd[i] != '=' && cmd[i] != '.')
+			if (!isalnum(cmd[i]) && cmd[i] != '\0' && cmd[i] != '=' \
+				&& cmd[i] != '.' && cmd[i] != '-')
 				return (true);
 	return (false);
 }
@@ -50,6 +51,7 @@ static bool	ft_tokencheck(char *cmd)
  */
 t_list	*ft_lexer(char *input, t_list *envp)
 {
+	t_qoute	*testcmd = ft_stringexpand(input, envp);
 	char	**cmds;
 	int		i;
 

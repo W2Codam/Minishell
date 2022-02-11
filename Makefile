@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/02/08 11:09:42 by lde-la-h      ########   odam.nl          #
+#    Updated: 2022/02/08 16:39:07 by pvan-dij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 # //= Variables =// #
 
 NAME 	= minishell
-CFLAGS	= -g #-Wextra -Werror -Wunreachable-code
+CFLAGS	= -g #-Wextra -Werror -Wunreachable-code 
 
 # //= Colors =// #
 BOLD	= \033[1m
@@ -48,7 +48,7 @@ all: libft $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
+	@$(CC) -fsanitize=address $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 libft:
 	@$(MAKE) -C libs/libft

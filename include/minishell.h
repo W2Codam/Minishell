@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 17:44:03 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/11 13:15:44 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,13 @@ typedef enum e_pipe
 	READ = 1
 }	t_pipe;
 
+// Enum for qoutations
+typedef enum s_qtype
+{
+	DOUBLE = 0,
+	SINGLE = 1
+}	t_qtype;
+
 /**
  * A single file, similar to FILE*
  * 
@@ -109,7 +116,7 @@ typedef struct s_cmd
 	t_file			in;
 	t_file			out;
 	t_func			builtin;
-}   t_cmd;
+}	t_cmd;
 
 /**
  * Important states to save about the shell that are
@@ -122,7 +129,13 @@ typedef struct s_shell
 {
 	int32_t	stdin_fd;
 	int32_t	stdout_fd;
-}   t_shell;
+}	t_shell;
+
+typedef struct s_qouted
+{
+	char	*arg;
+	bool	qouted;
+}	t_qoute;
 
 //////////////////////////////////////////////////////////////////
 
@@ -153,7 +166,11 @@ void	ft_error(int32_t errovr, const char *s, char *msg);
 t_list	*ft_lexer(char *input, t_list *envp);
 t_list	*ft_parser(char **input, t_list *envp);
 
-//= Utiles =//
+//= Utils =//
+
 void	exitout(char *s);
+int		selectstate(char c, int state);
+t_qoute	*ft_stringexpand(char *in, t_list *envp);
+t_qoute	*splitting(char *in);
 
 #endif
