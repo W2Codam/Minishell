@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 13:27:44 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/11 15:37:26 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	ft_env_cpy(t_var *var, char *buffer, size_t buffsize)
 {
 	size_t	len;
-	
+
 	memset(buffer, '\0', buffsize);
 	if (var->hidden) // Hidden variables are not meant to be added.
 		return ;

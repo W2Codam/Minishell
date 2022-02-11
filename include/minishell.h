@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 17:44:03 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/10 11:04:22 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ typedef struct s_cmd
 	t_file			in;
 	t_file			out;
 	t_func			builtin;
-}   t_cmd;
+}	t_cmd;
 
 /**
  * Important states to save about the shell that are
@@ -122,18 +122,18 @@ typedef struct s_shell
 {
 	int32_t	stdin_fd;
 	int32_t	stdout_fd;
-}   t_shell;
+}	t_shell;
 
 //////////////////////////////////////////////////////////////////
 
 //= Build-Ins =//
 
-int32_t	ft_cd(int32_t argc, char **argv, char **envp);
-int32_t	ft_echo(int32_t argc, char **argv, char **envp);
-int32_t	ft_env(int32_t argc, char **argv, char **envp);
-int32_t	ft_export(int32_t argc, char **argv, char **envp);
-int32_t	ft_pwd(int32_t argc, char **argv, char **envp);
-int32_t	ft_unset(int32_t argc, char **argv, char **envp);
+int32_t	ft_cd(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_echo(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_env(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_export(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_pwd(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_unset(int32_t argc, char **argv, t_list *envp);
 
 //= Unix Utils =//
 
