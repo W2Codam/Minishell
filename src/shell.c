@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 17:45:35 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/11 15:21:10 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void	ft_exec_tbl(t_list *cmds, t_list *env)
 		ft_fork(&pid);
 		if (pid == 0)
 		{
-			close(pipe[READ]); // We don't need this pipes read. As we want the read of the previous pipe
+			close(pipe[READ]);
 			dup2(prev_input, STDIN_FILENO);
 			dup2(pipe[WRITE], STDOUT_FILENO);
 			ft_child(cmd, env);

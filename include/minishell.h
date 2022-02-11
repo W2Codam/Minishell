@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/11 13:15:44 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/11 17:53:23 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,12 @@ typedef struct s_qouted
 
 //= Build-Ins =//
 
-int32_t	ft_cd(int32_t argc, char **argv, char **envp);
-int32_t	ft_echo(int32_t argc, char **argv, char **envp);
-int32_t	ft_env(int32_t argc, char **argv, char **envp);
-int32_t	ft_export(int32_t argc, char **argv, char **envp);
-int32_t	ft_pwd(int32_t argc, char **argv, char **envp);
-int32_t	ft_unset(int32_t argc, char **argv, char **envp);
+int32_t	ft_cd(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_echo(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_env(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_export(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_pwd(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_unset(int32_t argc, char **argv, t_list *envp);
 
 //= Unix Utils =//
 
