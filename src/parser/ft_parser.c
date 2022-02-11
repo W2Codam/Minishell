@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 17:39:37 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/11 15:31:27 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 		{
 			(*temp)->out.path = filename;
 			(*temp)->out.fd = -1;
-			if (handleallpaths(&((*temp)->out), false) < 0)
+			if (handleallpaths(&((*temp)->out), true) < 0)
 				return (false);
 		}
 		else
@@ -144,7 +144,6 @@ t_list *ft_parser(char **input, t_list *envp)
 			else
 				temp->argv[j++] = ft_strdup(input[i]);
 			i++;
-
 		}
 		temp->argv[j] = NULL;
 		temp->argc = j;			
