@@ -48,7 +48,7 @@ all: libft $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 
 
 $(NAME): $(OBJS)
-	@$(CC) -fsanitize=address $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
+	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 libft:
 	@$(MAKE) -C libs/libft
