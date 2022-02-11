@@ -31,16 +31,65 @@ char	*expandenv(char *cmd, t_list *envp)
 	return (temp->value);
 }
 
-void	expandshit(t_qoute *cmd, char *s, t_list *envp)
+int countchar(char *str, char c)
+{
+	int i;
+
+	i = 0;
+	while (*str)
+	{
+		if *str == c
+			i++;
+		str++:
+	}
+	return (i);
+}
+
+int	findnext(char *arg)
+{
+	int i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] == '\'' || arg[i] == '\"' || arg[i] == '$')
+			return (i);
+		i++;
+	}
+	return (i);
+}
+
+char **findenvars(char *arg, t_list *envp)
+{
+	char	**out;
+	int		i;
+	int		next;
+
+	out = (char **)malloc(sizeof(char *) * countchar(arg, '$') + 1)
+	i = 0;
+	while (*arg)
+	{
+		if (*arg == '$')
+		{
+			next = findnext(arg)
+			out[i++] = expandenv(ft_substr(arg, 0, next));
+		}
+		arg++;
+	}
+	out[i] = NULL;
+	return (out);
+}
+
+void	expandshit(t_qoute *cmd, char *s, char **envar)
 {
 	const char	qt[2] = {'\"', '\''};
 	int			state;
 	char		*save;
 
 	save = s;
-	while (*s)
+	for (int i = 0; envar[i]; i++)
 	{
-		
+		printf("%s\n", envar[i]);
 	}
 	
 }
@@ -56,7 +105,7 @@ t_qoute	*ft_stringexpand(char *in, t_list *envp)
 	{
 		if (ft_strchr(out[i].arg, '\'') || ft_strchr(out[i].arg, '\"') \
 			|| ft_strchr(out[i].arg, '$'))
-			expandshit(&out[i], out[i].arg, envp);
+			expandshit(&out[i], out[i].arg, findenvars(out[i].arg, envp));
 		else
 			out[i].qouted = false;
 		i++;
