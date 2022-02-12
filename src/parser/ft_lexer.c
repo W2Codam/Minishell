@@ -56,9 +56,16 @@ t_list	*ft_lexer(char *input, t_list *envp)
 	int		i;
 
 	cmds = ft_split(input, ' ');
+	for (int i = 0; testcmd[i].arg; i++)
+		printf("%s\n", testcmd[i].arg);
+	for (int i = 0; cmds[i]; i++)
+		printf("%s\n", cmds[i]);
+	exit(0);
 	i = 0;
 	while (cmds[i])
 	{
+		if (testcmd[i].qouted == true)
+			continue ;
 		if (ft_tokencheck(cmds[i]))
 		{
 			printf("bad token\n"); //testing purposes

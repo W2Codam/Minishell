@@ -148,8 +148,7 @@ t_qoute	*ft_stringexpand(char *in, t_list *envp)
 			out[i].qouted = false;
 		i++;
 	}
-	for (int i = 0; out[i].arg; i++)
-		printf("%s\n", out[i].arg);
-	exit(0);
+	// for (int i = 0; out[i].arg; i++)
+	// 	printf("%s\n", out[i].arg);
 	return (out);
 }
