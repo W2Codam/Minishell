@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 15:42:13 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:15:16 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static bool	ft_create_env(t_list **env, char **envp)
 	int32_t	i;
 	t_var	*var;
 	t_list	*entry;
-	
+
 	i = -1;
 	while (envp[++i])
 	{

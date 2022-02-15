@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/10 11:04:22 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/15 13:48:58 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ typedef enum e_pipe
 	WRITE = 0,
 	READ = 1
 }	t_pipe;
+
+// Enum for qoutations
+typedef enum s_qtype
+{
+	DOUBLE = 0,
+	SINGLE = 1
+}	t_qtype;
 
 /**
  * A single file, similar to FILE*
@@ -124,6 +131,12 @@ typedef struct s_shell
 	int32_t	stdout_fd;
 }	t_shell;
 
+typedef struct s_qouted
+{
+	char	*arg;
+	bool	qouted;
+}	t_qoute;
+
 //////////////////////////////////////////////////////////////////
 
 //= Build-Ins =//
@@ -153,7 +166,16 @@ void	ft_error(int32_t errovr, const char *s, char *msg);
 t_list	*ft_lexer(char *input, t_list *envp);
 t_list	*ft_parser(char **input, t_list *envp);
 
-//= Utiles =//
+//= Utils =//
+
 void	exitout(char *s);
+int		selectstate(char c, int state);
+char	**ft_stringexpand(char *in, t_list *envp);
+char	**splitting(char *in);
+int		countchar(char *str, char c);
+int		findnext(char *arg);
+int		arr_strlen(char **arr);
+void	addenvar(char **s, char **out, char *envar);
+void	moveenvarpointer(char **s, char **out, char *envar);
 
 #endif
