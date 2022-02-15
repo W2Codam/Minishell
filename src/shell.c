@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 16:10:02 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/15 22:02:18 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,51 +73,59 @@
 
 extern char	**environ;
 
-static void	ft_child(t_cmd *cmd, t_list *env, int32_t *pipe)
-{
-	char	**arr;
+static void ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env);
 
-	close(pipe[READ]);
-	dup2(pipe[2], STDIN_FILENO);
-	dup2(pipe[WRITE], STDOUT_FILENO);
-	cmd->argv[0] = (char *)ft_getexec(cmd->cmd_name, env);
-	arr = ft_env_get_arr(env);
-	if (!arr)
+/* With the standard output plumbing sorted, execute Nth command */
+static void ft_nth_command(t_list *cmd, t_list *env)
+{
+	pid_t 	pid; 
+	int32_t	pipe[2];
+	t_cmd	*cmdval;
+
+	cmdval = cmd->content;
+	if (cmd->prev)
 	{
-		ft_putendl_fd("shell: memory failure!", STDERR_FILENO);
-		exit(EXIT_NOTFOUND);
+		if (!ft_pipe(pipe))
+		{
+			ft_putendl_fd("THE BLOODY PIPE!", STDERR_FILENO);
+			exit (EXIT_FAILURE);
+		}
+		if (!ft_fork(&pid))
+		{
+			ft_putendl_fd("THE FUCKING FORK!", STDERR_FILENO);
+			exit (EXIT_FAILURE);
+		}
+		if (pid == 0)
+			ft_pipe_command(cmd->prev, pipe, env);
+		dup2(pipe[READ], STDIN_FILENO);
+		close(pipe[WRITE]);
+		close(pipe[READ]);
 	}
-	if (cmd->argv[0])
-		execve(cmd->argv[0], cmd->argv, environ);
-	ft_error(ENOENT, cmd->cmd_name, "command not found\n");
-	exit(EXIT_NOTFOUND);
+	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name, env);
+	if (cmdval->argv[0])
+		execve(cmdval->argv[0], cmdval->argv, environ);
+	ft_putendl_fd("TRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
+	exit (EXIT_NOTFOUND);
 }
 
-void	ft_parent(t_list *cmds_cpy, t_cmd *cmd, int32_t *pipe, pid_t pid)
+static void ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 {
-	int32_t	n;
-	char	buff[256];
-	int32_t	exitval;
+	t_cmd	*cmdval;
 
+	cmdval = cmd->content;
+	dup2(pipe[WRITE], STDOUT_FILENO);
+	close(pipe[READ]);
 	close(pipe[WRITE]);
-	if (cmd->out.fd == STDOUT_FILENO && cmds_cpy->next)
-		pipe[2] = pipe[READ];
-	else
-	{
-		n = 1;
-		ft_memset(buff, 0, sizeof(buff));
-		while (n > 0)
-		{
-			n = read(pipe[READ], buff, sizeof(buff));
-			write(cmd->out.fd, buff, n);
-		}
-	}
-	if (cmds_cpy->next == NULL)
-	{
-		if (waitpid(pid, &exitval, 0) == -1)
-			ft_error(-1, "shell", NULL);
-		printf("EXIT CODE: %d\n", WEXITSTATUS(exitval));
-	}
+	ft_nth_command(cmd, env);
+}
+
+static void ft_corrupt_the_child(void)
+{
+    pid_t	child;
+    int  	status;
+
+    while ((child = waitpid(0, &status, 0)) != -1)
+		fprintf(stderr, "EXIT CODE: %d\n", WEXITSTATUS(status));
 }
 
 /**
@@ -135,32 +143,18 @@ void	ft_parent(t_list *cmds_cpy, t_cmd *cmd, int32_t *pipe, pid_t pid)
  */
 void	ft_exec_tbl(t_list *cmds, t_list *env)
 {
-	pid_t	pid;
-	int32_t	pipe[3];
-	t_cmd	*cmd;
 	t_list	*cmds_cpy;
 
-	cmds_cpy = cmds;
-	pipe[2] = ((t_cmd *)cmds_cpy->content)->in.fd;
-	while (cmds_cpy)
+	pid_t	pid;
+	cmds_cpy = ft_lstlast(cmds);
+	if (!ft_fork(&pid))
 	{
-		cmd = cmds_cpy->content;
-		if (!ft_pipe(pipe))
-		{
-			ft_putendl_fd("Pipe failure!", STDERR_FILENO);
-			return ;
-		}
-		if (!ft_fork(&pid))
-		{
-			ft_putendl_fd("Philo dropped his fork...", STDERR_FILENO);
-			return ;
-		}
-		if (pid == 0)
-			ft_child(cmd, env, pipe);
-		else
-			ft_parent(cmds_cpy, cmd, pipe, pid);
-		cmds_cpy = cmds_cpy->next;
+		ft_putendl_fd("shell: Fork failure!", STDERR_FILENO);
+		return ;
 	}
+	if (pid != 0)
+		return ;
+	ft_nth_command(cmds_cpy, env);
 }
 
 /**
@@ -187,11 +181,12 @@ void	ft_shell(t_list *env)
 				continue ;
 			}
 			ft_exec_tbl(cmds, env);
+			ft_corrupt_the_child();
 			ft_lstclear(&cmds, &free);
 			add_history(line);
 		}
 		free (line);
-		write(1, "\r", 1);
+		//write(1, "\r", 1);
 	}
 }
 
@@ -204,12 +199,12 @@ void	ft_shell(t_list *env)
 
 	if (!ft_pipe(fds))
 	{
-        ft_error(-1, "shell", NULL);
+		ft_error(-1, "shell", NULL);
 		return ;
 	}
 	if (!ft_fork(&pid))
 	{
-        ft_error(-1, "shell", NULL);
+		ft_error(-1, "shell", NULL);
 		return ;
 	}
 	if (pid == 0)
@@ -220,9 +215,9 @@ void	ft_shell(t_list *env)
 
 		close(fds[WRITE]);
 		for (int n = 0; (n = read(fds[READ], buf, sizeof(buf))) > 0;)
-     		write(fd, buf, n); 
+	 		write(fd, buf, n); 
 		if (waitpid(pid, &status, 0) == -1) 
-        	ft_error(-1, "shell", NULL);
+			ft_error(-1, "shell", NULL);
 		close(fds[READ]);
 	}
 	close(fd);
@@ -280,9 +275,9 @@ void	ft_shell(t_list *env)
 		exit (EXIT_FAILURE);
 	}
 	if (waitpid(pid, &status, 0) == -1) 
-        exit(EXIT_FAILURE);
-    if (WIFEXITED(status)) // Did it exit normally ?
-        printf("Exit status was %d : ERR: %d\n", WEXITSTATUS(status), errno);
+		exit(EXIT_FAILURE);
+	if (WIFEXITED(status)) // Did it exit normally ?
+		printf("Exit status was %d : ERR: %d\n", WEXITSTATUS(status), errno);
 
 */
 
