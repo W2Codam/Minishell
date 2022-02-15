@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/11 15:21:10 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:10:02 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,34 +48,6 @@
 	exit (EXIT_FAILURE); // We don't need to free, exit takes care of that.
 */
 
-
-extern char **environ;
-
-
-/**
- * Parent job is to just direct the read end of the pipe
- * to the right file descriptor and write to it.
- * 
- * If STDOUT & no next, actually write to STDOUT
- * If STDOUT & next, write to STDIN as we wanna move it forward
- * If NOT STDOUT & write to fd.
- * 
- * @param cmds 
- * @param fds 
- * @param env 
- * @param pid 
- */
-void	ft_parent(t_list *cmds, int32_t fds[2], t_list *env, pid_t pid)
-{
-	int32_t		exitval;
-
-	close(fds[WRITE]);
-	dup2(fds[READ], STDIN_FILENO);
-	if (waitpid(pid, &exitval, 0) == -1) 
-		ft_error(-1, "shell", NULL);
-	printf("EXIT CODE: %d\n", exitval);
-}
-
 /*
 
 	int32_t		exitval;
@@ -99,24 +71,64 @@ void	ft_parent(t_list *cmds, int32_t fds[2], t_list *env, pid_t pid)
 
 */
 
+extern char	**environ;
 
-void	ft_child(t_cmd *cmd, t_list *env)
+static void	ft_child(t_cmd *cmd, t_list *env, int32_t *pipe)
 {
-	char		**arr;
-	
+	char	**arr;
+
+	close(pipe[READ]);
+	dup2(pipe[2], STDIN_FILENO);
+	dup2(pipe[WRITE], STDOUT_FILENO);
 	cmd->argv[0] = (char *)ft_getexec(cmd->cmd_name, env);
+	arr = ft_env_get_arr(env);
+	if (!arr)
+	{
+		ft_putendl_fd("shell: memory failure!", STDERR_FILENO);
+		exit(EXIT_NOTFOUND);
+	}
 	if (cmd->argv[0])
 		execve(cmd->argv[0], cmd->argv, environ);
 	ft_error(ENOENT, cmd->cmd_name, "command not found\n");
-	exit (EXIT_NOTFOUND);
+	exit(EXIT_NOTFOUND);
+}
+
+void	ft_parent(t_list *cmds_cpy, t_cmd *cmd, int32_t *pipe, pid_t pid)
+{
+	int32_t	n;
+	char	buff[256];
+	int32_t	exitval;
+
+	close(pipe[WRITE]);
+	if (cmd->out.fd == STDOUT_FILENO && cmds_cpy->next)
+		pipe[2] = pipe[READ];
+	else
+	{
+		n = 1;
+		ft_memset(buff, 0, sizeof(buff));
+		while (n > 0)
+		{
+			n = read(pipe[READ], buff, sizeof(buff));
+			write(cmd->out.fd, buff, n);
+		}
+	}
+	if (cmds_cpy->next == NULL)
+	{
+		if (waitpid(pid, &exitval, 0) == -1)
+			ft_error(-1, "shell", NULL);
+		printf("EXIT CODE: %d\n", WEXITSTATUS(exitval));
+	}
 }
 
 /**
- * We need to forward our pipe output to the next process so it can listen/read from it as stdin
- * then we continue down this chain. Until the last process.
+ * We need to forward our pipe output to the next process so it can 
+ * listen/read from it as stdin then we continue down this chain. 
+ * Until the last process.
  * 
- * So we want to run basically each command and just make them forward their pipe's output
- * to the next command.
+ * So we want to run basically each command and just make 
+ * them forward their pipe's output to the next command.
+ * 
+ * TODO: NOORMMEEEEEEEEEREEQWDQWDQWDEFSDGSDFGSDGSRTGH
  * 
  * @param cmds 
  * @param env 
@@ -124,39 +136,29 @@ void	ft_child(t_cmd *cmd, t_list *env)
 void	ft_exec_tbl(t_list *cmds, t_list *env)
 {
 	pid_t	pid;
-	int32_t	prev_input;
-	int32_t	pipe[2];
+	int32_t	pipe[3];
 	t_cmd	*cmd;
 	t_list	*cmds_cpy;
 
 	cmds_cpy = cmds;
-	cmd = cmds_cpy->content;
-	prev_input = cmd->in.fd;
+	pipe[2] = ((t_cmd *)cmds_cpy->content)->in.fd;
 	while (cmds_cpy)
 	{
 		cmd = cmds_cpy->content;
-		ft_pipe(pipe);
-		ft_fork(&pid);
+		if (!ft_pipe(pipe))
+		{
+			ft_putendl_fd("Pipe failure!", STDERR_FILENO);
+			return ;
+		}
+		if (!ft_fork(&pid))
+		{
+			ft_putendl_fd("Philo dropped his fork...", STDERR_FILENO);
+			return ;
+		}
 		if (pid == 0)
-		{
-			close(pipe[READ]);
-			dup2(prev_input, STDIN_FILENO);
-			dup2(pipe[WRITE], STDOUT_FILENO);
-			ft_child(cmd, env);
-		}
+			ft_child(cmd, env, pipe);
 		else
-		{
-			close(pipe[WRITE]);
-			prev_input = pipe[READ];
-			if (cmd->out.fd == STDOUT_FILENO && cmds_cpy->next)
-				prev_input = pipe[READ];
-			else
-			{
-				char buf[256] = {0}; 
-				for (int n = 0; (n = read(pipe[READ], buf, sizeof(buf))) > 0;)
-					write(cmd->out.fd, buf, n);
-			}
-		}
+			ft_parent(cmds_cpy, cmd, pipe, pid);
 		cmds_cpy = cmds_cpy->next;
 	}
 }
@@ -169,15 +171,13 @@ void	ft_exec_tbl(t_list *cmds, t_list *env)
 void	ft_shell(t_list *env)
 {
 	t_list	*cmds;
-	char	*line; 	// Current input line
+	char	*line;
 
 	while (true)
 	{
 		line = readline(TITLE);
 		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
-		{
-			return(exitout(line));
-		}
+			return (exitout(line));
 		if (*line)
 		{
 			cmds = ft_lexer(line, env);
@@ -186,8 +186,6 @@ void	ft_shell(t_list *env)
 				printf("(temp) error during lexing\n");
 				continue ;
 			}
-			//dup2(g_shell.stdin_fd, STDIN_FILENO);
-			//dup2(g_shell.stdout_fd, STDOUT_FILENO);
 			ft_exec_tbl(cmds, env);
 			ft_lstclear(&cmds, &free);
 			add_history(line);

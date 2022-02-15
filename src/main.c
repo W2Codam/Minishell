@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 13:26:58 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/15 15:42:13 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,14 +144,14 @@ static bool	ft_set_env_vars(t_list *env, char *SHPath)
  */
 int32_t	main(int argc, char **argv, char **envp)
 {
-	t_list	*env; 	// Current environment variables
+	t_list	*env;
 
 	env = NULL;
 	rl_catch_signals = false;
 	signal(SIGINT, ft_sig_handle);
 	signal(SIGQUIT, ft_sig_handle);
-	g_shell.stdin_fd = dup(STDIN_FILENO); // We need to store copies of our in and out
-	g_shell.stdout_fd = dup(STDOUT_FILENO); // So we can restore after commands with pipes.
+	g_shell.stdin_fd = dup(STDIN_FILENO);
+	g_shell.stdout_fd = dup(STDOUT_FILENO);
 	if (g_shell.stdin_fd == -1 || g_shell.stdout_fd == -1)
 	{
 		ft_error(-1, "shell", NULL);
@@ -159,11 +159,11 @@ int32_t	main(int argc, char **argv, char **envp)
 	}
 	if (!ft_create_env(&env, envp) || !ft_set_env_vars(env, argv[0]))
 	{
-		write(STDERR_FILENO, "shell: memory allocation failure\n", 33);
+		ft_putendl_fd("shell: failed to initilize envs!\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	ft_shell(env); // Run minishell
-	close(g_shell.stdin_fd); // We can close the backup now
-	close(g_shell.stdout_fd); // Adieu!
+	ft_shell(env);
+	close(g_shell.stdin_fd);
+	close(g_shell.stdout_fd);
 	exit(EXIT_SUCCESS);
 }
