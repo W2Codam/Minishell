@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 13:52:21 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 15:41:32 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,19 @@ static bool	ft_tokencheck(char *cmd)
 	len = ft_strlen(cmd);
 	if (len == 1)
 	{
-		if (cmd[0] == '>' || cmd[0] == '<' || cmd[0] == '|')
+		if ((cmd[0] == '>' || cmd[0] == '<' || cmd[0] == '|'))
 			return (false);
-		if (isalnum(cmd[0]))
+		if (!isalnum(cmd[0]))
 			return (false);
+		return (true);
 	}
 	else if (len == 2)
 	{
-		if (ft_strncmp(cmd, "<<", 2) || ft_strncmp(cmd, ">>", 2))
+		if (!(ft_strncmp(cmd, "<<", 2) || ft_strncmp(cmd, ">>", 2)))
 			return (false);
-		if ((cmd[0] == '$' && isalnum(cmd[0])) || \
-			((isalnum(cmd[0]) && isalnum(cmd[1]))))
+		if (!(cmd[0] == '$' && isalnum(cmd[1])))
 			return (false);
+		return (true);
 	}
 	return (false);
 }

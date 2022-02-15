@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 13:56:54 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 14:43:46 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*expandenv(char *cmd, t_list *envp)
 	return (temp->value);
 }
 
-//make an array of all the expanded envvars in arg
+//make an array of all the expanded envars in arg
 char	**findenvars(char *arg, t_list *envp)
 {
 	char	**out;

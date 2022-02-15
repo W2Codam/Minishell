@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 13:58:42 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 15:15:32 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	countargs(char *s)
 
 	words = 0;
 	state = -1;
-	while (*s != 0)
+	while (*s++ != 0)
 	{
 		if (*s != ' ')
 			words++;
@@ -45,7 +45,6 @@ int	countargs(char *s)
 				state = selectstate(*s, state);
 			s++;
 		}
-		s++;
 	}
 	if (state >= 0)
 		printf("unclosed qoute\n");
@@ -63,8 +62,9 @@ char	**splitting(char *in)
 	i = 0;
 	state = -1;
 	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
-	while (*in)
+	while (*in++ != '\0')
 	{
+
 		if (*in == '\'' || *in == '\"')
 			state = selectstate(*in, state);
 		if ((state < 0 && *in == ' ') || !*(in + 1))
@@ -75,7 +75,6 @@ char	**splitting(char *in)
 			save = in;
 			save++;
 		}
-		in++;
 	}
 	out[i] = NULL;
 	return (out);
