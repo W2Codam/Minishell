@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 15:15:32 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:39:30 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,22 @@ int	countargs(char *s)
 		}
 	}
 	if (state >= 0)
-		printf("unclosed qoute\n");
+		ft_putendl("Unclosed qoute\n");
 	return (words);
 }
 
-char	**splitting(char *in)
+char	**splitting(char *in, int i)
 {
-	char		**out;
-	char		*save;
-	int			state;
-	int			i;
+	char **const	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
+	char			*save;
+	int				state;
 
+	if (!out)
+		return (NULL);
 	save = in;
-	i = 0;
 	state = -1;
-	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
 	while (*in++ != '\0')
 	{
-
 		if (*in == '\'' || *in == '\"')
 			state = selectstate(*in, state);
 		if ((state < 0 && *in == ' ') || !*(in + 1))
@@ -72,12 +70,13 @@ char	**splitting(char *in)
 			if (!*(in + 1))
 				in++;
 			out[i++] = ft_substr(save, 0, (in - save));
+			if (!out[i - 1])
+				return (NULL); //protect previous mallocs
 			save = in;
 			save++;
 		}
 	}
-	out[i] = NULL;
-	return (out);
+	return (out[i] = NULL, out);
 }
 
 // TODO: mallocs lol get fucked

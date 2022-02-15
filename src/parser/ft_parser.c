@@ -6,11 +6,11 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 14:38:13 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:44:13 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 int	ft_arrlen(char **arr)
 {
@@ -40,7 +40,7 @@ bool	check(char *cmd)
 	return (true);
 }
 
-int handleallpaths(t_file *var, bool write)
+int	handleallpaths(t_file *var, bool write)
 {
 	var->fd = ft_openfile(var->path, write);
 	if (var->fd == -1)
@@ -81,7 +81,7 @@ bool	handleredirect(t_cmd **temp, char *direct, char *filename)
 	return (true);
 }
 
-t_cmd *constructor(t_cmd *temp, int len)
+t_cmd	*constructor(t_cmd *temp, int len)
 {
 	temp = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!temp)
@@ -146,7 +146,7 @@ t_list *ft_parser(char **input, t_list *envp)
 			i++;
 		}
 		temp->argv[j] = NULL;
-		temp->argc = j;			
+		temp->argc = j;	
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 15:41:32 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:33:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ t_list	*ft_lexer(char *input, t_list *envp)
 	int		i;
 
 	cmds = ft_stringexpand(input, envp);
+	if (!cmds)
+		return (NULL);
 	i = 0;
 	while (cmds[i])
 	{

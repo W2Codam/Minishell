@@ -6,14 +6,14 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 14:43:46 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:39:25 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //expand giver envar, "" on invalid/nonexisten var
-char	*expandenv(char *cmd, t_list *envp)
+static char	*expandenv(char *cmd, t_list *envp)
 {
 	t_var	*temp;
 	char	*out;
@@ -32,8 +32,14 @@ char	*expandenv(char *cmd, t_list *envp)
 	return (temp->value);
 }
 
-//make an array of all the expanded envars in arg
-char	**findenvars(char *arg, t_list *envp)
+/**
+ * Expands all the environment variables present in arg regardless of validity
+ * 
+ * @param arg The argument
+ * @param envp Environment pointer
+ * @return char** Array of all the expanded envars, NULL terminated
+ */
+static char	**findenvars(char *arg, t_list *envp)
 {
 	char	**out;
 	int		i;
@@ -54,15 +60,21 @@ char	**findenvars(char *arg, t_list *envp)
 	return (out);
 }
 
-void	expandshit(char **cmd, char *s, char **envar)
+/**
+ * Replaces the cmd with a new version which includes expanded
+ * environment variables and removal of extraneous qoutes
+ * 
+ * @param cmd pointer to the cmd
+ * @param s copy of cmd to iterate over
+ * @param envar array of expanded environment variables
+ */
+static void	expandshit(char **cmd, char *s, char *out, char **envar)
 {
 	const char	qt[2] = {'\"', '\''};
 	int			state;
 	char		*save;
-	char		*out;
 
 	state = -1;
-	out = (char *)malloc(ft_strlen(s) + arr_strlen(envar) + 1);
 	save = out;
 	while (*s)
 	{
@@ -72,7 +84,7 @@ void	expandshit(char **cmd, char *s, char **envar)
 			addenvar(&s, &out, *envar++);
 		else if (*s == '$' && qt[state] == '\'')
 			moveenvarpointer(&s, &out, *envar++);
-		else if (*s == qt[state])
+		else if (state >= 0 && *s == qt[state])
 			state = selectstate(*s++, state);
 		else
 			*out++ = *s++;
@@ -86,20 +98,28 @@ void	expandshit(char **cmd, char *s, char **envar)
  * 
  * @param in The cmd typed by user
  * @param envp env pointer
- * @return the expanded 
+ * @return the expanded string
  */
 char	**ft_stringexpand(char *in, t_list *envp)
 {
 	char	**out;
+	char	**temp;
+	char	*new;
 	int		i;
 
-	out = splitting(in);
 	i = 0;
-	while (out[i] != NULL)
+	out = splitting(in, i);
+	while (out && out[i] != NULL)
 	{
 		if (ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
 			|| ft_strchr(out[i], '$'))
-			expandshit(&out[i], out[i], findenvars(out[i], envp));
+		{
+			temp = findenvars(out[i], envp);
+			new = (char *)malloc(ft_strlen(out[i]) + arr_strlen(temp) + 1);
+			if (!new)
+				return (NULL); // clean up possible previous mallocs
+			expandshit(&out[i], out[i], new, temp);
+		}
 		i++;
 	}
 	return (out);

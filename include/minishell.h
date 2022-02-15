@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 13:48:58 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 16:39:40 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ t_list	*ft_parser(char **input, t_list *envp);
 void	exitout(char *s);
 int		selectstate(char c, int state);
 char	**ft_stringexpand(char *in, t_list *envp);
-char	**splitting(char *in);
+char	**splitting(char *in, int i);
 int		countchar(char *str, char c);
 int		findnext(char *arg);
 int		arr_strlen(char **arr);
