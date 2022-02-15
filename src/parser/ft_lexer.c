@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 16:33:59 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 21:12:04 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_list	*ft_lexer(char *input, t_list *envp)
 		}
 		i++;
 	}
-	return (ft_parser(cmds, envp));
+	return (ft_parser(cmds));
 }
 
 // echo HEY | tr 'A-Z' 'a-z' <= Perfectly valid!

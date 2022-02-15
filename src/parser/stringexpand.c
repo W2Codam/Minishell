@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 16:39:25 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 21:00:40 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ static char	*expandenv(char *cmd, t_list *envp)
  */
 static char	**findenvars(char *arg, t_list *envp)
 {
-	char	**out;
-	int		i;
-	int		next;
+	char		**out;
+	const int	dollars = countchar(arg, '$');
+	int			i;
+	int			next;
 
-	out = (char **)malloc(sizeof(char *) * countchar(arg, '$') + 1);
+	if (dollars == 0)
+		return (NULL);
+	out = (char **)malloc(sizeof(char *) * dollars + 1);
 	i = 0;
 	while (*arg)
 	{
@@ -108,7 +111,7 @@ char	**ft_stringexpand(char *in, t_list *envp)
 	int		i;
 
 	i = 0;
-	out = splitting(in, i);
+	out = splitting(in, i, -1);
 	while (out && out[i] != NULL)
 	{
 		if (ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \

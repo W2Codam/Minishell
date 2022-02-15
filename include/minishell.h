@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 16:39:40 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 21:12:14 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,18 +164,25 @@ int32_t	ft_openfile(char *path, bool isoutput);
 void	ft_shell(t_list *env);
 void	ft_error(int32_t errovr, const char *s, char *msg);
 t_list	*ft_lexer(char *input, t_list *envp);
-t_list	*ft_parser(char **input, t_list *envp);
+t_list	*ft_parser(char **input);
 
 //= Utils =//
 
 void	exitout(char *s);
 int		selectstate(char c, int state);
 char	**ft_stringexpand(char *in, t_list *envp);
-char	**splitting(char *in, int i);
+char	**splitting(char *in, int i, int state);
+
+//= lolnorm =//
+
 int		countchar(char *str, char c);
 int		findnext(char *arg);
 int		arr_strlen(char **arr);
 void	addenvar(char **s, char **out, char *envar);
 void	moveenvarpointer(char **s, char **out, char *envar);
+bool	check(char *cmd);
+int		ft_arrlen(char **arr);
+t_file	*evaluate(t_file *in, t_file *out, char c);
+int		testpipe(char c, int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 16:39:30 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 21:10:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	countargs(char *s)
 			if (*s == '\'' || *s == '\"')
 				state = selectstate(*s, state);
 			s++;
+			if (*s == 0)
+				return (words++, words);
 		}
 	}
 	if (state >= 0)
@@ -51,23 +53,31 @@ int	countargs(char *s)
 	return (words);
 }
 
-char	**splitting(char *in, int i)
+/**
+ * Splits up string into array while respecting qoutes
+ * 
+ * @param in input string
+ * @param i lolnorm
+ * @param state lolnorm
+ * @return char** 
+ */
+char	**splitting(char *in, int i, int state)
 {
 	char **const	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
 	char			*save;
-	int				state;
 
 	if (!out)
 		return (NULL);
 	save = in;
-	state = -1;
 	while (*in++ != '\0')
 	{
 		if (*in == '\'' || *in == '\"')
 			state = selectstate(*in, state);
 		if ((state < 0 && *in == ' ') || !*(in + 1))
 		{
-			if (!*(in + 1))
+			if (*in == ' ' && *(in + 1) == 0)
+				*in = 0;
+			else if (*(in + 1) == 0)
 				in++;
 			out[i++] = ft_substr(save, 0, (in - save));
 			if (!out[i - 1])
