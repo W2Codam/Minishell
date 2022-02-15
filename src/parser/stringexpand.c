@@ -122,6 +122,8 @@ void	expandshit(t_qoute *cmd, char *s, char **envar)
 			state = selectstate(*s++, state);
 		else if (*s == '$' && (qt[state] == '\"' || state == -1))
 			addenvar(&s, &out, *envar++);
+		// else if (*s == '$' && qt[state] == '\'')
+		// 	envar++;
 		else if (*s == qt[state])
 			state = selectstate(*s++, state);
 		else
@@ -132,6 +134,12 @@ void	expandshit(t_qoute *cmd, char *s, char **envar)
 	cmd->arg = save;
 }
 
+/**
+ * Remove qoutes and expand environment variable
+ * 
+ * @param in The cmd typed by user
+ * @param envp env pointer
+ */
 t_qoute	*ft_stringexpand(char *in, t_list *envp)
 {
 	t_qoute	*out;
