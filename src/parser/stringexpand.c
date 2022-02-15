@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/11 17:33:13 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 13:56:54 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,38 +32,8 @@ char	*expandenv(char *cmd, t_list *envp)
 	return (temp->value);
 }
 
-//count occurences of char in string
-int countchar(char *str, char c)
-{
-	int i;
-
-	i = 0;
-	while (*str)
-	{
-		if (*str == c)
-			i++;
-		str++;
-	}
-	return (i);
-}
-
-//find next occurence of ' " $
-int	findnext(char *arg)
-{
-	int i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] == '\'' || arg[i] == '\"' || arg[i] == '$')
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
 //make an array of all the expanded envvars in arg
-char **findenvars(char *arg, t_list *envp)
+char	**findenvars(char *arg, t_list *envp)
 {
 	char	**out;
 	int		i;
@@ -75,8 +45,8 @@ char **findenvars(char *arg, t_list *envp)
 	{
 		if (*arg == '$')
 		{
-			next = findnext(arg+1);
-			out[i++] = expandenv(ft_substr(arg, 0, next-1), envp);
+			next = findnext(arg + 1);
+			out[i++] = expandenv(ft_substr(arg, 0, next - 1), envp);
 		}
 		arg++;
 	}
@@ -84,29 +54,7 @@ char **findenvars(char *arg, t_list *envp)
 	return (out);
 }
 
-int	arr_strlen(char **arr)
-{
-	int i;
-	int out;
-
-	i = 0;
-	out = 0;
-	while (arr[i])
-	{
-		out += ft_strlen(arr[i]);
-		i++;
-	}
-	return (out);
-}
-
-void addenvar(char **s, char **out, char *envar)
-{
-	ft_memmove(*out, envar, ft_strlen(envar));
-	*out += ft_strlen(*out);
-	*s += findnext(*s + 1) + 1;
-}
-
-void	expandshit(t_qoute *cmd, char *s, char **envar)
+void	expandshit(char **cmd, char *s, char **envar)
 {
 	const char	qt[2] = {'\"', '\''};
 	int			state;
@@ -122,16 +70,15 @@ void	expandshit(t_qoute *cmd, char *s, char **envar)
 			state = selectstate(*s++, state);
 		else if (*s == '$' && (qt[state] == '\"' || state == -1))
 			addenvar(&s, &out, *envar++);
-		// else if (*s == '$' && qt[state] == '\'')
-		// 	envar++;
+		else if (*s == '$' && qt[state] == '\'')
+			moveenvarpointer(&s, &out, *envar++);
 		else if (*s == qt[state])
 			state = selectstate(*s++, state);
 		else
 			*out++ = *s++;
 	}
 	*out = 0;
-	cmd->qouted = true;
-	cmd->arg = save;
+	*cmd = save;
 }
 
 /**
@@ -139,24 +86,21 @@ void	expandshit(t_qoute *cmd, char *s, char **envar)
  * 
  * @param in The cmd typed by user
  * @param envp env pointer
+ * @return the expanded 
  */
-t_qoute	*ft_stringexpand(char *in, t_list *envp)
+char	**ft_stringexpand(char *in, t_list *envp)
 {
-	t_qoute	*out;
+	char	**out;
 	int		i;
 
 	out = splitting(in);
 	i = 0;
-	while (out[i].arg != NULL)
+	while (out[i] != NULL)
 	{
-		if (ft_strchr(out[i].arg, '\'') || ft_strchr(out[i].arg, '\"') \
-			|| ft_strchr(out[i].arg, '$'))
-			expandshit(&out[i], out[i].arg, findenvars(out[i].arg, envp));
-		else
-			out[i].qouted = false;
+		if (ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
+			|| ft_strchr(out[i], '$'))
+			expandshit(&out[i], out[i], findenvars(out[i], envp));
 		i++;
 	}
-	// for (int i = 0; out[i].arg; i++)
-	// 	printf("%s\n", out[i].arg);
 	return (out);
 }

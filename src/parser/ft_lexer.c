@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/10 18:43:08 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 13:52:21 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,6 @@ static bool	ft_tokencheck(char *cmd)
 			((isalnum(cmd[0]) && isalnum(cmd[1]))))
 			return (false);
 	}
-	else
-		while (cmd[i++])
-			if (!isalnum(cmd[i]) && cmd[i] != '\0' && cmd[i] != '=' \
-				&& cmd[i] != '.' && cmd[i] != '-')
-				return (true);
 	return (false);
 }
 
@@ -51,21 +46,13 @@ static bool	ft_tokencheck(char *cmd)
  */
 t_list	*ft_lexer(char *input, t_list *envp)
 {
-	t_qoute	*testcmd = ft_stringexpand(input, envp);
 	char	**cmds;
 	int		i;
 
-	cmds = ft_split(input, ' ');
-	for (int i = 0; testcmd[i].arg; i++)
-		printf("%s\n", testcmd[i].arg);
-	for (int i = 0; cmds[i]; i++)
-		printf("%s\n", cmds[i]);
-	exit(0);
+	cmds = ft_stringexpand(input, envp);
 	i = 0;
 	while (cmds[i])
 	{
-		if (testcmd[i].qouted == true)
-			continue ;
 		if (ft_tokencheck(cmds[i]))
 		{
 			printf("bad token\n"); //testing purposes

@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/11 13:07:29 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/15 13:58:42 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,13 @@ int	countargs(char *s)
 		s++;
 	}
 	if (state >= 0)
-		printf("unclosed qoute");
-	printf("%d\n", words);
+		printf("unclosed qoute\n");
 	return (words);
 }
 
-t_qoute	*splitting(char *in)
+char	**splitting(char *in)
 {
-	t_qoute		*out;
+	char		**out;
 	char		*save;
 	int			state;
 	int			i;
@@ -63,7 +62,7 @@ t_qoute	*splitting(char *in)
 	save = in;
 	i = 0;
 	state = -1;
-	out = (t_qoute *)malloc(sizeof(t_qoute) * (countargs(in) + 1));
+	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
 	while (*in)
 	{
 		if (*in == '\'' || *in == '\"')
@@ -72,13 +71,13 @@ t_qoute	*splitting(char *in)
 		{
 			if (!*(in + 1))
 				in++;
-			out[i++].arg = ft_substr(save, 0, (in - save));
+			out[i++] = ft_substr(save, 0, (in - save));
 			save = in;
 			save++;
 		}
 		in++;
 	}
-	out[i].arg = NULL;
+	out[i] = NULL;
 	return (out);
 }
 
