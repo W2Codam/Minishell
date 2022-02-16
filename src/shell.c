@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 22:02:18 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/16 11:21:13 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@
 
 extern char	**environ;
 
-static void ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env);
+static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env);
 
 /* With the standard output plumbing sorted, execute Nth command */
-static void ft_nth_command(t_list *cmd, t_list *env)
+static void	ft_nth_command(t_list *cmd, t_list *env)
 {
-	pid_t 	pid; 
+	pid_t	pid;
 	int32_t	pipe[2];
 	t_cmd	*cmdval;
 
@@ -101,6 +101,16 @@ static void ft_nth_command(t_list *cmd, t_list *env)
 		close(pipe[WRITE]);
 		close(pipe[READ]);
 	}
+	if (cmdval->in.fd != STDIN_FILENO)
+	{
+		dup2(cmdval->in.fd, STDIN_FILENO);
+		close(cmdval->in.fd);
+	}
+	if (cmdval->out.fd != STDOUT_FILENO)
+	{
+		dup2(cmdval->out.fd, STDOUT_FILENO);
+		close(cmdval->out.fd);
+	}
 	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name, env);
 	if (cmdval->argv[0])
 		execve(cmdval->argv[0], cmdval->argv, environ);
@@ -108,7 +118,7 @@ static void ft_nth_command(t_list *cmd, t_list *env)
 	exit (EXIT_NOTFOUND);
 }
 
-static void ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
+static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 {
 	t_cmd	*cmdval;
 
@@ -119,12 +129,12 @@ static void ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 	ft_nth_command(cmd, env);
 }
 
-static void ft_corrupt_the_child(void)
+static void	ft_corrupt_the_child(void)
 {
-    pid_t	child;
-    int  	status;
+	pid_t	child;
+	int		status;
 
-    while ((child = waitpid(0, &status, 0)) != -1)
+	while ((child = waitpid(0, &status, 0)) != -1)
 		fprintf(stderr, "EXIT CODE: %d\n", WEXITSTATUS(status));
 }
 
@@ -143,9 +153,9 @@ static void ft_corrupt_the_child(void)
  */
 void	ft_exec_tbl(t_list *cmds, t_list *env)
 {
+	pid_t	pid;
 	t_list	*cmds_cpy;
 
-	pid_t	pid;
 	cmds_cpy = ft_lstlast(cmds);
 	if (!ft_fork(&pid))
 	{
@@ -186,7 +196,6 @@ void	ft_shell(t_list *env)
 			add_history(line);
 		}
 		free (line);
-		//write(1, "\r", 1);
 	}
 }
 
