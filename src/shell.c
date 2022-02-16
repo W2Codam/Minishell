@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/16 11:21:13 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/16 13:42:47 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,15 @@ static void	ft_corrupt_the_child(void)
 	pid_t	child;
 	int		status;
 
-	while ((child = waitpid(0, &status, 0)) != -1)
-		fprintf(stderr, "EXIT CODE: %d\n", WEXITSTATUS(status));
+	while (true)
+	{
+		child = waitpid(0, &status, 0);
+		if (child != -1)
+		{
+			printf("EXIT CODE: %d\n", WEXITSTATUS(status));
+			break ;
+		}
+	}
 }
 
 /**
@@ -198,8 +205,6 @@ void	ft_shell(t_list *env)
 		free (line);
 	}
 }
-
-
 
 /*
 

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 21:12:14 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/16 13:37:37 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # define EXIT_NOTFOUND 127
-# define TITLE "\e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
+# define TITLE "\e[103m\e[30m 0 \e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
 
 /**
  * Only global variable since its VERY useful!

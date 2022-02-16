@@ -6,25 +6,11 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/11 15:37:26 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/16 17:00:50 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	ft_env_cpy(t_var *var, char *buffer, size_t buffsize)
-{
-	size_t	len;
-
-	memset(buffer, '\0', buffsize);
-	if (var->hidden) // Hidden variables are not meant to be added.
-		return ;
-	len = ft_strlen(var->key);
-	memmove(buffer, var->key, len);
-	buffer[len++] = '=';
-	len = ft_strlen(var->value);
-	memmove(buffer, var->value, len);
-}
 
 /**
  * Sets an environment variable to a specific value.
@@ -34,24 +20,52 @@ static void	ft_env_cpy(t_var *var, char *buffer, size_t buffsize)
  * @param val The new value.
  * @return Wether it succeeded in setting the variable or not.
  */
+bool	ft_env_add(t_list *envp, char *key, char *value)
+{
+	t_var	*newvar;
+	t_list	*entry;
+
+	if (!key || !value || !envp)
+		return (false);
+	if (ft_env_set(envp, key, value))
+		return (true);
+	newvar = malloc(sizeof(t_var));
+	newvar->hidden = false;
+	newvar->unset = true;
+	newvar->key = ft_strdup(key);
+	newvar->value = ft_strdup(value);
+	entry = ft_lstnew(newvar);
+	if (!newvar->key || !newvar->value)
+	{
+		free(newvar->key);
+		free(newvar->value);
+		free(newvar);
+		free(entry);
+		return (false);
+	}
+	ft_lstadd_back(&envp, entry);
+	return (true);
+}
+
+/**
+ * Sets an environment variable to a specific value.
+ * 
+ * @param envp The environment variables.
+ * @param var The variable to update.
+ * @param val The new value, strdups it.
+ * @return Wether it succeeded in setting the variable or not.
+ */
 bool	ft_env_set(t_list *envp, char *key, char *value)
 {
-	t_var	*variable;
-	t_list	*envp_cpy;
+	t_var *const	variable = ft_env_get(envp, key);
 
-	envp_cpy = envp;
-	while (envp_cpy)
-	{
-		variable = envp_cpy->content;
-		if (ft_strncmp(variable->key, key, ft_strlen(variable->key)) == 0)
-		{
-			free(variable->value);
-			variable->value = value;
-			return (true);
-		}
-		envp_cpy = envp_cpy->next;
-	}
-	return (false);
+	if (!variable || !key || !value || !envp)
+		return (false);
+	free(variable->value);
+	variable->value = ft_strdup(value);
+	if (!variable->value)
+		return (false);
+	return (true);
 }
 
 /**
@@ -64,18 +78,38 @@ bool	ft_env_set(t_list *envp, char *key, char *value)
  */
 t_var	*ft_env_get(t_list *envp, char *key)
 {
+	size_t	keylen;
+	t_list	*env_cpy;
 	t_var	*variable;
-	t_list	*envp_cpy;
 
-	envp_cpy = envp;
-	while (envp_cpy)
+	if (!key || !envp)
+		return (false);
+	env_cpy = envp;
+	while (env_cpy)
 	{
-		variable = envp_cpy->content;
-		if (ft_strncmp(variable->key, key, ft_strlen(variable->key)) == 0)
+		variable = env_cpy->content;
+		keylen = ft_strlen(variable->key);
+		if (ft_strncmp(variable->key, key, keylen))
 			return (variable);
-		envp_cpy = envp_cpy->next;
+		env_cpy = env_cpy->next;
 	}
-	return (NULL);
+	return (variable);
+}
+
+bool	ft_copy_entry(char *entry, t_var *variable)
+{
+	char			*temp;
+	const size_t	keylen = ft_strlen(variable->key);
+	const size_t	vallen = ft_strlen(variable->value);
+
+	temp = malloc(keylen + 1 + vallen);
+	if (!temp)
+		return (false);
+	memmove(temp, variable->key, keylen);
+	temp[keylen] = '=';
+	memmove(temp + 1 + keylen, variable->value, vallen);
+	entry = temp;
+	return (true);
 }
 
 /**
@@ -88,26 +122,28 @@ t_var	*ft_env_get(t_list *envp, char *key)
 char	**ft_env_get_arr(t_list *envp)
 {
 	int32_t	i;
-	char	**arr;
-	char	temp[4096];
+	int32_t	x;
+	t_var	*variable;
 	t_list	*envp_cpy;
+	char	**output;
 
 	i = 0;
-	arr = malloc(ft_lstsize(envp) * sizeof(char *));
-	if (!arr)
-		return (NULL);
+	x = 0;
 	envp_cpy = envp;
+	output = (char **)calloc(ft_lstsize(envp) + 1, sizeof(char *));
+	if (!output)
+		return (NULL);
 	while (envp_cpy)
 	{
-		ft_env_cpy(envp_cpy->content, temp, sizeof(temp));
-		arr[i] = ft_strdup(temp);
-		if (!arr[i])
+		variable = envp_cpy->content;
+		if (!variable->hidden && !ft_copy_entry(output[i++], variable))
 		{
-			//TODO: Free arr
-			free(arr);
+			while (output[x] != NULL)
+				free(output[x++]);
 			return (NULL);
 		}
 		envp_cpy = envp_cpy->next;
 	}
-	return (arr);
+	return (output);
 }
+
