@@ -6,53 +6,64 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 21:11:58 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/16 16:10:17 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handleallpaths(t_file *var, bool write)
+void	lolhandle(int sig)
 {
-	var->fd = ft_openfile(var->path, write);
-	if (var->fd == -1)
-	{
-		return (-1); // something went wrong during open
-	}
-	return (0);
+	(void)sig;
 }
 
-bool	handleredirect(t_file *temp, char *filename, bool write)
+t_file	*heredocshit(t_file *temp, char *delim)
+{
+	int32_t	pipe[2];
+	char	*tstr;
+
+	if (!ft_pipe(pipe))
+		return (NULL);
+	temp->fd = pipe[READ];
+	while (true)
+	{
+		tstr = readline("heredoc> ");
+		if (!tstr)
+			return (close(pipe[WRITE]), NULL);
+		if (ft_strncmp(tstr, delim, ft_strlen(tstr)) == 0)
+			break ;
+		ft_putendl_fd(tstr, pipe[WRITE]);
+		free(tstr);
+	}
+	free(tstr);
+	close(pipe[WRITE]);
+	return (temp);
+}
+
+bool	handleredirect(t_file *temp, char *filename, bool write, char *input)
 {
 	if (!filename)
 		return (true);
-	if (check(filename))
+	if (input[1] == '<')
+	{
+		if (!check(filename))
+			return (true);
+		temp = heredocshit(temp, filename);
+		if (!temp)
+			return (true);
+	}
+	else if (check(filename))
 	{
 		temp->path = filename;
+		if (temp->fd > 2)
+			close(temp->fd);
 		temp->fd = -1;
-		if (handleallpaths(temp, write) < 0)
+		if (handleallpaths(temp, write, (input[1] == '>')) < 0)
 			return (true);
 	}
 	else
 		return (true);
 	return (false);
-}
-
-t_cmd	*constructor(t_cmd *temp, int len)
-{
-	temp = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!temp)
-		return (NULL);
-	temp->argv = malloc((len + 1) * sizeof(char *));
-	if (!temp->argv)
-	{
-		free(temp);
-		return (NULL);
-	}
-	temp->cmd_name = NULL;
-	temp->in.fd = STDIN_FILENO;
-	temp->out.fd = STDOUT_FILENO;
-	return (temp);
 }
 
 int	parseone(char **input, t_cmd **temp, int i, int *j)
@@ -62,7 +73,7 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 		if (input[i][0] == '<' || input[i][0] == '>')
 		{
 			if (handleredirect(evaluate(&(*temp)->in, &(*temp)->out, \
-			input[i][0]), input[i + 1], (input[i][0] == '>')))
+			input[i][0]), input[i + 1], (input[i][0] == '>'), input[i]))
 				return (-1);
 			i += 2;
 			if (input[i] != NULL && input[i][0] != '<' && \
@@ -79,6 +90,26 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 		i++;
 	}
 	return (i);
+}
+
+t_cmd	*constructor(t_cmd *temp, int len)
+{
+	temp = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!temp)
+		return (NULL);
+	temp->argv = malloc((len + 1) * sizeof(char *));
+	if (!temp->argv)
+	{
+		free(temp);
+		return (NULL);
+	}
+	temp->cmd_name = NULL;
+	temp->in.fd = STDIN_FILENO;
+	temp->in.path = NULL;
+	temp->out.fd = STDOUT_FILENO;
+	temp->out.path = NULL;
+	temp->builtin = NULL;
+	return (temp);
 }
 
 /**
@@ -108,6 +139,7 @@ t_list	*ft_parser(char **input)
 			return (NULL); // handle previous mallocs
 		temp->argv[j] = NULL;
 		temp->argc = j;
+		//ft_builtincheck(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);

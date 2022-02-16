@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/15 21:12:14 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/16 15:57:51 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,17 @@ typedef struct s_shell
 	int32_t	stdout_fd;
 }	t_shell;
 
-typedef struct s_qouted
+/**
+ * For adding builtins to cmd_table if necessary
+ * 
+ * @param str name of the command
+ * @param builtin function pointer to the builtin
+ */
+typedef struct s_builtins
 {
-	char	*arg;
-	bool	qouted;
-}	t_qoute;
+	char	*str;
+	t_func	builtin;
+}	t_btin;
 
 //////////////////////////////////////////////////////////////////
 
@@ -157,7 +163,7 @@ char	*ft_getexec(const char *cmd, t_list *envp);
 bool	ft_pipe(int32_t fds[2]);
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_fork(pid_t *pid);
-int32_t	ft_openfile(char *path, bool isoutput);
+int32_t	ft_openfile(char *path, bool isoutput, bool append);
 
 //= Shell =//
 
@@ -173,16 +179,21 @@ int		selectstate(char c, int state);
 char	**ft_stringexpand(char *in, t_list *envp);
 char	**splitting(char *in, int i, int state);
 
+//= Builtin =//
+
+void	ft_builtincheck(t_cmd **cmd);
+
 //= lolnorm =//
 
 int		countchar(char *str, char c);
 int		findnext(char *arg);
 int		arr_strlen(char **arr);
+int		testpipe(char c, int i);
+int		ft_arrlen(char **arr);
+int		handleallpaths(t_file *var, bool write, bool append);
+bool	check(char *cmd);
 void	addenvar(char **s, char **out, char *envar);
 void	moveenvarpointer(char **s, char **out, char *envar);
-bool	check(char *cmd);
-int		ft_arrlen(char **arr);
 t_file	*evaluate(t_file *in, t_file *out, char c);
-int		testpipe(char c, int i);
 
 #endif

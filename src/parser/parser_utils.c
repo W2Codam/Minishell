@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 20:35:18 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 21:08:17 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/16 14:00:55 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,14 @@ bool	check(char *cmd)
 			return (false);
 	}
 	return (true);
+}
+
+int	handleallpaths(t_file *var, bool write, bool append)
+{
+	var->fd = ft_openfile(var->path, write, append);
+	if (var->fd == -1)
+	{
+		return (-1); // something went wrong during open
+	}
+	return (0);
 }
