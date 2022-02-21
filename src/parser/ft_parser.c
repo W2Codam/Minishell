@@ -6,56 +6,11 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:13:13 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 19:54:23 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "temp/get_next_line.h"
-
-pid_t pid = -1;
-
-void	lolhandle(int sig)
-{
-	kill(pid, SIGKILL);
-}
-
-t_file	*heredocshit(t_file *temp, char *delim)
-{
-	int32_t	pipe[2];
-	int		status;
-	char	*tstr;
-
-	if (!ft_pipe(pipe))
-		return (NULL);
-	pid = fork();
-	temp->fd = pipe[READ];
-	if (pid == 0)
-	{
-		while (true)
-		{
-			write(1, "heredoc> ", 9);
-			tstr = get_next_line(STDIN_FILENO);
-			if (tstr == NULL)
-				return (close(pipe[WRITE]), NULL);
-			if (tstr[0] == '\n')
-				;
-			else if (ft_strncmp(tstr, delim, ft_strlen(tstr) - 1) == 0)
-				break ;
-			ft_putendl_fd(tstr, pipe[WRITE]);
-			free(tstr);
-		}
-		exit(0);
-	}	
-	signal(SIGINT, lolhandle);
-	waitpid(0, &status, 0);
-	signal(SIGINT, ft_sig_handle);
-	if (status > 0)
-		return (close(pipe[WRITE]), NULL);
-	free(tstr);
-	close(pipe[WRITE]);
-	return (temp);
-}
 
 bool	handleredirect(t_file *temp, char *filename, bool write, char *input)
 {
@@ -99,7 +54,7 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 			continue ;
 		}
 		if (input[i][0] == '|')
-			return (testpipe(input[i + 1][0], i));
+			return (testpipe(input[i + 1], i));
 		if (i == 0 || input[i - 1][0] == '|')
 			(*temp)->cmd_name = input[i];
 		else

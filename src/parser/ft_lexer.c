@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/16 14:12:00 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 18:11:50 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static bool	ft_tokencheck(char *cmd)
 			return (false);
 		return (true);
 	}
+	else if (cmd[0] == '|' || cmd[0] == '>' || cmd[0] == '<')
+		return (true);
 	return (false);
 }
 

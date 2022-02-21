@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:45:17 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 17:59:27 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,13 @@ static bool	ft_set_env_vars(t_list **env, char *shellpath)
  */
 int32_t	main(int argc, char **argv, char **envp)
 {
-	t_list	*env;
+	t_list			*env;
+	struct termios	raw;
 
 	env = NULL;
+	tcgetattr(STDIN_FILENO, &raw);
+	raw.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 	rl_catch_signals = false;
 	signal(SIGINT, ft_sig_handle);
 	signal(SIGQUIT, ft_sig_handle);

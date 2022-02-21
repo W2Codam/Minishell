@@ -6,16 +6,16 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 20:35:18 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/16 14:00:55 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 19:28:39 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //lolnorm
-int	testpipe(char c, int i)
+int	testpipe(char *c, int i)
 {
-	if (i == 0 || c == '|')
+	if (i == 0 || !c || c[0] == '|')
 		return (-1);
 	return (i + 1);
 }

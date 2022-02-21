@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:45:26 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 19:55:02 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+# include <termios.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -189,7 +190,7 @@ void	ft_builtincheck(t_cmd **cmd);
 int		countchar(char *str, char c);
 int		findnext(char *arg);
 int		arr_strlen(char **arr);
-int		testpipe(char c, int i);
+int		testpipe(char *c, int i);
 int		ft_arrlen(char **arr);
 int		handleallpaths(t_file *var, bool write, bool append);
 bool	check(char *cmd);
@@ -197,5 +198,6 @@ void	addenvar(char **s, char **out, char *envar);
 void	moveenvarpointer(char **s, char **out, char *envar);
 t_file	*evaluate(t_file *in, t_file *out, char c);
 void	ft_sig_handle(int32_t sig);
+t_file	*heredocshit(t_file *temp, char *delim);
 
 #endif
