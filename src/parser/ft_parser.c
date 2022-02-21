@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:38:41 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:00:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ t_list	*ft_parser(char **input)
 			return (NULL); // handle previous mallocs
 		temp->argv[j] = NULL;
 		temp->argc = j;
-		//ft_builtincheck(&temp);
+		ft_builtincheck(&temp);
 		ft_lstadd_back(&out, ft_lstnew(temp));
 	}
 	return (out);
