@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:21:07 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/16 15:11:29 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:18:20 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,24 @@
 void	ft_builtincheck(t_cmd **cmd)
 {
 	int					i;
-	static const t_btin	btins[7] = {
+	static const t_btin	btins[] = {
 	{.str = "cd", .builtin = ft_cd},
 	{.str = "echo", .builtin = ft_echo},
 	{.str = "env", .builtin = ft_env},
 	// {.str = "export", .builtin = ft_export},
 	// {.str = "pwd", .builtin = ft_pwd},
 	{.str = "unset", .builtin = ft_unset},
-	{.str = NULL, .builtin = NULL},
 	};
 
 	i = 0;
-	while (btins[i].str != NULL)
+	while (i < sizeof(btins) / sizeof(t_btin))
 	{
-		if (ft_strncmp((*cmd)->cmd_name, btins[i].str, \
-				ft_strlen((*cmd)->cmd_name)))
+		if (!ft_strncmp((*cmd)->cmd_name, btins[i].str, \
+				ft_strlen(btins[i].str)))
+		{
 			(*cmd)->builtin = btins[i].builtin;
+			return ;
+		}
 		i++;
 	}
 }

@@ -10,7 +10,7 @@ static char	*stringcircumcise(char *files, char *out)
 	out = ft_substr(files, 0, i + 1);
 	if (!out)
 		return (NULL);
-	ft_memmove(files, files + i + 1, (ft_strlen(files) - i));
+	ft_memmove(files, files + i + 1, (fts_strlen(files) - i));
 	return (out);
 }
 

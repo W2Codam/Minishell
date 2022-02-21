@@ -1,6 +1,6 @@
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	fts_strlen(const char *str)
 {
 	size_t	i;
 
@@ -41,7 +41,7 @@ char	*ft_strdup(const char *src)
 	int		i;
 
 	i = 0;
-	copy = (char *)malloc((ft_strlen(src) + 1) * sizeof(char));
+	copy = (char *)malloc((fts_strlen(src) + 1) * sizeof(char));
 	if (!copy)
 		return (NULL);
 	while (src[i])
@@ -59,7 +59,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	size_t	i;
 	size_t	strlen;
 
-	strlen = (ft_strlen(s));
+	strlen = (fts_strlen(s));
 	if (!s)
 		return (NULL);
 	if (start > strlen)
@@ -88,8 +88,8 @@ char	*fts_strjoin(char *s1, char *s2)
 
 	if (!s1)
 		return (ft_strdup(s2));
-	i1 = ft_strlen(s1);
-	i2 = ft_strlen(s2);
+	i1 = fts_strlen(s1);
+	i2 = fts_strlen(s2);
 	out = malloc(sizeof(char) * (i1 + i2 + 1));
 	if (!out)
 		return (NULL);

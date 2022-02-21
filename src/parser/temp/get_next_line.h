@@ -15,7 +15,7 @@ char	*fts_strjoin(char *s1, char *s2);
 
 void	*ft_memmove(void *dst, const void *src, size_t len);
 
-size_t	ft_strlen(const char *str);
+size_t	fts_strlen(const char *str);
 
 static struct s_static_vars{
 	char	*files[MAX_FD];

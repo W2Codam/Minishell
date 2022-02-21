@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:18:28 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:28:34 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static int	ft_chdir(char *path, t_list *envp)
 	if (chdir(path) != 0)
 	{
 		ft_putstr_fd(path, STDERR_FILENO);
-		ft_putendl_fd(": No such file or directory.", STDERR_FILENO);
-		free(tmp_path);
+		ft_putendl_fd("cd: No such file or directory.", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	ft_env_set(&envp, "OLDPWD", tmp_path);
+	ft_env_set(&envp, ft_env_get(envp, "OLDPWD"), tmp_path);
+	fprintf(stderr, "DIR: %s\n", getcwd(NULL, -1));
 	return (EXIT_SUCCESS);
 }
 
