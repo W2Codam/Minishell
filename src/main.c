@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/16 15:57:58 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:41:12 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,31 +49,7 @@ static void	ft_sig_handle(int32_t sig)
  */
 static bool	ft_construct_var(t_var *var, char *envp)
 {
-	int32_t			i;
-	const size_t	dist_to_eq = ft_strclen(envp, '=');
-	const char		*specials[] = {"PWD", "SHLVL", NULL};
-	char			*value;
-
-	i = 0;
-	var->key = ft_substr(envp, 0, dist_to_eq);
-	if (!var->key)
-		return (false);
-	value = envp + dist_to_eq + 1; // +1 to skip =
-	var->value = ft_substr(value, 0, ft_strlen(value));
-	if (!var->value)
-	{
-		free(var->key);
-		return (false);
-	}
-	var->hidden = false;
-	var->unset = true; // For every var assume you can unset.
-	while (specials[i]) // Unless for specials we secretly still store them :P
-	{
-		if (ft_strncmp(var->key, specials[i], UINT8_MAX) == 0)
-			var->unset = false;
-		i++;
-	}
-	return (true);
+	return (false);
 }
 
 /**
@@ -85,25 +61,18 @@ static bool	ft_construct_var(t_var *var, char *envp)
  */
 static bool	ft_create_env(t_list **env, char **envp)
 {
-	int32_t	i;
-	t_var	*var;
-	t_list	*entry;
+	char		*key;
+	char		*val;
+	size_t		equ;
 
-	i = -1;
-	while (envp[++i])
+	while (*envp)
 	{
-		var = malloc(sizeof(t_var));
-		if ((var) && ft_construct_var(var, envp[i]))
-		{
-			entry = ft_lstnew(var);
-			if (entry)
-			{
-				ft_lstadd_back(env, entry);
-				continue ;
-			}
-		}
-		free(var);
-		return (false);
+		equ = ft_strclen(*envp, '=');
+		key = ft_substr(*envp, 0, equ);
+		val = ft_strdup(*envp + equ + 1);
+		if (!ft_env_add(env, key, val))
+			return (false);
+		envp++;
 	}
 	return (true);
 }
@@ -115,23 +84,22 @@ static bool	ft_create_env(t_list **env, char **envp)
  * @param SHPath The current shell path to this instance.
  * @return Some shit got fucked, or malloc failed, will return false or true.
  */
-static bool	ft_set_env_vars(t_list *env, char *SHPath)
+static bool	ft_set_env_vars(t_list **env, char *shellpath)
 {
-	int32_t		shlvl;
-	char		*shlvl_str;
-	const t_var	*lvl = ft_env_get(env, "SHLVL");
+	int32_t			shlvl_val;
+	t_var *const	shlvl = ft_env_get(*env, "SHLVL");
+	t_var *const	shell = ft_env_get(*env, "SHELL");
 
-	// TODO: Check how to actually deal with this garbage, for now just fail, have not tested with bash.
-	// Im refering to the fact that what if shell is unset, what error do we give back ?
-	if (!lvl || !ft_env_set(env, "SHELL", SHPath))
+	if (!shlvl || !shell)
 		return (false);
-	shlvl = ft_atoi(lvl->value) + 1; // Go up one shell level
-	if (shlvl < 0) // TODO: We shouldn't reach this point, only in debugger or if some mad lad set this as their default shell xddd
+	shlvl_val = ft_atoi(shlvl->value) + 1;
+	if (shlvl_val <= 0)
 		return (false);
-	shlvl_str = ft_itoa(shlvl);
-	if (!shlvl_str)
+	if (!ft_env_set(env, ft_env_get(*env, "SHLVL"), ft_itoa(shlvl_val)))
 		return (false);
-	return (ft_env_set(env, "SHLVL", shlvl_str));
+	if (!ft_env_set(env, ft_env_get(*env, "SHELL"), shellpath))
+		return (false);
+	return (true);
 }
 
 /**
@@ -150,20 +118,11 @@ int32_t	main(int argc, char **argv, char **envp)
 	rl_catch_signals = false;
 	signal(SIGINT, ft_sig_handle);
 	signal(SIGQUIT, ft_sig_handle);
-	g_shell.stdin_fd = dup(STDIN_FILENO);
-	g_shell.stdout_fd = dup(STDOUT_FILENO);
-	if (g_shell.stdin_fd == -1 || g_shell.stdout_fd == -1)
-	{
-		ft_error(-1, "shell", NULL);
-		exit(EXIT_FAILURE);
-	}
-	if (!ft_create_env(&env, envp) || !ft_set_env_vars(env, argv[0]))
+	if (!ft_create_env(&env, envp) || !ft_set_env_vars(&env, argv[0]))
 	{
 		ft_putendl_fd("shell: failed to initilize envs!\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
 	ft_shell(env);
-	close(g_shell.stdin_fd);
-	close(g_shell.stdout_fd);
 	exit(EXIT_SUCCESS);
 }

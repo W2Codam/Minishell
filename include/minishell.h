@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/16 17:02:34 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:38:18 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,9 @@ int32_t	ft_unset(int32_t argc, char **argv, t_list *envp);
 
 //= Unix Utils =//
 
+bool	ft_env_add(t_list **envp, char *key, char *value);
 char	**ft_env_get_arr(t_list *envp);
-bool	ft_env_set(t_list *envp, char *key, char *value);
+bool	ft_env_set(t_list **envp, t_var *var, char *value);
 t_var	*ft_env_get(t_list *envp, char *key);
 char	*ft_getexec(const char *cmd, t_list *envp);
 bool	ft_pipe(int32_t fds[2]);

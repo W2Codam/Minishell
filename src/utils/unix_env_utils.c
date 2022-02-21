@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/16 17:00:50 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:38:01 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,26 @@
  * @param val The new value.
  * @return Wether it succeeded in setting the variable or not.
  */
-bool	ft_env_add(t_list *envp, char *key, char *value)
+bool	ft_env_add(t_list **envp, char *key, char *value)
 {
 	t_var	*newvar;
 	t_list	*entry;
 
-	if (!key || !value || !envp)
+	if (!key || !value)
 		return (false);
-	if (ft_env_set(envp, key, value))
-		return (true);
 	newvar = malloc(sizeof(t_var));
 	newvar->hidden = false;
 	newvar->unset = true;
-	newvar->key = ft_strdup(key);
-	newvar->value = ft_strdup(value);
+	newvar->key = key;
+	newvar->value = value;
 	entry = ft_lstnew(newvar);
 	if (!newvar->key || !newvar->value)
 	{
-		free(newvar->key);
-		free(newvar->value);
 		free(newvar);
 		free(entry);
 		return (false);
 	}
-	ft_lstadd_back(&envp, entry);
+	ft_lstadd_back(envp, entry);
 	return (true);
 }
 
@@ -55,16 +51,17 @@ bool	ft_env_add(t_list *envp, char *key, char *value)
  * @param val The new value, strdups it.
  * @return Wether it succeeded in setting the variable or not.
  */
-bool	ft_env_set(t_list *envp, char *key, char *value)
+bool	ft_env_set(t_list **envp, t_var *var, char *value)
 {
-	t_var *const	variable = ft_env_get(envp, key);
+	char	*new_val;
 
-	if (!variable || !key || !value || !envp)
+	if (!var || !value)
 		return (false);
-	free(variable->value);
-	variable->value = ft_strdup(value);
-	if (!variable->value)
+	new_val = ft_strdup(value);
+	if (!new_val)
 		return (false);
+	free(var->value);
+	var->value = new_val;
 	return (true);
 }
 
@@ -89,14 +86,14 @@ t_var	*ft_env_get(t_list *envp, char *key)
 	{
 		variable = env_cpy->content;
 		keylen = ft_strlen(variable->key);
-		if (ft_strncmp(variable->key, key, keylen))
+		if (ft_strncmp(variable->key, key, keylen) == 0)
 			return (variable);
 		env_cpy = env_cpy->next;
 	}
 	return (variable);
 }
 
-bool	ft_copy_entry(char *entry, t_var *variable)
+static bool	ft_copy_entry(char *entry, t_var *variable)
 {
 	char			*temp;
 	const size_t	keylen = ft_strlen(variable->key);
