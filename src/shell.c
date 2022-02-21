@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/16 17:02:55 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:57:44 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,11 @@ static void	ft_nth_command(t_list *cmd, t_list *env)
 	}
 	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name, env);
 	if (cmdval->argv[0])
+	{
+		if (cmdval->builtin != NULL)
+			exit(cmdval->builtin(ft_arrlen(cmdval->argv), cmdval->argv, env));
 		execve(cmdval->argv[0], cmdval->argv, environ);
+	}
 	ft_putendl_fd("TRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
 	exit (EXIT_NOTFOUND);
 }
