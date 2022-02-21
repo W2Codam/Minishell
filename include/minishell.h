@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:38:18 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:45:26 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,5 +196,6 @@ bool	check(char *cmd);
 void	addenvar(char **s, char **out, char *envar);
 void	moveenvarpointer(char **s, char **out, char *envar);
 t_file	*evaluate(t_file *in, t_file *out, char c);
+void	ft_sig_handle(int32_t sig);
 
 #endif
