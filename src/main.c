@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:41:12 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:45:17 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  * 
  * @param sig The signal which was intercepted
  */
-static void	ft_sig_handle(int32_t sig)
+void	ft_sig_handle(int32_t sig)
 {
 	// Signal: CTRL-C
 	if (sig == SIGINT)
