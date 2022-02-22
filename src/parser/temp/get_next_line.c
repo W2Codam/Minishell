@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/02/22 21:05:50 by pvan-dij      #+#    #+#                 */
+/*   Updated: 2022/02/22 21:06:53 by pvan-dij      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static char	*stringcircumcise(char *files, char *out)
@@ -52,6 +64,8 @@ char	*get_next_line(int fd)
 	while (bread > 0)
 	{
 		bread = read(fd, s_var.buf, BUFFER_SIZE);
+		if (bread < 0)
+			return (NULL);
 		s_var.buf[bread] = 0;
 		if (bread == 0)
 			break ;
@@ -60,8 +74,6 @@ char	*get_next_line(int fd)
 			return (stringcircumcise(s_var.files[fd], out));
 	}
 	if (s_var.files[fd])
-	{
 		return (helper(&s_var.files[fd], out, s_var.buf));
-	}
 	return (NULL);
 }

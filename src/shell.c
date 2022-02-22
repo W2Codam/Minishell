@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/22 20:35:05 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/22 21:45:21 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,12 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 static void	ft_corrupt_the_child(int32_t shitpipe[2])
 {
 	pid_t	child;
-	int		status = -1;
+	int		status;
 
 	close(shitpipe[WRITE]);
 	while (true)
 	{
+		child = waitpid(0, &status, 0);
 		read(shitpipe[READ], NULL, 10);
 		if (child != -1)
 		{
