@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/21 17:41:50 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/22 15:44:10 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int32_t	ft_unset(int argc, char **argv, t_list *env)
 		return (EXIT_FAILURE);
 	}
 	argv++;
-	while (*argv++)
+	while (*argv)
 	{
 		while (env)
 		{
@@ -40,6 +40,7 @@ int32_t	ft_unset(int argc, char **argv, t_list *env)
 				envvar->hidden = true;
 			env = env->next;
 		}
+		argv++;
 	}
 	return (EXIT_SUCCESS);
 }

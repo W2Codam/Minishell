@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 19:19:16 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/22 17:40:01 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,14 +137,15 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 	ft_nth_command(cmd, env);
 }
 
-static void	ft_corrupt_the_child(void)
+static void	ft_corrupt_the_child(int32_t pipe[2])
 {
 	pid_t	child;
-	int		status;
+	int		status = -1;
 
+	close(pipe[WRITE]);
 	while (true)
 	{
-		child = waitpid(0, &status, 0);
+		read(pipe[READ], NULL, 10);
 		if (child != -1)
 		{
 			printf("EXIT CODE: %d\n", WEXITSTATUS(status));
@@ -166,7 +167,7 @@ static void	ft_corrupt_the_child(void)
  * @param cmds 
  * @param env 
  */
-void	ft_exec_tbl(t_list *cmds, t_list *env)
+void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t pipe[2])
 {
 	pid_t	pid;
 	t_list	*cmds_cpy;
@@ -179,6 +180,7 @@ void	ft_exec_tbl(t_list *cmds, t_list *env)
 	}
 	if (pid != 0)
 		return ;
+	close(pipe[READ]);
 	ft_nth_command(cmds_cpy, env);
 }
 
@@ -205,8 +207,10 @@ void	ft_shell(t_list *env)
 				printf("(temp) error during lexing\n");
 				continue ;
 			}
-			ft_exec_tbl(cmds, env);
-			ft_corrupt_the_child();
+			int32_t	pipe[2];
+			ft_pipe(pipe);
+			ft_exec_tbl(cmds, env, pipe);
+			ft_corrupt_the_child(pipe);
 			ft_lstclear(&cmds, &free);
 			add_history(line);
 		}
