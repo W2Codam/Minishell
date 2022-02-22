@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/22 17:40:01 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/22 20:35:05 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,15 +137,15 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 	ft_nth_command(cmd, env);
 }
 
-static void	ft_corrupt_the_child(int32_t pipe[2])
+static void	ft_corrupt_the_child(int32_t shitpipe[2])
 {
 	pid_t	child;
 	int		status = -1;
 
-	close(pipe[WRITE]);
+	close(shitpipe[WRITE]);
 	while (true)
 	{
-		read(pipe[READ], NULL, 10);
+		read(shitpipe[READ], NULL, 10);
 		if (child != -1)
 		{
 			printf("EXIT CODE: %d\n", WEXITSTATUS(status));
@@ -167,7 +167,7 @@ static void	ft_corrupt_the_child(int32_t pipe[2])
  * @param cmds 
  * @param env 
  */
-void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t pipe[2])
+void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t shitpipe[2])
 {
 	pid_t	pid;
 	t_list	*cmds_cpy;
@@ -180,7 +180,7 @@ void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t pipe[2])
 	}
 	if (pid != 0)
 		return ;
-	close(pipe[READ]);
+	close(shitpipe[READ]);
 	ft_nth_command(cmds_cpy, env);
 }
 
@@ -207,10 +207,10 @@ void	ft_shell(t_list *env)
 				printf("(temp) error during lexing\n");
 				continue ;
 			}
-			int32_t	pipe[2];
-			ft_pipe(pipe);
-			ft_exec_tbl(cmds, env, pipe);
-			ft_corrupt_the_child(pipe);
+			int32_t	shitpipe[2];
+			ft_pipe(shitpipe);
+			ft_exec_tbl(cmds, env, shitpipe);
+			ft_corrupt_the_child(shitpipe);
 			ft_lstclear(&cmds, &free);
 			add_history(line);
 		}
