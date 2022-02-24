@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:38:46 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/24 14:51:53 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@
 # include <readline/history.h>
 # define EXIT_NOTFOUND 127
 # define TITLE "\e[103m\e[30m 0 \e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
-
-/**
- * Only global variable since its VERY useful!
- */
-struct s_shell	g_shell;
 
 //////////////////////////////////////////////////////////////////
 
@@ -90,11 +85,22 @@ typedef struct s_file
  */
 typedef struct s_var
 {
-	char	*key;
-	char	*value;
-	bool	hidden;
-	bool	unset;
+	char			*key;
+	char			*value;
+	bool			hidden;
+	struct s_var	*next;
 }	t_var;
+
+typedef struct s_shell
+{
+	t_var	*environ;
+	pid_t	child;
+}	t_shell;
+
+/**
+ * Only global variable since its VERY useful!
+ */
+extern t_shell	*g_shell;
 
 /**
  * A single command in a linked list 
@@ -115,18 +121,6 @@ typedef struct s_cmd
 	t_file			out;
 	t_func			builtin;
 }	t_cmd;
-
-/**
- * Important states to save about the shell that are
- * globally available.
- * 
- * @param stdin The original stdin fd.
- * @param stdout The original stdout fd.
- */
-typedef struct s_shell
-{
-	t_list	*environ;
-}	t_shell;
 
 /**
  * For adding builtins to cmd_table if necessary
@@ -153,11 +147,10 @@ int32_t	ft_unset(int32_t argc, char **argv);
 
 //= Unix Utils =//
 
-bool	ft_env_add(t_list **envp, char *key, char *value);
-char	**ft_env_get_arr(t_list *envp);
-bool	ft_env_set(t_list **envp, t_var *var, char *value);
-t_var	*ft_env_get(t_list *envp, char *key);
-char	*ft_getexec(const char *cmd, t_list *envp);
+t_var	*ft_env_get(char *key);
+bool	ft_env_add(char *key, char *value);
+char	*ft_getexec(const char *cmd);
+
 bool	ft_pipe(int32_t fds[2]);
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_fork(pid_t *pid);

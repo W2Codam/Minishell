@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:40:31 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/24 14:45:17 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static void	ft_nth_command(t_list *cmd)
 		dup2(cmdval->out.fd, STDOUT_FILENO);
 		close(cmdval->out.fd);
 	}
-	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name, g_shell.environ);
+	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name);
 	if (cmdval->argv[0] || cmdval->builtin != NULL)
 	{
 		if (cmdval->builtin != NULL)

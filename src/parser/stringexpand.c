@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:38:04 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/24 14:53:49 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,21 @@
 //expand giver envar, "" on invalid/nonexisten var
 static char	*expandenv(char *cmd)
 {
-	t_var	*temp;
 	char	*out;
 	bool	found;
-	t_list	*envp;
+	t_var	*envp;
 
 	found = false;
-	envp = g_shell.environ;
+	envp = g_shell->environ;
 	while (envp && found == false)
 	{
-		temp = envp->content;
-		if (!ft_strncmp(cmd + 1, temp->key, ft_strlen(cmd + 1)))
+		if (!ft_strncmp(cmd + 1, envp->key, ft_strlen(cmd + 1)))
 			found = true;
 		envp = envp->next;
 	}
-	if (found == false || temp->hidden == true)
+	if (found == false || envp->hidden == true)
 		return ("");
-	return (temp->value);
+	return (envp->value);
 }
 
 /**
