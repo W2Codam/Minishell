@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 18:46:12 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 19:07:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,12 +187,12 @@ void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2])
 {
 	t_list	*cmds_cpy;
 
-	cmds_cpy = ft_lstlast(filteroutbuiltin(cmds));
 	if (!ft_fork(&g_shell->child))
 	{
 		ft_putendl_fd("shell: Fork failure!", STDERR_FILENO);
 		return ;
 	}
+	cmds_cpy = ft_lstlast(filteroutbuiltin(cmds));
 	if (g_shell->child != 0)
 		return ;
 	close(shitpipe[READ]);
