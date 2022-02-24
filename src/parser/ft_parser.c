@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 19:54:23 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/22 21:51:43 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,4 @@ t_list	*ft_parser(char **input)
 	return (out);
 }
 
-//TODO: norm, fucking norm
 //TODO: mallocs || error return

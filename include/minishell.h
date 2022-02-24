@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 19:55:02 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/22 21:51:33 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include <errno.h>
 # include <string.h>
 # include <signal.h>
-# include <limits.h> // TODO: Remove for MacOS
+# include <limits.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <readline/readline.h>
