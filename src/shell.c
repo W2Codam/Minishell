@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 15:00:03 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 18:46:12 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2]);
 /* With the standard output plumbing sorted, execute Nth command */
 static void	ft_nth_command(t_list *cmd)
 {
-	pid_t	pid;
 	int32_t	pipe[2];
 	t_cmd	*cmdval;
 
@@ -90,12 +89,12 @@ static void	ft_nth_command(t_list *cmd)
 			ft_putendl_fd("THE BLOODY PIPE!", STDERR_FILENO);
 			exit (EXIT_FAILURE);
 		}
-		if (!ft_fork(&pid))
+		if (!ft_fork(&g_shell->child))
 		{
 			ft_putendl_fd("THE FUCKING FORK!", STDERR_FILENO);
 			exit (EXIT_FAILURE);
 		}
-		if (pid == 0)
+		if (g_shell->child == 0)
 			ft_pipe_command(cmd->prev, pipe);
 		dup2(pipe[READ], STDIN_FILENO);
 		close(pipe[WRITE]);
@@ -151,6 +150,26 @@ static void	ft_corrupt_the_child(int32_t shitpipe[2])
 	}
 }
 
+t_list	*filteroutbuiltin(t_list *cmds)
+{
+	t_list	*cmdcpy;
+	t_cmd	*temp;
+
+	cmdcpy = cmds;
+	while (cmdcpy)
+	{
+		temp = cmdcpy->content;
+		if (temp->builtin && (temp->builtin == ft_unset || \
+			temp->builtin == ft_export || temp->builtin == ft_cd) \
+				&& !cmdcpy->prev && !cmdcpy->next)
+		{
+			temp->builtin(temp->argc, temp->argv);
+		}
+		cmdcpy = cmdcpy->next;
+	}
+	return (cmds);
+}
+
 /**
  * We need to forward our pipe output to the next process so it can 
  * listen/read from it as stdin then we continue down this chain. 
@@ -166,16 +185,15 @@ static void	ft_corrupt_the_child(int32_t shitpipe[2])
  */
 void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2])
 {
-	pid_t	pid;
 	t_list	*cmds_cpy;
 
-	cmds_cpy = ft_lstlast(cmds);
-	if (!ft_fork(&pid))
+	cmds_cpy = ft_lstlast(filteroutbuiltin(cmds));
+	if (!ft_fork(&g_shell->child))
 	{
 		ft_putendl_fd("shell: Fork failure!", STDERR_FILENO);
 		return ;
 	}
-	if (pid != 0)
+	if (g_shell->child != 0)
 		return ;
 	close(shitpipe[READ]);
 	ft_nth_command(cmds_cpy);
@@ -214,6 +232,8 @@ void	ft_shell(void)
 		free(line);
 	}
 }
+
+//have main process execute first command then add checks in builtins for children
 
 /*
 

@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:35:08 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/24 18:44:20 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 int32_t	ft_cd(int argc, char **argv)
 {
+	if (g_shell->child == 0)
+		return (0);
 	return (0);
 }
