@@ -6,18 +6,16 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/21 19:54:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/22 15:25:53 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 15:02:10 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "temp/get_next_line.h"
 
-static pid_t	g_pid;
-
 void	lolhandle(int sig)
 {
-	kill(g_pid, SIGKILL);
+	kill(g_shell->child, SIGKILL);
 }
 
 void	runheredoc(t_file *temp, int32_t pipe[2], char *tstr, char *delim)
@@ -44,10 +42,10 @@ t_file	*heredocshit(t_file *temp, char *delim)
 	int		status;
 	char	*tstr;
 
-	if (!ft_pipe(pipe) || !ft_fork(&g_pid))
+	if (!ft_pipe(pipe) || !ft_fork(&(g_shell->child)))
 		return (NULL);
 	temp->fd = pipe[READ];
-	if (g_pid == 0)
+	if (g_shell->child == 0)
 	{
 		runheredoc(temp, pipe, tstr, delim);
 	}	
