@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 17:59:27 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:33:55 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int32_t	main(int argc, char **argv, char **envp)
 		ft_putendl_fd("shell: failed to initilize envs!\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	ft_shell(env);
+	g_shell.environ = env;
+	ft_shell();
 	exit(EXIT_SUCCESS);
 }

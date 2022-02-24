@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:08 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:24:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:34:57 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	ft_print_args(int32_t argc, char **argv, bool newline)
 		write(STDOUT_FILENO, "\n", 1);
 }
 
-int32_t	ft_echo(int argc, char **argv, t_list *env)
+int32_t	ft_echo(int argc, char **argv)
 {
 	bool	newline;
 

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/22 21:45:21 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:40:31 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@
 
 extern char	**environ;
 
-static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env);
+static void	ft_pipe_command(t_list *cmd, int32_t pipe[2]);
 
 /* With the standard output plumbing sorted, execute Nth command */
-static void	ft_nth_command(t_list *cmd, t_list *env)
+static void	ft_nth_command(t_list *cmd)
 {
 	pid_t	pid;
 	int32_t	pipe[2];
@@ -96,7 +96,7 @@ static void	ft_nth_command(t_list *cmd, t_list *env)
 			exit (EXIT_FAILURE);
 		}
 		if (pid == 0)
-			ft_pipe_command(cmd->prev, pipe, env);
+			ft_pipe_command(cmd->prev, pipe);
 		dup2(pipe[READ], STDIN_FILENO);
 		close(pipe[WRITE]);
 		close(pipe[READ]);
@@ -111,22 +111,18 @@ static void	ft_nth_command(t_list *cmd, t_list *env)
 		dup2(cmdval->out.fd, STDOUT_FILENO);
 		close(cmdval->out.fd);
 	}
-	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name, env);
+	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name, g_shell.environ);
 	if (cmdval->argv[0] || cmdval->builtin != NULL)
 	{
 		if (cmdval->builtin != NULL)
-		{
-			//fprintf(stderr, "RUNNING BUILT IN\n");	
-			exit(cmdval->builtin(cmdval->argc, cmdval->argv, env));
-		}
-		//fprintf(stderr, "%s\n", cmdval->argv[0]);
+			exit(cmdval->builtin(cmdval->argc, cmdval->argv));
 		execve(cmdval->argv[0], cmdval->argv, environ);
 	}
 	ft_putendl_fd("TRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
 	exit (EXIT_NOTFOUND);
 }
 
-static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
+static void	ft_pipe_command(t_list *cmd, int32_t pipe[2])
 {
 	t_cmd	*cmdval;
 
@@ -134,7 +130,7 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2], t_list *env)
 	dup2(pipe[WRITE], STDOUT_FILENO);
 	close(pipe[READ]);
 	close(pipe[WRITE]);
-	ft_nth_command(cmd, env);
+	ft_nth_command(cmd);
 }
 
 static void	ft_corrupt_the_child(int32_t shitpipe[2])
@@ -168,7 +164,7 @@ static void	ft_corrupt_the_child(int32_t shitpipe[2])
  * @param cmds 
  * @param env 
  */
-void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t shitpipe[2])
+void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2])
 {
 	pid_t	pid;
 	t_list	*cmds_cpy;
@@ -182,7 +178,7 @@ void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t shitpipe[2])
 	if (pid != 0)
 		return ;
 	close(shitpipe[READ]);
-	ft_nth_command(cmds_cpy, env);
+	ft_nth_command(cmds_cpy);
 }
 
 /**
@@ -190,7 +186,7 @@ void	ft_exec_tbl(t_list *cmds, t_list *env, int32_t shitpipe[2])
  * 
  * @param env The environment variable.
  */
-void	ft_shell(t_list *env)
+void	ft_shell(void)
 {
 	t_list	*cmds;
 	char	*line;
@@ -202,7 +198,7 @@ void	ft_shell(t_list *env)
 			return (exitout(line));
 		if (*line)
 		{
-			cmds = ft_lexer(line, env);
+			cmds = ft_lexer(line);
 			if (!cmds)
 			{
 				printf("(temp) error during lexing\n");
@@ -210,7 +206,7 @@ void	ft_shell(t_list *env)
 			}
 			int32_t	shitpipe[2];
 			ft_pipe(shitpipe);
-			ft_exec_tbl(cmds, env, shitpipe);
+			ft_exec_tbl(cmds, shitpipe);
 			ft_corrupt_the_child(shitpipe);
 			ft_lstclear(&cmds, &free);
 			add_history(line);

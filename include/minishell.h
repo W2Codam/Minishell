@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 19:55:02 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:38:46 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@
 
 /**
  * Only global variable since its VERY useful!
- * 
- * @param stdin_fd The original INPUT stream
- * @param stdout_fd The original OUTPUT stream
  */
 struct s_shell	g_shell;
 
@@ -54,7 +51,7 @@ struct s_shell	g_shell;
 //= Types =//
 
 // Functor for build in commands.
-typedef int32_t	(*t_func)(int32_t, char **, t_list *envp);
+typedef int32_t	(*t_func)(int32_t argc, char ** argv);
 
 // Custom pipe enum.
 typedef enum e_pipe
@@ -128,8 +125,7 @@ typedef struct s_cmd
  */
 typedef struct s_shell
 {
-	int32_t	stdin_fd;
-	int32_t	stdout_fd;
+	t_list	*environ;
 }	t_shell;
 
 /**
@@ -148,12 +144,12 @@ typedef struct s_builtins
 
 //= Build-Ins =//
 
-int32_t	ft_cd(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_echo(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_env(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_export(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_pwd(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_unset(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_cd(int32_t argc, char **argv);
+int32_t	ft_echo(int32_t argc, char **argv);
+int32_t	ft_env(int32_t argc, char **argv);
+int32_t	ft_export(int32_t argc, char **argv);
+int32_t	ft_pwd(int32_t argc, char **argv);
+int32_t	ft_unset(int32_t argc, char **argv);
 
 //= Unix Utils =//
 
@@ -169,16 +165,16 @@ int32_t	ft_openfile(char *path, bool isoutput, bool append);
 
 //= Shell =//
 
-void	ft_shell(t_list *env);
+void	ft_shell(void);
 void	ft_error(int32_t errovr, const char *s, char *msg);
-t_list	*ft_lexer(char *input, t_list *envp);
+t_list	*ft_lexer(char *input);
 t_list	*ft_parser(char **input);
 
 //= Utils =//
 
 void	exitout(char *s);
 int		selectstate(char c, int state);
-char	**ft_stringexpand(char *in, t_list *envp);
+char	**ft_stringexpand(char *in);
 char	**splitting(char *in, int i, int state);
 
 //= Builtin =//

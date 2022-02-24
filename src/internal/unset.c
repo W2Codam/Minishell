@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/22 15:44:10 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:34:45 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,7 @@
  * @param env 
  * @return int32_t 
  */
-int32_t	ft_unset(int argc, char **argv, t_list *env)
+int32_t	ft_unset(int argc, char **argv)
 {
-	t_var	*envvar;
-
-	if (argc == 1)
-	{
-		ft_putendl_fd("unset: not enough arguments", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-	argv++;
-	while (*argv)
-	{
-		while (env)
-		{
-			envvar = env->content;
-			if (!ft_strncmp(*argv, envvar->key, PATH_MAX) && !envvar->hidden)
-				envvar->hidden = true;
-			env = env->next;
-		}
-		argv++;
-	}
-	return (EXIT_SUCCESS);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/21 18:11:50 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:36:33 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ static bool	ft_tokencheck(char *cmd)
  * @return NULL on fail or valid command structure, should be passed to the
  * parser for verification.
  */
-t_list	*ft_lexer(char *input, t_list *envp)
+t_list	*ft_lexer(char *input)
 {
 	char	**cmds;
 	int		i;
 
-	cmds = ft_stringexpand(input, envp);
+	cmds = ft_stringexpand(input);
 	if (!cmds)
 		return (NULL);
 	i = 0;

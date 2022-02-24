@@ -6,20 +6,22 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 21:00:40 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:38:04 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //expand giver envar, "" on invalid/nonexisten var
-static char	*expandenv(char *cmd, t_list *envp)
+static char	*expandenv(char *cmd)
 {
 	t_var	*temp;
 	char	*out;
 	bool	found;
+	t_list	*envp;
 
 	found = false;
+	envp = g_shell.environ;
 	while (envp && found == false)
 	{
 		temp = envp->content;
@@ -39,7 +41,7 @@ static char	*expandenv(char *cmd, t_list *envp)
  * @param envp Environment pointer
  * @return char** Array of all the expanded envars, NULL terminated
  */
-static char	**findenvars(char *arg, t_list *envp)
+static char	**findenvars(char *arg)
 {
 	char		**out;
 	const int	dollars = countchar(arg, '$');
@@ -55,7 +57,7 @@ static char	**findenvars(char *arg, t_list *envp)
 		if (*arg == '$')
 		{
 			next = findnext(arg + 1);
-			out[i++] = expandenv(ft_substr(arg, 0, next - 1), envp);
+			out[i++] = expandenv(ft_substr(arg, 0, next - 1));
 		}
 		arg++;
 	}
@@ -103,7 +105,7 @@ static void	expandshit(char **cmd, char *s, char *out, char **envar)
  * @param envp env pointer
  * @return the expanded string
  */
-char	**ft_stringexpand(char *in, t_list *envp)
+char	**ft_stringexpand(char *in)
 {
 	char	**out;
 	char	**temp;
@@ -117,7 +119,7 @@ char	**ft_stringexpand(char *in, t_list *envp)
 		if (ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
 			|| ft_strchr(out[i], '$'))
 		{
-			temp = findenvars(out[i], envp);
+			temp = findenvars(out[i]);
 			new = (char *)malloc(ft_strlen(out[i]) + arr_strlen(temp) + 1);
 			if (!new)
 				return (NULL); // clean up possible previous mallocs
