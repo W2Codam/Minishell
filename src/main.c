@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 15:00:19 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 15:09:06 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,10 @@ static bool	ft_set_env_vars(char *shellpath)
 	t_var *const	shlvl = ft_env_get("SHLVL");
 	t_var *const	shell = ft_env_get("SHELL");
 
+	free(shell->value);
+	shell->value = ft_strdup(shellpath);
+	if (!shell->value)
+		return (false);
 	return (true);
 }
 
@@ -100,7 +104,7 @@ int32_t	main(int argc, char **argv, char **envp)
 	rl_catch_signals = false;
 	signal(SIGINT, ft_sig_handle);
 	signal(SIGQUIT, ft_sig_handle);
-	g_shell = malloc(sizeof(t_shell));
+	g_shell = calloc(1, sizeof(t_shell));
 	if (!ft_create_env(envp) || !ft_set_env_vars(argv[0]))
 	{
 		ft_putendl_fd("shell: failed to initilize envs!\n", STDERR_FILENO);
