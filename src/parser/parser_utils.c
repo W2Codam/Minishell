@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 20:35:18 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/21 19:28:39 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 20:59:45 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ bool	check(char *cmd)
 	}
 	else if (len == 2)
 	{
-		if (ft_strncmp(cmd, "<<", 2) || ft_strncmp(cmd, ">>", 2))
+		if (!ft_strncmp(cmd, "<<", 2) || !ft_strncmp(cmd, ">>", 2))
 			return (false);
 	}
 	return (true);
