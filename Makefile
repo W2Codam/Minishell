@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/02/16 20:23:07 by pvan-dij      ########   odam.nl          #
+#    Updated: 2022/02/24 20:27:36 by lde-la-h      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 # //= Variables =// #
 
 NAME 	= minishell
-CFLAGS	= -g #-Wall -Wextra -Werror -Wunreachable-code 
+CFLAGS	= #-Wall -Wextra -Werror -Wunreachable-code 
 
 # //= Colors =// #
 BOLD	= \033[1m
