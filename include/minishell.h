@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/22 21:51:33 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 14:59:26 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,12 @@
 # define EXIT_NOTFOUND 127
 # define TITLE "\e[103m\e[30m 0 \e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
 
-/**
- * Only global variable since its VERY useful!
- * 
- * @param stdin_fd The original INPUT stream
- * @param stdout_fd The original OUTPUT stream
- */
-struct s_shell	g_shell;
-
 //////////////////////////////////////////////////////////////////
 
 //= Types =//
 
 // Functor for build in commands.
-typedef int32_t	(*t_func)(int32_t, char **, t_list *envp);
+typedef int32_t	(*t_func)(int32_t argc, char ** argv);
 
 // Custom pipe enum.
 typedef enum e_pipe
@@ -93,11 +85,22 @@ typedef struct s_file
  */
 typedef struct s_var
 {
-	char	*key;
-	char	*value;
-	bool	hidden;
-	bool	unset;
+	char			*key;
+	char			*value;
+	bool			hidden;
+	struct s_var	*next;
 }	t_var;
+
+typedef struct s_shell
+{
+	t_var	*environ;
+	pid_t	child;
+}	t_shell;
+
+/**
+ * Only global variable since its VERY useful!
+ */
+extern t_shell	*g_shell;
 
 /**
  * A single command in a linked list 
@@ -120,19 +123,6 @@ typedef struct s_cmd
 }	t_cmd;
 
 /**
- * Important states to save about the shell that are
- * globally available.
- * 
- * @param stdin The original stdin fd.
- * @param stdout The original stdout fd.
- */
-typedef struct s_shell
-{
-	int32_t	stdin_fd;
-	int32_t	stdout_fd;
-}	t_shell;
-
-/**
  * For adding builtins to cmd_table if necessary
  * 
  * @param str name of the command
@@ -148,20 +138,19 @@ typedef struct s_builtins
 
 //= Build-Ins =//
 
-int32_t	ft_cd(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_echo(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_env(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_export(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_pwd(int32_t argc, char **argv, t_list *envp);
-int32_t	ft_unset(int32_t argc, char **argv, t_list *envp);
+int32_t	ft_cd(int32_t argc, char **argv);
+int32_t	ft_echo(int32_t argc, char **argv);
+int32_t	ft_env(int32_t argc, char **argv);
+int32_t	ft_export(int32_t argc, char **argv);
+int32_t	ft_pwd(int32_t argc, char **argv);
+int32_t	ft_unset(int32_t argc, char **argv);
 
 //= Unix Utils =//
 
-bool	ft_env_add(t_list **envp, char *key, char *value);
-char	**ft_env_get_arr(t_list *envp);
-bool	ft_env_set(t_list **envp, t_var *var, char *value);
-t_var	*ft_env_get(t_list *envp, char *key);
-char	*ft_getexec(const char *cmd, t_list *envp);
+t_var	*ft_env_get(char *key);
+bool	ft_env_add(char *key, char *value);
+char	*ft_getexec(const char *cmd);
+
 bool	ft_pipe(int32_t fds[2]);
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_fork(pid_t *pid);
@@ -169,16 +158,16 @@ int32_t	ft_openfile(char *path, bool isoutput, bool append);
 
 //= Shell =//
 
-void	ft_shell(t_list *env);
+void	ft_shell(void);
 void	ft_error(int32_t errovr, const char *s, char *msg);
-t_list	*ft_lexer(char *input, t_list *envp);
+t_list	*ft_lexer(char *input);
 t_list	*ft_parser(char **input);
 
 //= Utils =//
 
 void	exitout(char *s);
 int		selectstate(char c, int state);
-char	**ft_stringexpand(char *in, t_list *envp);
+char	**ft_stringexpand(char *in);
 char	**splitting(char *in, int i, int state);
 
 //= Builtin =//

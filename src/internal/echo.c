@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:08 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:24:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:45:09 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ static void	ft_print_args(int32_t argc, char **argv, bool newline)
 		i++;
 	while (argc >= 2 && i <= argc - 1)
 	{
-		write(STDOUT_FILENO, argv[i], ft_strlen(argv[i]));
-		i++;
+		ft_putstr(argv[i++]);
+		ft_putchar(' ');
 	}
 	if (newline)
-		write(STDOUT_FILENO, "\n", 1);
+		ft_putchar('\n');
 }
 
-int32_t	ft_echo(int argc, char **argv, t_list *env)
+int32_t	ft_echo(int argc, char **argv)
 {
 	bool	newline;
 
 	newline = true;
 	if (argc == 1)
 	{
-		write(STDOUT_FILENO, "\n", 1);
+		ft_putchar('\n');
 		return (EXIT_SUCCESS);
 	}
 	if (argc >= 2)
@@ -43,7 +43,7 @@ int32_t	ft_echo(int argc, char **argv, t_list *env)
 		if (ft_strncmp(argv[1], "-n", 2) == 0)
 			newline = false;
 		if (argc < 3)
-			write(STDOUT_FILENO, "", 1);
+			ft_putchar('\0');
 	}
 	ft_print_args(argc, argv, newline);
 	return (EXIT_SUCCESS);
