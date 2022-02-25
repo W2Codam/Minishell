@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 19:44:33 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/24 20:49:51 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,11 @@ static void	ft_nth_command(t_list *cmd)
 	}
 	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name);
 	if (cmdval->argv[0] || cmdval->builtin != NULL)
-	{
+	{	
 		if (cmdval->builtin != NULL)
+		{
 			exit(cmdval->builtin(cmdval->argc, cmdval->argv));
+		}
 		execve(cmdval->argv[0], cmdval->argv, environ);
 	}
 	ft_putendl_fd("TRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
@@ -138,16 +140,10 @@ static void	ft_corrupt_the_child(int32_t shitpipe[2])
 	int		status;
 
 	close(shitpipe[WRITE]);
-	while (true)
-	{
-		child = waitpid(0, &status, 0);
-		read(shitpipe[READ], NULL, 10);
-		if (child != -1)
-		{
-			printf("EXIT CODE: %d\n", WEXITSTATUS(status));
-			break ;
-		}
-	}
+	child = waitpid(0, &status, 0);
+	read(shitpipe[READ], NULL, 10);
+	if (child != -1)
+		printf("EXIT CODE: %d\n", WEXITSTATUS(status));
 }
 
 t_list	*filteroutbuiltin(t_list *cmds)
@@ -164,6 +160,7 @@ t_list	*filteroutbuiltin(t_list *cmds)
 				&& !cmdcpy->prev && !cmdcpy->next)
 		{
 			temp->builtin(temp->argc, temp->argv);
+			return (NULL);
 		}
 		cmdcpy = cmdcpy->next;
 	}
@@ -187,13 +184,14 @@ void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2])
 {
 	t_list	*cmds_cpy;
 
+	cmds_cpy = ft_lstlast(filteroutbuiltin(cmds));
+	if (!cmds_cpy)
+		return ((void)close(shitpipe[READ]));
 	if (!ft_fork(&g_shell->child))
 	{
 		ft_putendl_fd("shell: Fork failure!", STDERR_FILENO);
 		return ;
 	}
-	if (g_shell->child == 0)
-		cmds_cpy = ft_lstlast(filteroutbuiltin(cmds));
 	if (g_shell->child != 0)
 		return ;
 	close(shitpipe[READ]);

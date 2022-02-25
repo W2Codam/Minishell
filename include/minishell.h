@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 15:38:03 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:48:37 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 # include <readline/history.h>
 # define EXIT_NOTFOUND 127
 # define TITLE "\e[103m\e[30m 0 \e[104m MongolShell \e[49m\e[94m\e[92m❱ \e[0m"
-
+// \001\x1b[1m\002\x1b[40;31m\002hell\001\x1b[0m\002hells\001> \001\x1b[0m\002
 //////////////////////////////////////////////////////////////////
 
 //= Types =//
