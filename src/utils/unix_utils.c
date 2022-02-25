@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:08:27 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 14:45:33 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:55:17 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_getexec(const char *cmd)
 	size_t		len;
 	char		**paths;
 	char		path[PATH_MAX];
-	const t_var *enval = ft_env_get("PATH");
+	const t_var	*enval = ft_env_get("PATH");
 
 	i = -1;
 	if (!enval) // Some fucker in the eval decided to unset this shit, go fuck yourself.

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 20:49:51 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/25 16:22:52 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ t_list	*filteroutbuiltin(t_list *cmds)
 			temp->builtin == ft_export || temp->builtin == ft_cd) \
 				&& !cmdcpy->prev && !cmdcpy->next)
 		{
+			g_shell->child = 1;
 			temp->builtin(temp->argc, temp->argv);
 			return (NULL);
 		}

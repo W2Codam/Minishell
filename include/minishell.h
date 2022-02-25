@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 15:48:37 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 17:28:22 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int32_t	ft_unset(int32_t argc, char **argv);
 
 t_var	*ft_env_get(char *key);
 bool	ft_env_add(char *key, char *value);
+void	ft_starthidden(const char **starthidden);
 char	*ft_getexec(const char *cmd);
 
 bool	ft_pipe(int32_t fds[2]);
@@ -174,6 +175,7 @@ char	**splitting(char *in, int i, int state);
 //= Builtin =//
 
 void	ft_builtincheck(t_cmd **cmd);
+bool	ft_isvalidkey(char *str);
 
 //= lolnorm =//
 

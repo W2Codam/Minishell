@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 14:52:48 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/25 16:49:37 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,21 @@ t_var	*ft_env_get(char *key)
 		cpy = cpy->next;
 	}
 	return (NULL);
+}
+
+/**
+ * Set environment variables that need to start out as hidden, to hidden = tru
+ * 
+ * @param starthidden char * array of the keys that need to be hidden
+ */
+void	ft_starthidden(const char **starthidden)
+{
+	t_var	*temp;
+
+	while (*starthidden)
+	{
+		temp = ft_env_get((char *)*starthidden);
+		temp->hidden = true;
+		starthidden++;
+	}
 }

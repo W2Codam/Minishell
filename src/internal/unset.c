@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/24 20:48:33 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/02/25 17:28:51 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,27 @@ int32_t	ft_unset(int argc, char **argv)
 	}
 	if (g_shell->child == 0)
 		return (EXIT_SUCCESS);
-	env = ft_env_get(argv[1]);
-	if (env)
+	argv++;
+	while (*argv)
+	{	
+		if (ft_isdigit(*argv[0]) || !ft_isvalidkey(*argv))
+		{
+			ft_putstr_fd("unset: ", STDERR_FILENO);
+			ft_putstr_fd(*argv, STDERR_FILENO);
+			ft_putendl_fd(": invalid parameter name", STDERR_FILENO);
+			argv++;
+			continue ;
+		}
+		env = ft_env_get(*argv);
+		if (!env)
+		{
+			argv++;
+			continue ;
+		}
 		env->hidden = true;
+		argv++;
+	}
 	return (EXIT_SUCCESS);
 }
+
+//TODO: norm
