@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/24 14:59:26 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:38:03 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ t_list	*ft_parser(char **input);
 void	exitout(char *s);
 int		selectstate(char c, int state);
 char	**ft_stringexpand(char *in);
+char	**findenvars(char *arg);
 char	**splitting(char *in, int i, int state);
 
 //= Builtin =//

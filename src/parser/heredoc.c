@@ -6,16 +6,43 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/21 19:54:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/24 15:02:10 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:46:06 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "temp/get_next_line.h"
 
-void	lolhandle(int sig)
+static void	lolhandle(int sig)
 {
 	kill(g_shell->child, SIGKILL);
+}
+
+static char	*handleenvar(char *str)
+{
+	char		**envars;
+	char		*save;
+	char		*save2;
+	char		*out;
+
+	envars = findenvars(str);
+	if (!envars)
+		return (str);
+	save2 = str;
+	out = malloc(ft_strlen(str) + arr_strlen(envars) + 1);
+	save = out;
+	while (*str)
+	{
+		if (*str == '$')
+			addenvar(&str, &out, *envars++);
+		else
+			*out++ = *str++;
+	}
+	*out = '\n';
+	++out;
+	*out = 0;
+	free(save2);
+	return (save);
 }
 
 void	runheredoc(t_file *temp, int32_t pipe[2], char *tstr, char *delim)
@@ -30,6 +57,7 @@ void	runheredoc(t_file *temp, int32_t pipe[2], char *tstr, char *delim)
 			;
 		else if (ft_strncmp(tstr, delim, ft_strlen(tstr) - 1) == 0)
 			break ;
+		tstr = handleenvar(tstr);
 		ft_putstr_fd(tstr, pipe[WRITE]);
 		free(tstr);
 	}

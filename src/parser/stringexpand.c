@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/24 19:45:19 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:42:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*expandenv(char *cmd)
  * @param envp Environment pointer
  * @return char** Array of all the expanded envars, NULL terminated
  */
-static char	**findenvars(char *arg)
+char	**findenvars(char *arg)
 {
 	char		**out;
 	const int	dollars = countchar(arg, '$');
