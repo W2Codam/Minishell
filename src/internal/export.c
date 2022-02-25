@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/25 17:38:18 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 17:54:18 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,3 +71,5 @@ int32_t	ft_export(int argc, char **argv)
 	}
 	return (0);
 }
+
+//TODO: norm

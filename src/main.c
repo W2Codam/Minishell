@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 16:49:09 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/02/25 17:53:47 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,4 +116,4 @@ int32_t	main(int argc, char **argv, char **envp)
 	exit(EXIT_SUCCESS);
 }
 
-//TODO: builtins, norm, cleanup
+//TODO: norm, cleanup, SHLVL
