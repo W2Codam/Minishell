@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 16:37:22 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 15:39:58 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static bool	ft_tokencheck(char *cmd)
 t_list	*ft_lexer(char *input)
 {
 	char	**cmds;
+	t_list	*temp;
 	int		i;
 
 	cmds = ft_stringexpand(input);
@@ -66,7 +67,9 @@ t_list	*ft_lexer(char *input)
 		}
 		i++;
 	}
-	return (ft_parser(cmds));
+	temp = ft_parser(cmds);
+	ft_cleanup(cmds);
+	return (temp);
 }
 
 // echo HEY | tr 'A-Z' 'a-z' <= Perfectly valid!

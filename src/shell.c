@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 16:22:52 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 15:50:51 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,13 +137,19 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2])
 static void	ft_corrupt_the_child(int32_t shitpipe[2])
 {
 	pid_t	child;
+	t_var	*temp;
 	int		status;
 
 	close(shitpipe[WRITE]);
 	child = waitpid(0, &status, 0);
 	read(shitpipe[READ], NULL, 10);
 	if (child != -1)
-		printf("EXIT CODE: %d\n", WEXITSTATUS(status));
+	{
+		temp = ft_env_get("?");
+		free(temp->value);
+		temp->value = ft_itoa(WEXITSTATUS(status));
+		printf("EXIT CODE: %s\n", temp->value);
+	}
 }
 
 t_list	*filteroutbuiltin(t_list *cmds)
@@ -201,8 +207,6 @@ void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2])
 
 /**
  * The behaviour loop for the shell itself.
- * 
- * @param env The environment variable.
  */
 void	ft_shell(void)
 {
@@ -226,7 +230,7 @@ void	ft_shell(void)
 			ft_pipe(shitpipe);
 			ft_exec_tbl(cmds, shitpipe);
 			ft_corrupt_the_child(shitpipe);
-			ft_lstclear(&cmds, &free);
+			ft_cleantbl(&cmds);
 			add_history(line);
 		}
 		free(line);

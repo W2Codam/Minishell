@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 17:53:47 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 15:51:48 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_sig_handle(int32_t sig)
  */
 static bool	ft_create_env(char **envp)
 {
-	const char	*starthidden[] = {"OLDPWD", NULL};
+	const char	*starthidden[] = {"OLDPWD", "?", NULL};
 	char		*key;
 	char		*val;
 	size_t		equ;
@@ -62,6 +62,7 @@ static bool	ft_create_env(char **envp)
 			return (false);
 		envp++;
 	}
+	ft_env_add("?", ft_strdup("0"));
 	ft_starthidden(starthidden);
 	return (true);
 }

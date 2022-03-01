@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/22 21:51:43 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 15:21:02 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	handleredirect(t_file *temp, char *filename, bool write, char *input)
 	}
 	else if (check(filename))
 	{
-		temp->path = filename;
+		temp->path = ft_strdup(filename);
 		if (temp->fd > 2)
 			close(temp->fd);
 		temp->fd = -1;
@@ -49,16 +49,16 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 				return (-1);
 			i += 2;
 			if (input[i] != NULL && input[i][0] != '<' && \
-				input[i][0] != '>' && input[i][0] != '|')
-				(*temp)->cmd_name = input[i++];
+				input[i][0] != '>' && input[i][0] != '|' && !(*temp)->cmd_name)
+				(*temp)->cmd_name = ft_strdup(input[i++]);
 			continue ;
 		}
 		if (input[i][0] == '|')
 			return (testpipe(input[i + 1], i));
 		if (i == 0 || input[i - 1][0] == '|')
-			(*temp)->cmd_name = input[i];
+			(*temp)->cmd_name = ft_strdup(input[i]);
 		else
-			(*temp)->argv[(*j)++] = input[i];
+			(*temp)->argv[(*j)++] = ft_strdup(input[i]);
 		i++;
 	}
 	return (i);
