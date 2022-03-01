@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 20:38:14 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:47:24 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ static bool	ft_create_env(char **envp)
 			return (false);
 		envp++;
 	}
-	ft_env_add("?", ft_strdup("0"));
+	if (!ft_env_get("?"))
+		ft_env_add("?", ft_strdup("0"));
 	ft_starthidden(starthidden);
 	return (true);
 }
