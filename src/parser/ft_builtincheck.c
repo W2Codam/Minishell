@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:21:07 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/24 16:28:28 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:48:40 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_builtincheck(t_cmd **cmd)
 	};
 
 	i = 0;
-	while (i < sizeof(btins) / sizeof(t_btin))
+	while (i < (int)(sizeof(btins) / sizeof(t_btin)))
 	{
 		if (!ft_strncmp((*cmd)->cmd_name, btins[i].str, \
 				ft_strlen(btins[i].str)))

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 15:51:48 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:48:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ static bool	ft_set_env_vars(char *shellpath)
 
 	free(shell->value);
 	shell->value = ft_strdup(shellpath);
+	shlvl_val = ft_atoi(shlvl->value);
+	free(shlvl->value);
+	shlvl->value = ft_itoa(shlvl_val + 1);
 	if (!shell->value)
 		return (false);
 	return (true);
@@ -101,6 +104,7 @@ int32_t	main(int argc, char **argv, char **envp)
 {
 	struct termios	raw;
 
+	(void)argc;
 	tcgetattr(STDIN_FILENO, &raw);
 	raw.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);

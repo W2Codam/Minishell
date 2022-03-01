@@ -6,15 +6,20 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/25 17:54:18 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:03:26 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// {KEY}={VALUE}
+static void	printfunc(char *str)
+{
+	ft_putstr_fd("export: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
+}
 
-void	ft_exportprintevn(void)
+static void	ft_exportprintevn(void)
 {
 	t_var	*cpy;
 
@@ -35,16 +40,38 @@ void	ft_exportprintevn(void)
 	}
 }
 
-int32_t	ft_export(int argc, char **argv)
+static void	addenv(char **temp_arr)
 {
 	t_var	*cpy;
+
+	cpy = ft_env_get(temp_arr[0]);
+	if (!cpy)
+	{
+		if (!ft_env_add(temp_arr[0], temp_arr[1]))
+			free(temp_arr[0]);
+	}
+	else
+	{	
+		if (!temp_arr[1])
+		{
+			free(temp_arr[0]);
+			return (free(temp_arr));
+		}
+		free(cpy->value);
+		cpy->value = ft_strdup(temp_arr[1]);
+	}
+	free(temp_arr);
+}
+
+int32_t	ft_export(int argc, char **argv)
+{
 	char	**temp_arr;
 
-	if (g_shell->child == 0)
-		return (0);
-	if (argc == 1)
-		return (ft_exportprintevn(), 0);
 	argv++;
+	if (g_shell->child == 0)
+		return (EXIT_SUCCESS);
+	if (argc == 1)
+		return (ft_exportprintevn(), EXIT_SUCCESS);
 	while (*argv)
 	{
 		temp_arr = ft_split(*argv, '=');
@@ -52,24 +79,11 @@ int32_t	ft_export(int argc, char **argv)
 			return (EXIT_FAILURE);
 		if (ft_isdigit(temp_arr[0][0]) || !ft_isvalidkey(temp_arr[0]))
 		{
-			ft_putstr_fd("export: ", STDERR_FILENO);
-			ft_putstr_fd(*argv, STDERR_FILENO);
-			ft_putendl_fd(": not a valid identifier", STDERR_FILENO);
-			argv++;
+			printfunc(*argv++);
 			continue ;
 		}
-		cpy = ft_env_get(temp_arr[0]);
-		if (!cpy)
-			ft_env_add(temp_arr[0], temp_arr[1]);
-		else
-		{
-			free(cpy->value);
-			cpy->value = ft_strdup(temp_arr[1]);
-		}
-		free(temp_arr);
+		addenv(temp_arr);
 		argv++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
-
-//TODO: norm

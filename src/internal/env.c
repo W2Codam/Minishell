@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:25:20 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/24 19:21:45 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:44:33 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int32_t	ft_env(int argc, char **argv)
 {
 	const t_var	*envcpy = g_shell->environ;
 
+	(void)argc;
+	(void)argv;
 	while (envcpy)
 	{
 		if (!envcpy->hidden)

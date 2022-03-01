@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 14:13:33 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:15:23 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_var	*ft_env_get(char *key)
 	cpy = g_shell->environ;
 	while (cpy)
 	{
-		if (ft_strncmp(cpy->key, key, ft_strlen(cpy->key)) == 0)
+		if (ft_strncmp(cpy->key, key, ft_strlen(key)) == 0)
 			return (cpy);
 		cpy = cpy->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/21 19:54:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/25 15:46:06 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:49:57 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "temp/get_next_line.h"
 
 static void	lolhandle(int sig)
-{
+{	
+	(void)sig;
 	kill(g_shell->child, SIGKILL);
 }
 
@@ -45,7 +46,7 @@ static char	*handleenvar(char *str)
 	return (save);
 }
 
-void	runheredoc(t_file *temp, int32_t pipe[2], char *tstr, char *delim)
+void	runheredoc(int32_t pipe[2], char *tstr, char *delim)
 {
 	while (true)
 	{
@@ -73,9 +74,10 @@ t_file	*heredocshit(t_file *temp, char *delim)
 	if (!ft_pipe(pipe) || !ft_fork(&(g_shell->child)))
 		return (NULL);
 	temp->fd = pipe[READ];
+	tstr = NULL;
 	if (g_shell->child == 0)
 	{
-		runheredoc(temp, pipe, tstr, delim);
+		runheredoc(pipe, tstr, delim);
 	}	
 	signal(SIGINT, lolhandle);
 	waitpid(0, &status, 0);

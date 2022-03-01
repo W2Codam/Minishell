@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 15:38:33 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:34:44 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	*expandenv(char *cmd)
 
 	temp = ft_env_get(cmd);
 	if (!temp || (temp->hidden && temp->key[0] != '?'))
-		return ("");
+		return (ft_strdup(""));
 	free(cmd);
 	return (temp->value);
 }
@@ -85,7 +85,6 @@ static void	expandshit(char **cmd, char *s, char *out, char **envar)
 			*out++ = *s++;
 	}
 	*out = 0;
-	free(*cmd);
 	*cmd = save;
 }
 
