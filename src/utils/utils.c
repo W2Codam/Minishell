@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/01 18:01:40 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 23:01:56 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	exitout(char *s)
 {
 	if (s == NULL)
-		ft_putendl("\x1b[A\x1b[18Cexit");
+		ft_putendl("\x1b[A\x1b[19Cexit");
 	else
 	{
 		ft_putendl("exit");
