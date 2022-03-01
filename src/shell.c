@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 20:23:57 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:30:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ static void	ft_corrupt_the_child(int32_t shitpipe[2])
 	if (child != -1)
 	{
 		temp = ft_env_get("?");
+		if (!temp)
+			write(1, "lol\n", 4);
 		free(temp->value);
 		temp->value = ft_itoa(WEXITSTATUS(status));
 		printf("EXIT CODE: %s\n", temp->value);
@@ -229,7 +231,8 @@ void	ft_shell(void)
 		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
 			return (exitout(line));
 		if (*line)
-		{
+		{	
+			add_history(line);
 			cmds = ft_lexer(line);
 			if (!cmds)
 			{
@@ -241,7 +244,6 @@ void	ft_shell(void)
 			ft_corrupt_the_child(shitpipe);
 			ft_cleantbl(&cmds);
 		}
-		add_history(line);
 		free(line);
 	}
 }
