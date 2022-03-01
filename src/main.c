@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:48:19 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 18:10:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int32_t	main(int argc, char **argv, char **envp)
 	rl_catch_signals = false;
 	signal(SIGINT, ft_sig_handle);
 	signal(SIGQUIT, ft_sig_handle);
-	g_shell = calloc(1, sizeof(t_shell));
+	g_shell = ft_calloc(1, sizeof(t_shell));
 	if (!ft_create_env(envp) || !ft_set_env_vars(argv[0]))
 	{
 		ft_putendl_fd("shell: failed to initilize envs!\n", STDERR_FILENO);
