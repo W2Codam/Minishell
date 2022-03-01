@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 15:51:22 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 18:22:37 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int32_t	ft_unset(int32_t argc, char **argv);
 
 t_var	*ft_env_get(char *key);
 bool	ft_env_add(char *key, char *value);
+char	**ft_lst_to_arr(t_var *lst);
 void	ft_starthidden(const char **starthidden);
 char	*ft_getexec(const char *cmd);
 
