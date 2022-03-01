@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 18:02:30 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:23:57 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,35 @@
 
 extern char	**environ;
 
+// Lol weak shit
+static void	ft_exec(t_cmd *cmdval)
+{
+	if (cmdval->in.fd != STDIN_FILENO)
+	{
+		dup2(cmdval->in.fd, STDIN_FILENO);
+		close(cmdval->in.fd);
+	}
+	if (cmdval->out.fd != STDOUT_FILENO)
+	{
+		dup2(cmdval->out.fd, STDOUT_FILENO);
+		close(cmdval->out.fd);
+	}
+	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name);
+	if (cmdval->builtin != NULL)
+		exit(cmdval->builtin(cmdval->argc, cmdval->argv));
+	if ((cmdval->cmd_name[0] == '.' && cmdval->cmd_name[1] == '/') || \
+		(cmdval->cmd_name[0] == '.' && cmdval->cmd_name[1] == '.' && \
+		cmdval->cmd_name[2] == '/') || cmdval->cmd_name[0] == '/')
+		cmdval->argv[0] = cmdval->cmd_name;
+	else
+		cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name);
+	fprintf(stderr, "%s\n", cmdval->argv[0]);
+	execve(cmdval->argv[0], cmdval->argv, ft_lst_to_arr(g_shell->environ));
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	ft_putendl_fd("\nTRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
+	exit (EXIT_NOTFOUND);
+}
+
 static void	ft_pipe_command(t_list *cmd, int32_t pipe[2]);
 
 /* With the standard output plumbing sorted, execute Nth command */
@@ -100,27 +129,7 @@ static void	ft_nth_command(t_list *cmd)
 		close(pipe[WRITE]);
 		close(pipe[READ]);
 	}
-	if (cmdval->in.fd != STDIN_FILENO)
-	{
-		dup2(cmdval->in.fd, STDIN_FILENO);
-		close(cmdval->in.fd);
-	}
-	if (cmdval->out.fd != STDOUT_FILENO)
-	{
-		dup2(cmdval->out.fd, STDOUT_FILENO);
-		close(cmdval->out.fd);
-	}
-	cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name);
-	if (cmdval->argv[0] || cmdval->builtin != NULL)
-	{	
-		if (cmdval->builtin != NULL)
-		{
-			exit(cmdval->builtin(cmdval->argc, cmdval->argv));
-		}
-		execve(cmdval->argv[0], cmdval->argv, environ);
-	}
-	ft_putendl_fd("TRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
-	exit (EXIT_NOTFOUND);
+	ft_exec(cmdval);
 }
 
 static void	ft_pipe_command(t_list *cmd, int32_t pipe[2])
@@ -360,3 +369,4 @@ void	ft_shell(void)
 	ft_lstclear(&tbl, &ft_delete_tbl);
 
 */
+

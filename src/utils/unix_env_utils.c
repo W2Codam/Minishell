@@ -6,20 +6,26 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:15:23 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:25:31 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_var	*ft_lastvar(t_var *varr)
+static t_var	*ft_lastvar(t_var *varr, size_t *size)
 {
+	size_t	i;
+
+	i = 0;
 	while (varr)
 	{
 		if (!varr->next)
 			break ;
 		varr = varr->next;
+		i++;
 	}
+	if (size)
+		*size = i;
 	return (varr);
 }
 
@@ -49,7 +55,7 @@ bool	ft_env_add(char *key, char *value)
 		g_shell->environ = newval;
 	else
 	{
-		last = ft_lastvar(g_shell->environ);
+		last = ft_lastvar(g_shell->environ, NULL);
 		last->next = newval;
 	}
 	return (true);
@@ -94,4 +100,33 @@ void	ft_starthidden(const char **starthidden)
 		temp->hidden = true;
 		starthidden++;
 	}
+}
+
+char	**ft_lst_to_arr(t_var *lst)
+{
+	int32_t		i;
+	size_t		size;
+	size_t		envsize;
+	char		**arr;
+	t_var		*lstcpy = lst;
+
+	i = -1;
+	ft_lastvar(lst, &envsize);
+	arr = (char **)ft_calloc(envsize + 1, sizeof(char *));
+	while (arr && lstcpy)
+	{
+		size = ft_strlen(lstcpy->key) + 2 + ft_strlen(lstcpy->value);
+		arr[++i] = ft_calloc(size + 1, sizeof(char));
+		if (!arr[i])
+		{
+			ft_cleanup(arr);
+			return (NULL);
+		}
+		ft_strlcat(arr[i], lstcpy->key, size);
+		ft_strlcat(arr[i], "=", size);
+		ft_strlcat(arr[i], lstcpy->value, size);
+		lstcpy = lstcpy->next;
+	}
+	arr[++i] = NULL;
+	return (arr);
 }
