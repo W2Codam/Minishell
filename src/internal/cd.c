@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/01 17:38:04 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:36:19 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	ft_chdir(char *path)
 	if (temp->hidden)
 		temp->hidden = false;
 	free(temp->value);
-	temp->value = ft_strdup(tmp_path);
+	temp->value = tmp_path;
 	return (EXIT_SUCCESS);
 }
 
