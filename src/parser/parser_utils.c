@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 20:35:18 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/24 20:59:45 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 18:00:32 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	testpipe(char *c, int i)
 {
 	if (i == 0 || !c || c[0] == '|')
-		return (-1);
+		return (ft_putstr_fd("Piping error\n", STDERR_FILENO), -1);
 	return (i + 1);
 }
 
@@ -60,7 +60,7 @@ int	handleallpaths(t_file *var, bool write, bool append)
 	var->fd = ft_openfile(var->path, write, append);
 	if (var->fd == -1)
 	{
-		return (-1); // something went wrong during open
+		return (-1);
 	}
 	return (0);
 }

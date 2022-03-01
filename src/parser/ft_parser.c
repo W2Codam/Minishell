@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 15:21:02 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:55:52 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 		{
 			if (handleredirect(evaluate(&(*temp)->in, &(*temp)->out, \
 			input[i][0]), input[i + 1], (input[i][0] == '>'), input[i]))
-				return (-1);
+				return (ft_putstr_fd("Redirect error\n", STDERR_FILENO), -1);
 			i += 2;
 			if (input[i] != NULL && input[i][0] != '<' && \
 				input[i][0] != '>' && input[i][0] != '|' && !(*temp)->cmd_name)
@@ -104,11 +104,13 @@ t_list	*ft_parser(char **input)
 		j = 1;
 		temp = constructor(temp, ft_arrlen(input));
 		if (!temp)
-			return (NULL); // failed malloc, free possible previous mallocs in out
+			return (ft_lstadd_back(&out, ft_lstnew(temp)), \
+									ft_cleantbl(&out), NULL);
 		temp->argv[0] = NULL;
 		i = parseone(input, &temp, i, &j);
 		if (i < 0)
-			return (NULL); // handle previous mallocs
+			return (ft_lstadd_back(&out, ft_lstnew(temp)), \
+									ft_cleantbl(&out), NULL);
 		temp->argv[j] = NULL;
 		temp->argc = j;
 		ft_builtincheck(&temp);
@@ -116,5 +118,3 @@ t_list	*ft_parser(char **input)
 	}
 	return (out);
 }
-
-//TODO: mallocs || error return

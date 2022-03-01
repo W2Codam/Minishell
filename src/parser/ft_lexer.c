@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:34:48 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:56:01 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,15 @@ t_list	*ft_lexer(char *input)
 
 	cmds = ft_stringexpand(input);
 	if (!cmds)
-		return (NULL);
+		return (ft_putstr_fd("String expand error\n", STDERR_FILENO), \
+			NULL);
 	i = 0;
 	while (cmds[i])
 	{
 		if (ft_tokencheck(cmds[i]))
 		{
-			printf("bad token\n"); //testing purposes
-			return (NULL);
+			return (ft_putstr_fd("Bad token", STDERR_FILENO), \
+				ft_cleanup(cmds), NULL);
 		}
 		i++;
 	}
@@ -71,10 +72,3 @@ t_list	*ft_lexer(char *input)
 	ft_cleanup(cmds);
 	return (temp);
 }
-
-// echo HEY | tr 'A-Z' 'a-z' <= Perfectly valid!
-// podufhiowuhfouiwf <= Still valid, parser will complain!
-// wqdqwd | tr lol <= In terms of structure, valid however again, parser fail.
-// echo HEY > input.txt < grep h // Technically valid, executor will fail.
-
-//check for valid tokens: |, >, <, >>, << 

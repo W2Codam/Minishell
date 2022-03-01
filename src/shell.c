@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:34:56 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 18:02:30 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2])
 void	ft_shell(void)
 {
 	t_list	*cmds;
+	int32_t	shitpipe[2];
 	char	*line;
 
 	while (true)
@@ -223,16 +224,15 @@ void	ft_shell(void)
 			cmds = ft_lexer(line);
 			if (!cmds)
 			{
-				printf("(temp) error during lexing\n");
+				free(line);
 				continue ;
 			}
-			int32_t	shitpipe[2]; //clean this shit up
 			ft_pipe(shitpipe);
 			ft_exec_tbl(cmds, shitpipe);
 			ft_corrupt_the_child(shitpipe);
 			ft_cleantbl(&cmds);
-			add_history(line);
 		}
+		add_history(line);
 		free(line);
 	}
 }

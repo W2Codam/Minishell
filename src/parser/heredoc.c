@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/21 19:54:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:49:57 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:59:39 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static char	*handleenvar(char *str)
 		return (str);
 	save2 = str;
 	out = malloc(ft_strlen(str) + arr_strlen(envars) + 1);
+	if (!out)
+		return (ft_cleanup(envars), NULL);
 	save = out;
 	while (*str)
 	{
@@ -42,8 +44,7 @@ static char	*handleenvar(char *str)
 	*out = '\n';
 	++out;
 	*out = 0;
-	free(save2);
-	return (save);
+	return (free(save2), ft_cleanup(envars), save);
 }
 
 void	runheredoc(int32_t pipe[2], char *tstr, char *delim)
@@ -59,6 +60,8 @@ void	runheredoc(int32_t pipe[2], char *tstr, char *delim)
 		else if (ft_strncmp(tstr, delim, ft_strlen(tstr) - 1) == 0)
 			break ;
 		tstr = handleenvar(tstr);
+		if (!tstr)
+			exit(1);
 		ft_putstr_fd(tstr, pipe[WRITE]);
 		free(tstr);
 	}

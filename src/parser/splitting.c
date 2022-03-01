@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/02/15 21:10:19 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 18:01:24 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,10 @@ char	**splitting(char *in, int i, int state)
 				in++;
 			out[i++] = ft_substr(save, 0, (in - save));
 			if (!out[i - 1])
-				return (NULL); //protect previous mallocs
+				return (ft_cleanup(out), NULL);
 			save = in;
 			save++;
 		}
 	}
 	return (out[i] = NULL, out);
 }
-
-// TODO: mallocs lol get fucked

@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/25 16:54:43 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:38:04 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,26 @@ int32_t	ft_cd(int argc, char **argv)
 	char	*path;
 
 	if (argc > 2)
-	{
-		ft_putendl_fd("cd: Too many arguments.", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
+		return (ft_putendl_fd("cd: Too many arguments.", STDERR_FILENO), \
+			EXIT_FAILURE);
 	if (g_shell->child == 0)
 		return (0);
-	if (argc == 1)
+	if (argc == 1 || ft_strncmp("~", argv[1], 1) == 0)
 	{
 		path = ft_env_get("HOME")->value;
 		if (path == NULL)
-		{
-			ft_putendl_fd("cd: No home directory.", STDERR_FILENO);
-			return (EXIT_FAILURE);
-		}
+			return (ft_putendl_fd("cd: No home directory.", STDERR_FILENO), \
+				EXIT_FAILURE);
 		return (ft_chdir(path));
 	}
 	if (ft_strncmp("-", argv[1], 1) == 0)
 	{
 		if (ft_env_get("OLDPWD")->hidden)
-			return (ft_putendl_fd("cd: OLDPWD not set", STDERR_FILENO), EXIT_FAILURE);
+			return (ft_putendl_fd("cd: OLDPWD not set", STDERR_FILENO), \
+				EXIT_FAILURE);
 		return (ft_chdir(ft_env_get("OLDPWD")->value));
 	}
-	if (ft_strncmp("~", argv[1], 1) == 0)
-		return (ft_chdir(ft_env_get("HOME")->value));
 	else
 		return (ft_chdir(argv[1]));
 	return (EXIT_SUCCESS);
 }
-
-//TODO: norm

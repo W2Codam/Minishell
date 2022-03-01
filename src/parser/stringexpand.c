@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:34:44 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:55:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ char	**ft_stringexpand(char *in)
 			temp = findenvars(out[i]);
 			new = (char *)malloc(ft_strlen(out[i]) + arr_strlen(temp) + 1);
 			if (!new)
-				return (NULL); // clean up possible previous mallocs
+				return (ft_cleanup(temp), ft_cleanup(out), NULL);
 			expandshit(&out[i], out[i], new, temp);
 			ft_cleanup(temp);
 		}
