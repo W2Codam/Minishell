@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 17:56:01 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:43:07 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_list	*ft_lexer(char *input)
 	{
 		if (ft_tokencheck(cmds[i]))
 		{
-			return (ft_putstr_fd("Bad token", STDERR_FILENO), \
+			return (ft_putstr_fd("Bad token\n", STDERR_FILENO), \
 				ft_cleanup(cmds), NULL);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 20:30:59 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:37:33 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,10 @@ static void	ft_exec(t_cmd *cmdval)
 		cmdval->argv[0] = cmdval->cmd_name;
 	else
 		cmdval->argv[0] = (char *)ft_getexec(cmdval->cmd_name);
-	fprintf(stderr, "%s\n", cmdval->argv[0]);
+	//fprintf(stderr, "%s\n", cmdval->argv[0]);
 	execve(cmdval->argv[0], cmdval->argv, ft_lst_to_arr(g_shell->environ));
-	ft_putendl_fd(strerror(errno), STDERR_FILENO);
-	ft_putendl_fd("\nTRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
+	//ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	ft_putendl_fd("TRY HARDER MONGOOL COMMAND NOT FOUND!", STDERR_FILENO);
 	exit (EXIT_NOTFOUND);
 }
 
@@ -227,6 +227,7 @@ void	ft_shell(void)
 
 	while (true)
 	{
+		g_shell->child = -1;
 		line = readline(TITLE);
 		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
 			return (exitout(line));

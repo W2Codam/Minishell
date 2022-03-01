@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 18:10:59 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/01 20:38:14 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
  */
 void	ft_sig_handle(int32_t sig)
 {
-	if (sig == SIGINT)
+	if (sig == SIGINT && g_shell->child == -1)
 	{	
 		write(1, "\n", 1);
 		rl_on_new_line();
