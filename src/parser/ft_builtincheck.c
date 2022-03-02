@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:21:07 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:48:40 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:40:13 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_builtincheck(t_cmd **cmd)
 	{.str = "export", .builtin = ft_export},
 	{.str = "pwd", .builtin = ft_pwd},
 	{.str = "unset", .builtin = ft_unset},
+	{.str = "exit", .builtin = ft_exit},
 	};
 
 	i = 0;

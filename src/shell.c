@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:35:46 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:52:46 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ void	ft_shell(void)
 	{
 		g_shell->child = -1;
 		line = readline(TITLE);
-		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
-			return (exitout(line));
 		if (*line)
 		{	
 			add_history(line);

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:35:21 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:40:36 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int32_t	ft_env(int32_t argc, char **argv);
 int32_t	ft_export(int32_t argc, char **argv);
 int32_t	ft_pwd(int32_t argc, char **argv);
 int32_t	ft_unset(int32_t argc, char **argv);
+int32_t	ft_exit(int argc, char **argv);
 
 //= Unix Utils =//
 
