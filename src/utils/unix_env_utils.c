@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 20:25:31 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 15:07:32 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,25 +108,24 @@ char	**ft_lst_to_arr(t_var *lst)
 	size_t		size;
 	size_t		envsize;
 	char		**arr;
-	t_var		*lstcpy = lst;
+	const t_var	*lstcpy = lst;
 
 	i = -1;
-	ft_lastvar(lst, &envsize);
-	arr = (char **)ft_calloc(envsize + 1, sizeof(char *));
+	// TODO: Get size of NON-HIDDEN instead!
+	arr = (char **)ft_calloc(ft_lastvar(lst, &envsize) + 1, sizeof(char *));
 	while (arr && lstcpy)
 	{
-		size = ft_strlen(lstcpy->key) + 2 + ft_strlen(lstcpy->value);
-		arr[++i] = ft_calloc(size + 1, sizeof(char));
-		if (!arr[i])
+		if (!lstcpy->hidden)
 		{
-			ft_cleanup(arr);
-			return (NULL);
+			size = ft_strlen(lstcpy->key) + 2 + ft_strlen(lstcpy->value);
+			arr[++i] = ft_calloc(size + 1, sizeof(char));
+			if (!arr[i])	
+				return (ft_cleanup(arr), NULL);
+			ft_strlcat(arr[i], lstcpy->key, size);
+			ft_strlcat(arr[i], "=", size);
+			ft_strlcat(arr[i], lstcpy->value, size);
 		}
-		ft_strlcat(arr[i], lstcpy->key, size);
-		ft_strlcat(arr[i], "=", size);
-		ft_strlcat(arr[i], lstcpy->value, size);
 		lstcpy = lstcpy->next;
 	}
-	arr[++i] = NULL;
-	return (arr);
+	return (arr[++i] = NULL, arr);
 }
