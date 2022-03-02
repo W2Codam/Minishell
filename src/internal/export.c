@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/02 16:51:00 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:38:22 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,31 @@ static void	ft_exportprintevn(void)
 	}
 }
 
+static void	addenvutil(char **temp_arr, t_var *cpy, bool append)
+{
+	char	*old;
+
+	if (!temp_arr[1])
+	{
+		free(temp_arr[0]);
+		return (free(temp_arr));
+	}
+	if (!append)
+	{
+		free(cpy->value);
+		cpy->value = ft_strdup(temp_arr[1]);
+	}
+	else
+	{
+		old = cpy->value;
+		cpy->value = ft_strjoin(cpy->value, temp_arr[1]);
+		free(old);
+	}
+}
+
 static void	addenv(char **temp_arr)
 {
 	t_var	*cpy;
-	char	*old;
 	bool	append;
 
 	if (temp_arr[0][ft_strlen(*temp_arr) - 1] == '+')
@@ -58,24 +79,7 @@ static void	addenv(char **temp_arr)
 			free(temp_arr[0]);
 	}
 	else
-	{	
-		if (!temp_arr[1])
-		{
-			free(temp_arr[0]);
-			return (free(temp_arr));
-		}
-		if (!append)
-		{
-			free(cpy->value);
-			cpy->value = ft_strdup(temp_arr[1]);
-		}
-		else
-		{
-			old = cpy->value;
-			cpy->value = ft_strjoin(cpy->value, temp_arr[1]);
-			free(old);
-		}
-	}
+		addenvutil(temp_arr, cpy, append);
 	free(temp_arr);
 }
 
