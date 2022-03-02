@@ -3,16 +3,16 @@
 /*                                                        ::::::::            */
 /*   unix_file_utils.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
+/*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/12/01 19:56:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:46:43 by lde-la-h      ########   odam.nl         */
+/*   Created: 2022/02/02 19:10:21 by w2wizard      #+#    #+#                 */
+/*   Updated: 2022/02/25 15:54:42 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
+#include "minishell.h"
 
-/** 
+/**
  * Simplified wrapper for access to return proper boolean.
  * @param path The path to the file.
  * @param flags The flags to use for checking.
@@ -48,11 +48,14 @@ bool	ft_valid_file(t_file *file)
  * @param isoutput Is the file meant to be an output file, aka written to.
  * @return The file descriptor.
  */
-int32_t	ft_openfile(char *path, bool isoutput)
+int32_t	ft_openfile(char *path, bool isoutput, bool append)
 {
 	int32_t	fd;
 
-	if (isoutput)
+	if (isoutput && append)
+		fd = open(path, O_CREAT | O_WRONLY | O_APPEND, \
+		S_IRUSR | S_IWUSR | S_IROTH);
+	else if (isoutput)
 	{
 		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, \
 		S_IRUSR | S_IWUSR | S_IROTH);
@@ -61,7 +64,7 @@ int32_t	ft_openfile(char *path, bool isoutput)
 	{
 		fd = open(path, O_RDONLY);
 	}
-	if (fd < 0)
-		ft_assert("Unable to open file");
+	if (fd < 0 || errno)
+		return (-1);
 	return (fd);
 }

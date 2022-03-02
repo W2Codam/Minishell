@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expand_string.c                                    :+:    :+:            */
+/*   ft_builtin_utils.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
+/*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/27 12:24:28 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:56:09 by lde-la-h      ########   odam.nl         */
+/*   Created: 2022/02/25 17:26:38 by pvan-dij      #+#    #+#                 */
+/*   Updated: 2022/03/02 16:41:29 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
+#include "minishell.h"
 
-/**
- * Takes a string with potential environment variables
- * in it and expands them.
- * 
- * @param str 
- * @return char* 
- */
-char	*ft_expand_string(const char *str)
+bool	ft_isvalidkey(char *str)
 {
-	return (ft_strdup(str));
+	while (*str)
+	{
+		if (ft_isalnum(*str) == false && (*str != '+' && *str + 1 != '='))
+			return (false);
+		str++;
+	}
+	return (true);
 }

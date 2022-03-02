@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   export.c                                           :+:    :+:            */
+/*   pwd.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/26 16:10:51 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:54:10 by lde-la-h      ########   odam.nl         */
+/*   Created: 2022/02/24 12:51:48 by lde-la-h      #+#    #+#                 */
+/*   Updated: 2022/03/01 16:44:47 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
+#include "minishell.h"
 
-/**
- * Exports/sets
- * 
- * @param argc 
- * @param argv 
- * @return int32_t 
- */
-int32_t	ft_export(int argc, char **argv)
+int32_t	ft_pwd(int argc, char **argv)
 {
-	SHUTFUCK(argc);
-	SHUTFUCK(argv);
-    return (EXIT_SUCCESS);
+	char	buf[PATH_MAX];
+
+	(void)argv;
+	if (argc > 1)
+	{
+		ft_putendl_fd("pwd: too many arguments you moron", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	if (!getcwd(buf, sizeof(buf)))
+	{
+		perror("pwd");
+		return (EXIT_FAILURE);
+	}
+	ft_putendl_fd(buf, 1);
+	return (0);
 }
