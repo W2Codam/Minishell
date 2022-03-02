@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/03/01 23:01:27 by pvan-dij      ########   odam.nl          #
+#    Updated: 2022/03/02 21:07:39 by pvan-dij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,33 @@ ARCHIVES = ./libs/libft/libft.a -lreadline -L ~/.brew/opt/readline/lib
 # //= Files =// #
 
 # TODO: Add files, remove shell command.
-SRCS	=	$(shell find ./src -iname "*.c")
+SRCS	=	./src/internal/cd.c 		\
+./src/internal/echo.c 					\
+./src/internal/env.c 					\
+./src/internal/exit.c 					\
+./src/internal/export.c 				\
+./src/internal/ft_builtin_utils.c 		\
+./src/internal/pwd.c 					\
+./src/internal/unset.c 					\
+./src/main.c 							\
+./src/parser/ft_builtincheck.c 			\
+./src/parser/ft_lexer.c 				\
+./src/parser/ft_parser.c 				\
+./src/parser/heredoc.c 					\
+./src/parser/splitting.c 				\
+./src/parser/stringexpand.c 			\
+./src/parser/temp/get_next_line.c 		\
+./src/parser/temp/get_next_line_utils.c \
+./src/shell.c 							\
+./src/utils/parser_utils.c 				\
+./src/utils/shell_utils.c 				\
+./src/utils/stringexpand_utils.c 		\
+./src/utils/unix_env_utils.c 			\
+./src/utils/unix_env_utils_utils.c 		\
+./src/utils/unix_err_utils.c 			\
+./src/utils/unix_file_utils.c 			\
+./src/utils/unix_utils.c 				\
+./src/utils/utils.c 					
 			
 OBJS	= ${SRCS:.c=.o}
 

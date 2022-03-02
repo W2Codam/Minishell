@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 19:59:31 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 21:21:28 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ int		selectstate(char c, int state);
 int		exitout(char *s);
 char	**ft_stringexpand(char *in);
 char	**findenvars(char *arg);
+bool	checkinvalid(char *str);
 char	**splitting(char *in, int i, int state);
 
 //= Builtin =//

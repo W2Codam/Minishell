@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 20:35:26 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 21:25:44 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,11 @@ static void	expandshit(char **cmd, char *s, char *out, char **envar)
 			*out++ = *s++;
 	}
 	*out = 0;
-	printf("%s\n", save);
 	free(*cmd);
 	*cmd = save;
 }
 
-bool	checkinvalid(char **str)
+bool	checkinvalid(char *str)
 {	
 	int			i;
 	const char	*arr[] = {
@@ -105,8 +104,10 @@ bool	checkinvalid(char **str)
 	i = 0;
 	while (arr[i])
 	{
-		if (ft_strncmp(*str, arr[i], ft_strlen(arr[i])))
+		if (ft_strncmp(str, arr[i], ft_strlen(arr[i])) == 0)
+		{
 			return (true);
+		}
 		i++;
 	}
 	return (false);
@@ -131,7 +132,7 @@ char	**ft_stringexpand(char *in)
 	while (out && out[i] != NULL)
 	{
 		if ((ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
-			|| ft_strchr(out[i], '$')) || !checkinvalid(&out[i]))
+			|| ft_strchr(out[i], '$')) || !checkinvalid(out[i]))
 		{
 			temp = findenvars(out[i]);
 			new = (char *)malloc(ft_strlen(out[i]) + arr_strlen(temp) + 1);

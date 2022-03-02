@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 16:08:23 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 21:25:50 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,15 @@ bool	handleredirect(t_file *temp, char *filename, bool write, char *input)
 	return (false);
 }
 
-char	*checkforqoute(char *s)
+char	*checkforqoute(char *s, int state)
 {
 	const char	qt[2] = {'\"', '\''};
-	int			state;
 	char		*out;
 	char		*save;
 	char		*lol;
 
-	if (!ft_strchr(s, '\'') && !ft_strchr(s, '\"'))
+	if (!checkinvalid(s))
 		return (s);
-	state = -1;
 	lol = s;
 	out = malloc(ft_strlen(s));
 	if (!out)
@@ -87,7 +85,7 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 		if (i == 0 || input[i - 1][0] == '|')
 			(*temp)->cmd_name = ft_strdup(input[i]);
 		else
-			(*temp)->argv[(*j)++] = ft_strdup(checkforqoute(input[i]));
+			(*temp)->argv[(*j)++] = ft_strdup(checkforqoute(input[i], -1));
 		i++;
 	}
 	return (i);
