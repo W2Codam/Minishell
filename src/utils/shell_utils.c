@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 17:23:38 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 18:01:52 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 22:07:16 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	ft_corrupt_the_child(int32_t shitpipe[2])
 	close(shitpipe[WRITE]);
 	child = waitpid(0, &status, 0);
 	read(shitpipe[READ], NULL, 10);
+	close(shitpipe[READ]);
 	if (child != -1)
 	{
 		temp = ft_env_get("?");
