@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 18:01:24 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 20:33:38 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ char	**splitting(char *in, int i, int state)
 			out[i++] = ft_substr(save, 0, (in - save));
 			if (!out[i - 1])
 				return (ft_cleanup(out), NULL);
+			while (*in && *in == ' ')
+				in++;
 			save = in;
-			save++;
 		}
 	}
 	return (out[i] = NULL, out);

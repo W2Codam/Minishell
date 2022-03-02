@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:59:31 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 19:59:28 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	ft_shell(void)
 	while (true)
 	{
 		g_shell->child = -1;
-		line = readline(TITLE);
+		line = readline(TITLEA TITLEB);
 		if (!line)
 			ft_exit(0, NULL);
 		if (*line)

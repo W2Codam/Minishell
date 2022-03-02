@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 13:33:13 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 14:18:31 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 20:38:08 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	arr_strlen(char **arr)
 //both of these exist because lolnorm
 void	addenvar(char **s, char **out, char *envar)
 {
-	ft_memmove(*out, envar, ft_strlen(envar));
+	ft_memmove(*out, envar, ft_strlen(envar) + 1);
 	*out += ft_strlen(*out);
 	*s += findnext(*s + 1) + 1;
 }
