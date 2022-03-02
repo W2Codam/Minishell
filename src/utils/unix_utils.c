@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:08:27 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 15:55:17 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:17:20 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_getexec(const char *cmd)
 	const t_var	*enval = ft_env_get("PATH");
 
 	i = -1;
-	if (!enval) // Some fucker in the eval decided to unset this shit, go fuck yourself.
+	if (enval->hidden) // Some fucker in the eval decided to unset this shit, go fuck yourself.
 		return (NULL);
 	paths = ft_split(enval->value, ':');
 	if (!paths) // Just for you eval fucks
