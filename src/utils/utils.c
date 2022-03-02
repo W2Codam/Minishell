@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/01 23:01:56 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 16:39:04 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_cleantbl(t_list **cmds)
 
 	cpy = (*cmds);
 	while (cpy)
-	{
+	{	
 		temp = cpy->content;
 		free(temp->cmd_name);
 		ft_cleanup(temp->argv);

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 20:03:46 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 16:08:23 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,35 @@ bool	handleredirect(t_file *temp, char *filename, bool write, char *input)
 	return (false);
 }
 
+char	*checkforqoute(char *s)
+{
+	const char	qt[2] = {'\"', '\''};
+	int			state;
+	char		*out;
+	char		*save;
+	char		*lol;
+
+	if (!ft_strchr(s, '\'') && !ft_strchr(s, '\"'))
+		return (s);
+	state = -1;
+	lol = s;
+	out = malloc(ft_strlen(s));
+	if (!out)
+		return (s);
+	save = out;
+	while (*s)
+	{
+		if ((*s == '\'' || *s == '\"') && state == -1)
+			state = selectstate(*s++, state);
+		else if (state >= 0 && *s == qt[state])
+			state = selectstate(*s++, state);
+		else
+			*out++ = *s++;
+	}
+	*out = 0;
+	return (s = save, s);
+}
+
 int	parseone(char **input, t_cmd **temp, int i, int *j)
 {
 	while (input[i] != NULL)
@@ -58,7 +87,7 @@ int	parseone(char **input, t_cmd **temp, int i, int *j)
 		if (i == 0 || input[i - 1][0] == '|')
 			(*temp)->cmd_name = ft_strdup(input[i]);
 		else
-			(*temp)->argv[(*j)++] = ft_strdup(input[i]);
+			(*temp)->argv[(*j)++] = ft_strdup(checkforqoute(input[i]));
 		i++;
 	}
 	return (i);
@@ -69,7 +98,7 @@ t_cmd	*constructor(t_cmd *temp, int len)
 	temp = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!temp)
 		return (NULL);
-	temp->argv = malloc((len + 1) * sizeof(char *));
+	temp->argv = ft_calloc((len + 1), sizeof(char *));
 	if (!temp->argv)
 	{
 		free(temp);

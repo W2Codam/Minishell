@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 23:01:31 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 14:18:25 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
 # include <fcntl.h>
@@ -39,7 +38,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # define EXIT_NOTFOUND 127
-# define TITLE "\001\x1b[103m\x1b[30m\002 🐎 \001\x1b[104m\002 MongolShell \001\x1b[49m\x1b[94m\x1b[92m❱\002 \001\x1b[0m\002"
+# define TITLE "\001\x1b[103m\x1b[30m\002 🐎 \001\x1b[104m\002 MongolShell \001\x1b[49m\x1b[92m❱ \x1b[0m\002"
 //////////////////////////////////////////////////////////////////
 
 //= Types =//

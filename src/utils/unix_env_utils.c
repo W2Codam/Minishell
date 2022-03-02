@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/01 20:25:31 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 15:37:32 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ void	ft_starthidden(const char **starthidden)
 	while (*starthidden)
 	{
 		temp = ft_env_get((char *)*starthidden);
-		temp->hidden = true;
+		if (temp)
+			temp->hidden = true;
 		starthidden++;
 	}
 }
@@ -108,7 +109,7 @@ char	**ft_lst_to_arr(t_var *lst)
 	size_t		size;
 	size_t		envsize;
 	char		**arr;
-	t_var		*lstcpy = lst;
+	const t_var	*lstcpy = lst;
 
 	i = -1;
 	ft_lastvar(lst, &envsize);

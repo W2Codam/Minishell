@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/01 17:03:26 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 16:51:00 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,14 @@ static void	ft_exportprintevn(void)
 static void	addenv(char **temp_arr)
 {
 	t_var	*cpy;
+	char	*old;
+	bool	append;
 
+	if (temp_arr[0][ft_strlen(*temp_arr) - 1] == '+')
+	{
+		temp_arr[0][ft_strlen(*temp_arr) - 1] = 0;
+		append = true;
+	}
 	cpy = ft_env_get(temp_arr[0]);
 	if (!cpy)
 	{
@@ -57,8 +64,17 @@ static void	addenv(char **temp_arr)
 			free(temp_arr[0]);
 			return (free(temp_arr));
 		}
-		free(cpy->value);
-		cpy->value = ft_strdup(temp_arr[1]);
+		if (!append)
+		{
+			free(cpy->value);
+			cpy->value = ft_strdup(temp_arr[1]);
+		}
+		else
+		{
+			old = cpy->value;
+			cpy->value = ft_strjoin(cpy->value, temp_arr[1]);
+			free(old);
+		}
 	}
 	free(temp_arr);
 }
@@ -87,3 +103,5 @@ int32_t	ft_export(int argc, char **argv)
 	}
 	return (EXIT_SUCCESS);
 }
+
+//TODO: norm

@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/01 21:24:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 16:48:46 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,28 @@ static void	expandshit(char **cmd, char *s, char *out, char **envar)
 	*cmd = save;
 }
 
+bool	checkinvalid(char **str)
+{	
+	int			i;
+	const char	*arr[] = {
+		"\"<<\"", "\'<<\'"
+		"\">>\"", "\'>>\'"
+		"\"|\"", "\'|\'"
+		"\">\"", "\'>\'"
+		"\"<\"", "\'<\'",
+		NULL
+	};
+
+	i = 0;
+	while (arr[i])
+	{
+		if (ft_strncmp(*str, arr[i], ft_strlen(arr[i])))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 /**
  * Remove qoutes and expand environment variable
  * 
@@ -107,8 +129,8 @@ char	**ft_stringexpand(char *in)
 	out = splitting(in, i, -1);
 	while (out && out[i] != NULL)
 	{
-		if (ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
-			|| ft_strchr(out[i], '$'))
+		if ((ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
+			|| ft_strchr(out[i], '$')) || !checkinvalid(&out[i]))
 		{
 			temp = findenvars(out[i]);
 			new = (char *)malloc(ft_strlen(out[i]) + arr_strlen(temp) + 1);
