@@ -18,7 +18,7 @@
  * 
  * @param cmd The command like 'ls' or 'grep'.
  * @param envp The environment variable pointer.
- * @return The absolute path to the cmd executable.
+ * @return The absolute path to the cmd executable or NULL on failure.
  */
 char	*ft_getexec(const char *cmd)
 {
@@ -32,7 +32,7 @@ char	*ft_getexec(const char *cmd)
 	if (enval->hidden) // Some fucker in the eval decided to unset this shit, go fuck yourself.
 		return (NULL);
 	paths = ft_split(enval->value, ':');
-	if (!paths) // Just for you eval fucks
+	if (!paths)
 		return (NULL);
 	while (paths[++i])
 	{
@@ -46,7 +46,7 @@ char	*ft_getexec(const char *cmd)
 		free(paths[i]);
 	}
 	free(paths);
-	return (NULL); // Failed to find.
+	return (NULL);
 }
 
 /** 

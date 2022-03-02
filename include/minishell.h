@@ -161,7 +161,11 @@ int32_t	ft_openfile(char *path, bool isoutput, bool append);
 //= Shell =//
 
 void	ft_shell(void);
+void	ft_exec_tbl(t_list *cmds, int32_t shitpipe[2]);
+void	ft_corrupt_the_child(int32_t shitpipe[2]);
 void	ft_error(int32_t errovr, const char *s, char *msg);
+void	ft_nth_command(t_list *cmd);
+t_list	*filteroutbuiltin(t_list *cmds);
 t_list	*ft_lexer(char *input);
 t_list	*ft_parser(char **input);
 
