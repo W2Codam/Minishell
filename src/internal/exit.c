@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 17:25:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:52:10 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 18:00:22 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int32_t	ft_exit(int argc, char **argv)
 {
 	if (g_shell->child == 0)
 		return (EXIT_SUCCESS);
+	if (!argv)
+		exit(exitout(NULL));
 	if (argc > 2)
 	{
 		ft_putendl_fd("cd: Too many arguments.", STDERR_FILENO);
@@ -52,5 +54,7 @@ int32_t	ft_exit(int argc, char **argv)
 		exit(255);
 	}
 	ft_putendl_fd("exit", STDERR_FILENO);
+	if (!argv[1])
+		exit(0);
 	exit(ft_atoi(argv[1]));
 }

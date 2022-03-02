@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 17:23:38 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:56:40 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 18:01:52 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ t_list	*filteroutbuiltin(t_list *cmds)
 	while (cmdcpy)
 	{
 		temp = cmdcpy->content;
-		if (temp->builtin && (temp->builtin == ft_unset || temp->builtin == ft_exit ||\
+		if (temp->builtin && (temp->builtin == ft_unset || \
+		temp->builtin == ft_exit || \
 			temp->builtin == ft_export || temp->builtin == ft_cd) \
 				&& !cmdcpy->prev && !cmdcpy->next)
 		{

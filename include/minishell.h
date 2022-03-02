@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:40:36 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 18:00:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,10 +171,10 @@ t_list	*ft_parser(char **input);
 
 //= Utils =//
 
-void	exitout(char *s);
 void	ft_cleanup(char **out);
 void	ft_cleantbl(t_list **cmds);
 int		selectstate(char c, int state);
+int		exitout(char *s);
 char	**ft_stringexpand(char *in);
 char	**findenvars(char *arg);
 char	**splitting(char *in, int i, int state);

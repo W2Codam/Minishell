@@ -6,21 +6,25 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/02 16:39:04 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 18:00:43 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exitout(char *s)
+int	exitout(char *s)
 {
 	if (s == NULL)
+	{
 		ft_putendl("\x1b[A\x1b[19Cexit");
+		return (0);
+	}
 	else
 	{
 		ft_putendl("exit");
 		free(s);
 	}
+	return (0);
 }
 
 void	ft_cleanup(char **out)
