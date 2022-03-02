@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:16:52 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:52:46 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ t_list	*filteroutbuiltin(t_list *cmds)
 	{
 		temp = cmdcpy->content;
 		if (temp->builtin && (temp->builtin == ft_unset || \
-			temp->builtin == ft_export || temp->builtin == ft_cd) \
-				&& !cmdcpy->prev && !cmdcpy->next)
+			temp->builtin == ft_export || temp->builtin == ft_cd || \
+			temp->builtin == ft_exit) && !cmdcpy->prev && !cmdcpy->next)
 		{
 			g_shell->child = 1;
 			temp->builtin(temp->argc, temp->argv);
@@ -164,8 +164,6 @@ void	ft_shell(void)
 	{
 		g_shell->child = -1;
 		line = readline(TITLE);
-		if ((!line) || ft_strncmp(line, "exit", 4) == 0)
-			return (exitout(line));
 		if (*line)
 		{	
 			add_history(line);
