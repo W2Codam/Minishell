@@ -6,11 +6,22 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:30:44 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 15:47:06 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	changepwd(void)
+{
+	t_var	*temp;
+
+	temp = ft_env_get("PWD");
+	if (!temp)
+		return ;
+	free(temp->value);
+	temp->value = getcwd(NULL, -1);
+}
 
 static int	ft_chdir(char *path)
 {
@@ -32,6 +43,7 @@ static int	ft_chdir(char *path)
 		temp->hidden = false;
 	free(temp->value);
 	temp->value = tmp_path;
+	changepwd();
 	return (EXIT_SUCCESS);
 }
 
