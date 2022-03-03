@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 17:23:38 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/03 15:08:57 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 16:04:21 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,15 @@ void	ft_corrupt_the_child(int32_t shitpipe[2])
 		if (!temp->value)
 			exit(EXIT_FAILURE);
 	}
+}
+
+bool	spacestring(char *str)
+{
+	while (*str)
+	{
+		if (ft_isspace(*str) == false)
+			return (false);
+		str++;
+	}
+	return (true);
 }

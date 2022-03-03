@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/03 15:08:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 16:01:41 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,5 @@ void	ft_cleantbl(t_list **cmds)
 		free(cpy);
 		cpy = cpy->next;
 	}
+	(*cmds) = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 22:08:25 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 16:04:15 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	ft_shell(void)
 	int32_t	shitpipe[2];
 	char	*line;
 
+	cmds = NULL;
 	while (true)
 	{
 		g_shell->child = -1;
@@ -105,7 +106,8 @@ void	ft_shell(void)
 		if (*line)
 		{	
 			add_history(line);
-			cmds = ft_lexer(line);
+			if (!spacestring(line))
+				cmds = ft_lexer(line);
 			if (!cmds)
 			{
 				free(line);
