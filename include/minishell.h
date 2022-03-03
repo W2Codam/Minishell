@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 14:44:58 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 15:08:35 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,12 +194,12 @@ int		arr_strlen(char **arr);
 int		testpipe(char *c, int i);
 int		ft_arrlen(char **arr);
 int		handleallpaths(t_file *var, bool write, bool append);
+int		countargs(char *s);
 bool	check(char *cmd);
 void	addenvar(char **s, char **out, char *envar);
 void	moveenvarpointer(char **s, char **out, char *envar);
-t_file	*evaluate(t_file *in, t_file *out, char c);
 void	ft_sig_handle(int32_t sig);
+t_file	*evaluate(t_file *in, t_file *out, char c);
 t_file	*heredocshit(t_file *temp, char *delim);
-int		countargs(char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 17:23:38 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 22:07:16 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 15:08:57 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
  * 
  * So we want to run basically each command and just make 
  * them forward their pipe's output to the next command.
- * 
- * TODO: NOORMMEEEEEEEEEREEQWDQWDQWDEFSDGSDFGSDGSRTGH
  * 
  * @param cmds 
  * @param env 

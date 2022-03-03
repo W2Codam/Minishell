@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/03/02 21:40:53 by pvan-dij      ########   odam.nl          #
+#    Updated: 2022/03/03 15:09:06 by pvan-dij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ ARCHIVES = ./libs/libft/libft.a -lreadline -L ~/.brew/opt/readline/lib
 
 # //= Files =// #
 
-# TODO: Add files, remove shell command.
 SRCS	=	./src/internal/cd.c 		\
 ./src/internal/echo.c 					\
 ./src/internal/env.c 					\

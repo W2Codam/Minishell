@@ -6,12 +6,20 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/03 14:44:17 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 15:07:36 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * Selects state based on c. Return -1 if we're exiting a qoute,
+ * 1 for ' and 0 for "
+ * 
+ * @param c " or ' 
+ * @param state State variable, initialized to -1, changed afterwards
+ * @return The new value of state
+ */
 int	selectstate(char c, int state)
 {
 	const char	qt[2] = {'\"', '\''};
