@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 21:21:28 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 14:44:58 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int		exitout(char *s);
 char	**ft_stringexpand(char *in);
 char	**findenvars(char *arg);
 bool	checkinvalid(char *str);
-char	**splitting(char *in, int i, int state);
+char	**splitting(char **out, char *in, int i, int state);
 
 //= Builtin =//
 
@@ -200,5 +200,6 @@ void	moveenvarpointer(char **s, char **out, char *envar);
 t_file	*evaluate(t_file *in, t_file *out, char c);
 void	ft_sig_handle(int32_t sig);
 t_file	*heredocshit(t_file *temp, char *delim);
+int		countargs(char *s);
 
 #endif

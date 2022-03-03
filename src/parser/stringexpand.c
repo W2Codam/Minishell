@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 21:54:19 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 14:44:35 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,10 @@ bool	checkinvalid(char *str)
 {	
 	int			i;
 	const char	*arr[] = {
-		"\"<<\"", "\'<<\'"
-		"\">>\"", "\'>>\'"
-		"\"|\"", "\'|\'"
-		"\">\"", "\'>\'"
+		"\"<<\"", "\'<<\'",
+		"\">>\"", "\'>>\'",
+		"\"|\"", "\'|\'",
+		"\">\"", "\'>\'",
 		"\"<\"", "\'<\'",
 		NULL
 	};
@@ -130,11 +130,14 @@ char	**ft_stringexpand(char *in)
 	int		i;
 
 	i = 0;
-	out = splitting(in, i, -1);
+	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
+	if (!out)
+		return (NULL);
+	out = splitting(out, in, i, -1);
 	while (out && out[i] != NULL)
 	{
 		if ((ft_strchr(out[i], '\'') || ft_strchr(out[i], '\"') \
-			|| ft_strchr(out[i], '$')) || !checkinvalid(out[i]))
+			|| ft_strchr(out[i], '$')) && !checkinvalid(out[i]))
 		{
 			temp = findenvars(out[i]);
 			new = (char *)malloc(ft_strlen(out[i]) + arr_strlen(temp) + 1);

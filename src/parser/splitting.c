@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 20:33:38 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 14:44:17 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,12 @@ int	countargs(char *s)
  * @param state lolnorm
  * @return char** 
  */
-char	**splitting(char *in, int i, int state)
+char	**splitting(char **out, char *in, int i, int state)
 {
-	char **const	out = (char **)malloc(sizeof(char *) * (countargs(in) + 1));
 	char			*save;
 
-	if (!out)
-		return (NULL);
 	save = in;
-	while (*in++ != '\0')
+	while (*in != '\0')
 	{
 		if (*in == '\'' || *in == '\"')
 			state = selectstate(*in, state);
@@ -85,7 +82,9 @@ char	**splitting(char *in, int i, int state)
 			while (*in && *in == ' ')
 				in++;
 			save = in;
+			continue ;
 		}
+		in++;
 	}
 	return (out[i] = NULL, out);
 }

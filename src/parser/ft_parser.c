@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/02 21:25:50 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 14:42:09 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,9 @@ char	*checkforqoute(char *s, int state)
 	const char	qt[2] = {'\"', '\''};
 	char		*out;
 	char		*save;
-	char		*lol;
 
 	if (!checkinvalid(s))
 		return (s);
-	lol = s;
 	out = malloc(ft_strlen(s));
 	if (!out)
 		return (s);
