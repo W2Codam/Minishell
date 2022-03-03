@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:04:15 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 17:48:35 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	ft_shell(void)
 		if (*line)
 		{	
 			add_history(line);
-			if (!spacestring(line))
+			if (spacestring(line) == false)
 				cmds = ft_lexer(line);
 			if (!cmds)
 			{

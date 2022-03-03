@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 17:23:38 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:04:21 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 17:49:26 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ bool	spacestring(char *str)
 {
 	while (*str)
 	{
-		if (ft_isspace(*str) == false)
+		if (*str != ' ')
 			return (false);
 		str++;
 	}
