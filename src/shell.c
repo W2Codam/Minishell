@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 00:08:09 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 17:52:12 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/03 17:54:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ static void	ft_pipe_command(t_list *cmd, int32_t pipe[2])
 	ft_nth_command(cmd);
 }
 
-void	ft_helpshell(int32_t shitpipe[2], t_list *cmds)
+void	ft_helpshell( t_list *cmds)
 {
+	int32_t	shitpipe[2];
+
 	ft_pipe(shitpipe);
 	ft_exec_tbl(cmds, shitpipe);
 	ft_corrupt_the_child(shitpipe);
@@ -92,7 +94,6 @@ void	ft_helpshell(int32_t shitpipe[2], t_list *cmds)
 void	ft_shell(void)
 {
 	t_list	*cmds;
-	int32_t	shitpipe[2];
 	char	*line;
 
 	cmds = NULL;
@@ -112,7 +113,7 @@ void	ft_shell(void)
 				free(line);
 				continue ;
 			}
-			ft_helpshell(shitpipe, cmds);
+			ft_helpshell(cmds);
 			ft_cleantbl(&cmds);
 		}
 		free(line);
