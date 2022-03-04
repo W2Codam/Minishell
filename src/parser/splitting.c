@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:00:51 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 20:38:10 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ char	**splitting(char **out, char *in, int i, int state)
 {
 	char			*save;
 
+	while (*in == ' ')
+		in++;
 	save = in;
 	while (*in != '\0')
 	{
