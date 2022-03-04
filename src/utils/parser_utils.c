@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 20:35:18 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/04 12:45:22 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:30:00 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,3 @@ int	handleallpaths(t_file *var, bool write, bool append)
 	}
 	return (0);
 }
-
-//TODO: very random redirect error, uninitialized memory?
