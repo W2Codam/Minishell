@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 17:45:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:12:05 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ int		selectstate(char c, int state);
 int		exitout(char *s);
 char	**ft_stringexpand(char *in);
 char	**findenvars(char *arg);
+bool	ft_strcmp(char *s1, char *s2);
 bool	checkinvalid(char *str);
 char	**splitting(char **out, char *in, int i, int state);
 
@@ -186,6 +187,7 @@ char	**splitting(char **out, char *in, int i, int state);
 
 void	ft_builtincheck(t_cmd **cmd);
 bool	ft_isvalidkey(char *str);
+int		set_exit_failure(void);
 
 //= lolnorm =//
 

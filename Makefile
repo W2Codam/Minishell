@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/03/03 15:09:06 by pvan-dij      ########   odam.nl          #
+#    Updated: 2022/03/04 15:07:05 by pvan-dij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRCS	=	./src/internal/cd.c 		\
 ./src/internal/env.c 					\
 ./src/internal/exit.c 					\
 ./src/internal/export.c 				\
-./src/internal/ft_builtin_utils.c 		\
+./src/utils/ft_builtin_utils.c 			\
 ./src/internal/pwd.c 					\
 ./src/internal/unset.c 					\
 ./src/main.c 							\
@@ -73,7 +73,7 @@ all: libft $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) 
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(HEADERS) $(ARCHIVES) -o $(NAME)
 	@echo "$(GREEN)Done ✅$(RESET)"
 libft:
 	@$(MAKE) -C libs/libft

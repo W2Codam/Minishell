@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/01 17:03:34 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:08:05 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int32_t	ft_unset(int argc, char **argv)
 
 	if (argc == 1)
 		return (ft_putendl_fd("unset: not enough arguments", STDERR_FILENO), \
-			EXIT_FAILURE);
+			set_exit_failure());
 	if (g_shell->child == 0)
 		return (EXIT_SUCCESS);
 	argv++;

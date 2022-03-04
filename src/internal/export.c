@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/02 17:38:22 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:08:26 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int32_t	ft_export(int argc, char **argv)
 	{
 		temp_arr = ft_split(*argv, '=');
 		if (!temp_arr)
-			return (EXIT_FAILURE);
+			return (set_exit_failure());
 		if (ft_isdigit(temp_arr[0][0]) || !ft_isvalidkey(temp_arr[0]))
 		{
 			printfunc(*argv++);

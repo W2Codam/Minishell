@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/25 17:26:38 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 16:41:29 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:06:29 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,16 @@ bool	ft_isvalidkey(char *str)
 		str++;
 	}
 	return (true);
+}
+
+int	set_exit_failure(void)
+{
+	t_var	*temp;
+
+	temp = ft_env_get("?");
+	if (!temp)
+		return (1);
+	free(temp->value);
+	temp->value = ft_strdup("1");
+	return (1);
 }

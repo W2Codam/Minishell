@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 14:25:06 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 14:44:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static bool	ft_tokencheck(char *cmd)
 	len = ft_strlen(cmd);
 	if (len == 1)
 	{
-		if (ft_strchr("><~|-$+\b", cmd[0]))
+		if (ft_strchr("><~|-$+.\b", cmd[0]))
 			return (false);
 		if (ft_isalnum(cmd[0]))
 			return (false);

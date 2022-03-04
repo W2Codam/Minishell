@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:01:41 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:12:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,35 @@ void	ft_cleantbl(t_list **cmds)
 		free(temp->cmd_name);
 		ft_cleanup(temp->argv);
 		if (temp->in.path)
+		{
+			close(temp->in.fd);
 			free(temp->in.path);
+		}
 		if (temp->out.path)
+		{
+			close(temp->out.fd);
 			free(temp->out.path);
+		}
 		free(temp);
 		free(cpy);
 		cpy = cpy->next;
 	}
 	(*cmds) = NULL;
+}
+
+//fucking add this to libft
+bool	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (false);
+		i++;
+	}
+	if (s1[i] != s2[i])
+		return (false);
+	return (true);
 }

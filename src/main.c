@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 15:09:11 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:10:31 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ int32_t	main(int argc, char **argv, char **envp)
 	signal(SIGINT, ft_sig_handle);
 	signal(SIGQUIT, ft_sig_handle);
 	g_shell = ft_calloc(1, sizeof(t_shell));
+	if (!g_shell)
+		exit(EXIT_FAILURE);
 	if (!ft_create_env(envp) || !ft_set_env_vars(argv[0]))
 	{
 		ft_putendl_fd("shell: failed to initilize envs!\n", STDERR_FILENO);
@@ -121,3 +123,6 @@ int32_t	main(int argc, char **argv, char **envp)
 	ft_shell();
 	exit(EXIT_SUCCESS);
 }
+
+//TODO:
+//wrong exit status on bad cd (like "cd hatshatshatshatshats")

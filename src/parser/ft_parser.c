@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:26:03 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 12:37:07 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ bool	handleredirect(t_file *temp, char *filename, bool write, char *input)
 	}
 	else if (check(filename))
 	{
+		if (temp->path)
+			free(temp->path);
 		temp->path = ft_strdup(filename);
 		if (temp->fd > 2)
 			close(temp->fd);

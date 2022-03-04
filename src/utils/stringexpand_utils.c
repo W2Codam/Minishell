@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 13:33:13 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/02 20:38:08 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 14:55:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,18 @@ int	findnext(char *arg)
 	int	i;
 
 	i = 0;
+	if (arg[0] == '?' && arg[1] == 0)
+		return (1);
+	if (arg[0] == '{')
+	{
+		while (arg[i] != '}' && arg[i])
+			i++;
+		return (i + 1);
+	}
 	while (arg[i])
 	{
 		if (arg[i] == '\'' || arg[i] == '\"' || arg[i] == '$' || \
-			(!ft_isalnum(arg[i]) && arg[i] != '?'))
+			(!ft_isalnum(arg[i])))
 			return (i);
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:38:16 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/03 14:44:35 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:10:57 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	**findenvars(char *arg)
 	if (dollars == 0)
 		return (NULL);
 	out = (char **)malloc(sizeof(char *) * dollars + 1);
+	if (!out)
+		return (NULL);
 	i = 0;
 	while (*arg)
 	{

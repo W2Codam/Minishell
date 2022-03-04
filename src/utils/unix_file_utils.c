@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 19:10:21 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/25 15:54:42 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 12:41:35 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int32_t	ft_openfile(char *path, bool isoutput, bool append)
 		fd = open(path, O_RDONLY);
 	}
 	if (fd < 0 || errno)
+	{
 		return (-1);
+	}
 	return (fd);
 }
