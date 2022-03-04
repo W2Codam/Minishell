@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 17:48:12 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/04 20:38:10 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 20:44:56 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,16 @@ int	countargs(char *s)
 	return (words);
 }
 
+char	*normfunction(char *save, char *in)
+{
+	char	*out;
+
+	out = ft_substr(save, 0, (in - save));
+	if (!out)
+		exit(1);
+	return (out);
+}
+
 /**
  * Splits up string into array while respecting qoutes
  * 
@@ -86,9 +96,7 @@ char	**splitting(char **out, char *in, int i, int state)
 				*in = 0;
 			else if (*(in + 1) == 0)
 				in++;
-			out[i++] = ft_substr(save, 0, (in - save));
-			if (!out[i - 1])
-				return (ft_cleanup(out), NULL);
+			out[i++] = normfunction(save, in);
 			while (*in + 1 && *in == ' ')
 				in++;
 			save = in;
