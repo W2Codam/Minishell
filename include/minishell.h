@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/04 15:12:05 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 15:39:48 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,6 @@ typedef enum e_pipe
 	WRITE = 0,
 	READ = 1
 }	t_pipe;
-
-// Enum for qoutations
-typedef enum s_qtype
-{
-	DOUBLE = 0,
-	SINGLE = 1
-}	t_qtype;
 
 /**
  * A single file, similar to FILE*
@@ -143,7 +136,7 @@ int32_t	ft_env(int32_t argc, char **argv);
 int32_t	ft_export(int32_t argc, char **argv);
 int32_t	ft_pwd(int32_t argc, char **argv);
 int32_t	ft_unset(int32_t argc, char **argv);
-int32_t	ft_exit(int argc, char **argv);
+int32_t	ft_exit(int32_t argc, char **argv);
 
 //= Unix Utils =//
 
@@ -153,7 +146,6 @@ char	**ft_lst_to_arr(t_var *lst);
 void	ft_starthidden(const char **starthidden);
 char	*ft_getexec(const char *cmd);
 size_t	ft_envsize(void);
-
 bool	ft_pipe(int32_t fds[2]);
 bool	ft_access(const char *path, int32_t flags);
 bool	ft_fork(pid_t *pid);
@@ -173,21 +165,21 @@ t_list	*ft_parser(char **input);
 
 //= Utils =//
 
-void	ft_cleanup(char **out);
-void	ft_cleantbl(t_list **cmds);
 int		selectstate(char c, int state);
 int		exitout(char *s);
-char	**ft_stringexpand(char *in);
-char	**findenvars(char *arg);
 bool	ft_strcmp(char *s1, char *s2);
 bool	checkinvalid(char *str);
+void	ft_cleanup(char **out);
+void	ft_cleantbl(t_list **cmds);
+char	**ft_stringexpand(char *in);
+char	**findenvars(char *arg);
 char	**splitting(char **out, char *in, int i, int state);
 
 //= Builtin =//
 
-void	ft_builtincheck(t_cmd **cmd);
-bool	ft_isvalidkey(char *str);
 int		set_exit_failure(void);
+bool	ft_isvalidkey(char *str);
+void	ft_builtincheck(t_cmd **cmd);
 
 //= lolnorm =//
 

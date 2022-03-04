@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/22 21:05:50 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:23:25 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 18:07:06 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static char	*helper(char **files, char *out, char *buf)
 	*files = fts_strjoin(*files, buf);
 	out = *files;
 	*files = NULL;
+	if (!*out)
+		return (NULL);
 	return (out);
 }
 

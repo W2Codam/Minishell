@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/04 15:27:26 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 17:51:07 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ static void	addenvutil(char **temp_arr, t_var *cpy, bool append)
 	if (!temp_arr[1])
 	{
 		free(temp_arr[0]);
-		return (free(temp_arr));
 	}
-	if (!append)
+	else if (!append)
 	{
 		free(cpy->value);
 		cpy->value = ft_strdup(temp_arr[1]);
@@ -67,6 +66,7 @@ static void	addenv(char **temp_arr)
 	t_var	*cpy;
 	bool	append;
 
+	append = false;
 	if (temp_arr[0][ft_strlen(*temp_arr) - 1] == '+')
 	{
 		temp_arr[0][ft_strlen(*temp_arr) - 1] = 0;

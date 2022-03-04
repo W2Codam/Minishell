@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/04 15:07:55 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 17:10:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int32_t	ft_cd(int argc, char **argv)
 	if (argc > 2)
 		return (ft_putendl_fd("cd: Too many arguments.", STDERR_FILENO), \
 			set_exit_failure());
-	if (g_shell->child == 0)
-		return (ft_atoi(ft_env_get("?")->value));
 	if (argc == 1 || ft_strncmp("~", argv[1], 1) == 0)
 	{
 		path = ft_env_get("HOME")->value;

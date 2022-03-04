@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/04 15:30:13 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 18:09:21 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ void	ft_cleantbl(t_list **cmds)
 		temp = cpy->content;
 		free(temp->cmd_name);
 		ft_cleanup(temp->argv);
-		if (temp->in.path)
+		if (temp->in.path || temp->in.fd > 1)
 		{
 			close(temp->in.fd);
 			free(temp->in.path);
 		}
-		if (temp->out.path)
+		if (temp->out.path || temp->out.fd > 1)
 		{
 			close(temp->out.fd);
 			free(temp->out.path);

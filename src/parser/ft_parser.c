@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:03 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/04 12:37:07 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/04 18:27:05 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ t_list	*ft_parser(char **input)
 									ft_cleantbl(&out), NULL);
 		temp->argv[0] = NULL;
 		i = parseone(input, &temp, i, &j);
-		if (i < 0)
+		if (i < 0 || temp->cmd_name == NULL)
 			return (ft_lstadd_back(&out, ft_lstnew(temp)), \
 									ft_cleantbl(&out), NULL);
 		temp->argv[j] = NULL;
