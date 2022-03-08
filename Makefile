@@ -6,7 +6,7 @@
 #    By: w2wizard <w2wizard@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/02/02 18:01:17 by w2wizard      #+#    #+#                  #
-#    Updated: 2022/03/04 15:07:05 by pvan-dij      ########   odam.nl          #
+#    Updated: 2022/03/04 20:56:06 by pvan-dij      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,15 +34,15 @@ ARCHIVES = ./libs/libft/libft.a -lreadline -L ~/.brew/opt/readline/lib
 
 # //= Files =// #
 
-SRCS	=	./src/internal/cd.c 		\
+SRCS	=	./src/main.c 				\
+./src/shell.c 							\
+./src/internal/cd.c 					\
 ./src/internal/echo.c 					\
 ./src/internal/env.c 					\
 ./src/internal/exit.c 					\
 ./src/internal/export.c 				\
-./src/utils/ft_builtin_utils.c 			\
 ./src/internal/pwd.c 					\
 ./src/internal/unset.c 					\
-./src/main.c 							\
 ./src/parser/ft_builtincheck.c 			\
 ./src/parser/ft_lexer.c 				\
 ./src/parser/ft_parser.c 				\
@@ -51,7 +51,7 @@ SRCS	=	./src/internal/cd.c 		\
 ./src/parser/stringexpand.c 			\
 ./src/parser/temp/get_next_line.c 		\
 ./src/parser/temp/get_next_line_utils.c \
-./src/shell.c 							\
+./src/utils/ft_builtin_utils.c 			\
 ./src/utils/parser_utils.c 				\
 ./src/utils/shell_utils.c 				\
 ./src/utils/stringexpand_utils.c 		\

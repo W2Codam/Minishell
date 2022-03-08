@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/21 19:54:32 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/04 18:07:18 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/08 14:32:42 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	lolhandle(int sig)
 {	
 	(void)sig;
 	kill(g_shell->child, SIGKILL);
+	set_exit_failure();
 }
 
 static char	*handleenvar(char *str)
