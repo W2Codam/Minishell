@@ -1,4 +1,0 @@
-
-[submodule "libs/libft"]
-	path = libs/libft
-	url = https://github.com/W2Codam/libft.git
