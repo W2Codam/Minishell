@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:39:11 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/08 15:08:09 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/08 21:05:59 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,3 @@ int32_t	main(int argc, char **argv, char **envp)
 	ft_shell();
 	exit(EXIT_SUCCESS);
 }
-
-// echo faeefw "
