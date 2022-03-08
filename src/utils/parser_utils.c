@@ -6,7 +6,7 @@
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/15 20:35:18 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/03/04 15:30:00 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/08 15:13:19 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	handleallpaths(t_file *var, bool write, bool append)
 	var->fd = ft_openfile(var->path, write, append);
 	if (var->fd == -1)
 	{
-		printf("lol");
 		return (-1);
 	}
 	return (0);
