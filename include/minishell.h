@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 17:40:22 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/03/04 15:39:48 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/08 21:21:43 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ int		selectstate(char c, int state);
 int		exitout(char *s);
 bool	ft_strcmp(char *s1, char *s2);
 bool	checkinvalid(char *str);
+void	freeeeenvvzzzzz(void);
 void	ft_cleanup(char **out);
 void	ft_cleantbl(t_list **cmds);
 char	**ft_stringexpand(char *in);

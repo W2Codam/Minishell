@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/16 14:00:58 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/04 18:09:21 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/08 21:21:22 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,17 @@ bool	ft_strcmp(char *s1, char *s2)
 	if (s1[i] != s2[i])
 		return (false);
 	return (true);
+}
+
+void	freeeeenvvzzzzz(void)
+{
+	t_var	*temp;
+
+	temp = g_shell->environ;
+	while (temp)
+	{
+		free(temp->value);
+		free(temp->key);
+		temp = temp->next;
+	}
 }

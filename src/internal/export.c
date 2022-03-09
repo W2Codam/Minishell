@@ -6,7 +6,7 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:25 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/08 14:27:19 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/09 16:11:07 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static void	addenvutil(char **temp_arr, t_var *cpy, bool append)
 	{
 		free(cpy->value);
 		cpy->value = ft_strdup(temp_arr[1]);
+		cpy->hidden = false;
 		free(temp_arr[0]);
 		free(temp_arr[1]);
 	}
@@ -59,6 +60,7 @@ static void	addenvutil(char **temp_arr, t_var *cpy, bool append)
 	{
 		old = cpy->value;
 		cpy->value = ft_strjoin(cpy->value, temp_arr[1]);
+		cpy->hidden = false;
 		free(old);
 		free(temp_arr[0]);
 		free(temp_arr[1]);
