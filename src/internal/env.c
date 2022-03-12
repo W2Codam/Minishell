@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/26 16:11:16 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:55:50 by lde-la-h      ########   odam.nl         */
+/*   Created: 2022/02/09 13:25:20 by lde-la-h      #+#    #+#                 */
+/*   Updated: 2022/03/02 21:53:39 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
+#include "minishell.h"
 
-// TODO: Edgecase, pwd when ur in directory that got deleted!
-int32_t	ft_pwd(int32_t argc, char **argv, char **envp)
+int32_t	ft_env(int argc, char **argv)
 {
-	char	buff[PATH_MAX];
+	const t_var	*envcpy = g_shell->environ;
 
-	SHUTFUCK(argc);
-	SHUTFUCK(argv);
-	SHUTFUCK(envp);
-	if (getcwd(buff, sizeof(buff)))
+	(void)argc;
+	(void)argv;
+	while (envcpy)
 	{
-		write(STDOUT_FILENO, buff, sizeof(buff));
-		write(STDOUT_FILENO, "\n", 1);
-		return (EXIT_SUCCESS);
+		if (!envcpy->hidden)
+			printf("%s=%s\n", envcpy->key, envcpy->value);
+		envcpy = envcpy->next;
 	}
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

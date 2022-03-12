@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sighandle.c                                        :+:    :+:            */
+/*   ft_builtin_utils.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: pvan-dij <pvan-dij@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/12/01 19:43:37 by pvan-dij      #+#    #+#                 */
-/*   Updated: 2022/01/26 16:25:17 by pvan-dij      ########   odam.nl         */
+/*   Created: 2022/02/25 17:26:38 by pvan-dij      #+#    #+#                 */
+/*   Updated: 2022/03/08 14:22:23 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
+#include "minishell.h"
 
-/**
- * Handles Ctrl + c, which is SIGINT
- * 
- * @param sig 
- */
-void	sig_handle(int sig)
+bool	ft_isvalidkey(char *str)
 {
-	if (sig == SIGINT)
-	{	
-		write(1, "\n", 2);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+	while (*str)
+	{
+		if (ft_isalnum(*str) == false && (*str != '+' && *str + 1 != '=') \
+			&& *str != '_')
+			return (false);
+		str++;
 	}
+	return (true);
 }
 
-void	exitout(char *s)
+int	set_exit_failure(void)
 {
-	if (s == NULL)
-		write(1, "\x1b[A\x1b[15Cexit\n", 13);
-	else
-		write(1, "exit\n", 5);
+	t_var	*temp;
+
+	temp = ft_env_get("?");
+	if (!temp)
+		return (1);
+	free(temp->value);
+	temp->value = ft_strdup("1");
+	return (1);
 }

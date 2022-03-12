@@ -3,38 +3,14 @@
 /*                                                        ::::::::            */
 /*   unix_utils.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
+/*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2021/11/22 09:25:28 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:02:45 by lde-la-h      ########   odam.nl         */
+/*   Created: 2022/02/02 18:08:27 by w2wizard      #+#    #+#                 */
+/*   Updated: 2022/03/02 19:37:30 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mongolshell.h"
-
-/**
- * Gets the environment variable string depending on
- * which one is requested. (basically getvar)
- * 
- * @param var The variable.
- * @param envp The environment variable ptr.
- * @return The variable including the name.
- */
-char	*ft_getvar(const char *var, char **envp)
-{
-	size_t	var_len;
-	char	*out;
-
-	out = NULL;
-	var_len = ft_strlen(var);
-	while (*envp)
-	{
-		if (ft_strnstr(*envp, var, var_len))
-			break ;
-		envp++;
-	}
-	return ((*envp) + var_len + 1);
-}
+#include "minishell.h"
 
 /**
  * TODO: Leak proof this.
@@ -42,34 +18,35 @@ char	*ft_getvar(const char *var, char **envp)
  * 
  * @param cmd The command like 'ls' or 'grep'.
  * @param envp The environment variable pointer.
- * @return The absolute path to the cmd executable.
+ * @return The absolute path to the cmd executable or NULL on failure.
  */
-char	*ft_getexec(const char *cmd, char **envp)
+char	*ft_getexec(const char *cmd)
 {
-	char	*var;
-	char	*path;
-	char	*temp;
-	char	**paths;
-	int32_t	path_index;
+	int32_t		i;
+	size_t		len;
+	char		**paths;
+	char		path[PATH_MAX];
+	const t_var	*enval = ft_env_get("PATH");
 
-	path_index = -1;
-	var = ft_getvar("PATH", envp);
-	paths = ft_split(var, ':');
-	while (paths[++path_index])
+	i = -1;
+	if (enval->hidden)
+		return (NULL);
+	paths = ft_split(enval->value, ':');
+	if (!paths)
+		return (NULL);
+	while (paths[++i])
 	{
-		temp = ft_strjoin(paths[path_index], "/");
-		path = ft_strjoin(temp, cmd);
-		free(temp);
+		len = ft_strlen(paths[i]);
+		memset(path, '\0', sizeof(path));
+		memmove(path, paths[i], len);
+		path[len++] = '/';
+		memmove(&path[len], cmd, ft_strlen(cmd));
 		if (ft_access(path, F_OK | X_OK))
-			break ;
-		free(path);
-		path = NULL;
+			return (ft_strdup(path));
+		free(paths[i]);
 	}
-	path_index = -1;
-	while (paths[++path_index])
-		free(paths[path_index]);
 	free(paths);
-	return (path);
+	return (NULL);
 }
 
 /** 
@@ -98,7 +75,7 @@ bool	ft_pipe(int32_t fds[2])
  * @returns Wether the execution was sucessfull.
  * @note Use errorn!
  */
-int32_t	ft_fork(pid_t *pid)
+bool	ft_fork(pid_t *pid)
 {
 	int32_t	output;
 
