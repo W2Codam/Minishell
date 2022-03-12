@@ -9,4 +9,4 @@ The objective of this project is for you to create a simple shell.
 
 # Result
 
-![Result](/img/Result.png)
+![Result](/img/lol.png)
