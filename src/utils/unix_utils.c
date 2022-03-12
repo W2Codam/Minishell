@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:08:27 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/08 11:41:12 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:21:50 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@
  * 
  * @param cmd The command like 'ls' or 'grep'.
  * @param envp The environment variable pointer.
- * @return The absolute path to the cmd executable.
+ * @return The absolute path to the cmd executable or NULL on failure.
  */
-char	*ft_getexec(const char *cmd, t_list *envp)
+char	*ft_getexec(const char *cmd)
 {
 	int32_t		i;
 	size_t		len;
 	char		**paths;
 	char		path[PATH_MAX];
-	const t_var *enval = ft_env_get(envp, "PATH");
+	const t_var	*enval = ft_env_get("PATH");
 
 	i = -1;
-	if (!enval) // Some fucker in the eval decided to unset this shit, go fuck yourself.
+	if (enval->hidden) // Some fucker in the eval decided to unset this shit, go fuck yourself.
 		return (NULL);
 	paths = ft_split(enval->value, ':');
-	if (!paths) // Just for you eval fucks
+	if (!paths)
 		return (NULL);
 	while (paths[++i])
 	{
@@ -46,7 +46,7 @@ char	*ft_getexec(const char *cmd, t_list *envp)
 		free(paths[i]);
 	}
 	free(paths);
-	return (NULL); // Failed to find.
+	return (NULL);
 }
 
 /** 

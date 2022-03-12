@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 18:06:05 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/10 18:43:08 by pvan-dij      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:36:45 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,23 @@ static bool	ft_tokencheck(char *cmd)
 	len = ft_strlen(cmd);
 	if (len == 1)
 	{
-		if (cmd[0] == '>' || cmd[0] == '<' || cmd[0] == '|')
+		if (ft_strchr("><~|-$+\b", cmd[0]))
 			return (false);
-		if (isalnum(cmd[0]))
+		if (ft_isalnum(cmd[0]))
 			return (false);
+		return (true);
 	}
 	else if (len == 2)
 	{
-		if (ft_strncmp(cmd, "<<", 2) || ft_strncmp(cmd, ">>", 2))
+		if ((ft_strncmp(cmd, "<<", 2) || ft_strncmp(cmd, ">>", 2)))
 			return (false);
-		if ((cmd[0] == '$' && isalnum(cmd[0])) || \
-			((isalnum(cmd[0]) && isalnum(cmd[1]))))
+		if ((cmd[0] == '$' && ft_isalnum(cmd[1])) || \
+			(ft_isalnum(cmd[0]) && ft_isalnum(cmd[1])))
 			return (false);
+		return (true);
 	}
-	else
-		while (cmd[i++])
-			if (!isalnum(cmd[i]) && cmd[i] != '\0' && cmd[i] != '=' \
-				&& cmd[i] != '.' && cmd[i] != '-')
-				return (true);
+	else if (cmd[0] == '|' || cmd[0] == '>' || cmd[0] == '<')
+		return (true);
 	return (false);
 }
 
@@ -49,36 +48,27 @@ static bool	ft_tokencheck(char *cmd)
  * @return NULL on fail or valid command structure, should be passed to the
  * parser for verification.
  */
-t_list	*ft_lexer(char *input, t_list *envp)
+t_list	*ft_lexer(char *input)
 {
-	t_qoute	*testcmd = ft_stringexpand(input, envp);
 	char	**cmds;
+	t_list	*temp;
 	int		i;
 
-	cmds = ft_split(input, ' ');
-	for (int i = 0; testcmd[i].arg; i++)
-		printf("%s\n", testcmd[i].arg);
-	for (int i = 0; cmds[i]; i++)
-		printf("%s\n", cmds[i]);
-	exit(0);
+	cmds = ft_stringexpand(input);
+	if (!cmds)
+		return (ft_putstr_fd("String expand error\n", STDERR_FILENO), \
+			NULL);
 	i = 0;
 	while (cmds[i])
 	{
-		if (testcmd[i].qouted == true)
-			continue ;
 		if (ft_tokencheck(cmds[i]))
 		{
-			printf("bad token\n"); //testing purposes
-			return (NULL);
+			return (ft_putstr_fd("Bad token\n", STDERR_FILENO), \
+				ft_cleanup(cmds), NULL);
 		}
 		i++;
 	}
-	return (ft_parser(cmds, envp));
+	temp = ft_parser(cmds);
+	ft_cleanup(cmds);
+	return (temp);
 }
-
-// echo HEY | tr 'A-Z' 'a-z' <= Perfectly valid!
-// podufhiowuhfouiwf <= Still valid, parser will complain!
-// wqdqwd | tr lol <= In terms of structure, valid however again, parser fail.
-// echo HEY > input.txt < grep h // Technically valid, executor will fail.
-
-//check for valid tokens: |, >, <, >>, << 

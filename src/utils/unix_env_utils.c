@@ -6,24 +6,27 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/11 15:37:26 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/02 17:06:56 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_env_cpy(t_var *var, char *buffer, size_t buffsize)
+static t_var	*ft_lastvar(t_var *varr, size_t *size)
 {
-	size_t	len;
+	size_t	i;
 
-	memset(buffer, '\0', buffsize);
-	if (var->hidden) // Hidden variables are not meant to be added.
-		return ;
-	len = ft_strlen(var->key);
-	memmove(buffer, var->key, len);
-	buffer[len++] = '=';
-	len = ft_strlen(var->value);
-	memmove(buffer, var->value, len);
+	i = 0;
+	while (varr)
+	{
+		if (!varr->next)
+			break ;
+		varr = varr->next;
+		i++;
+	}
+	if (size)
+		*size = i;
+	return (varr);
 }
 
 /**
@@ -34,24 +37,28 @@ static void	ft_env_cpy(t_var *var, char *buffer, size_t buffsize)
  * @param val The new value.
  * @return Wether it succeeded in setting the variable or not.
  */
-bool	ft_env_set(t_list *envp, char *key, char *value)
+bool	ft_env_add(char *key, char *value)
 {
-	t_var	*variable;
-	t_list	*envp_cpy;
+	t_var	*newval;
+	t_var	*last;
 
-	envp_cpy = envp;
-	while (envp_cpy)
+	if (!key || !value)
+		return (false);
+	newval = malloc(sizeof(t_var));
+	if (!newval)
+		return (false);
+	newval->key = key;
+	newval->value = value;
+	newval->hidden = false;
+	newval->next = NULL;
+	if (!g_shell->environ)
+		g_shell->environ = newval;
+	else
 	{
-		variable = envp_cpy->content;
-		if (ft_strncmp(variable->key, key, ft_strlen(variable->key)) == 0)
-		{
-			free(variable->value);
-			variable->value = value;
-			return (true);
-		}
-		envp_cpy = envp_cpy->next;
+		last = ft_lastvar(g_shell->environ, NULL);
+		last->next = newval;
 	}
-	return (false);
+	return (true);
 }
 
 /**
@@ -62,52 +69,64 @@ bool	ft_env_set(t_list *envp, char *key, char *value)
  * @param val The new value.
  * @return Wether it succeeded in setting the variable or not.
  */
-t_var	*ft_env_get(t_list *envp, char *key)
+t_var	*ft_env_get(char *key)
 {
-	t_var	*variable;
-	t_list	*envp_cpy;
+	t_var	*cpy;
 
-	envp_cpy = envp;
-	while (envp_cpy)
+	if (!key)
+		return (NULL);
+	cpy = g_shell->environ;
+	while (cpy)
 	{
-		variable = envp_cpy->content;
-		if (ft_strncmp(variable->key, key, ft_strlen(variable->key)) == 0)
-			return (variable);
-		envp_cpy = envp_cpy->next;
+		if (ft_strncmp(cpy->key, key, ft_strlen(key)) == 0)
+			return (cpy);
+		cpy = cpy->next;
 	}
 	return (NULL);
 }
 
 /**
- * Converts the linked list into a classical char** array.
- * On malloc fail, NULL is returned
+ * Set environment variables that need to start out as hidden, to hidden = tru
  * 
- * @param envp The environment pointer.
- * @return On malloc fail, NULL is returned
+ * @param starthidden char * array of the keys that need to be hidden
  */
-char	**ft_env_get_arr(t_list *envp)
+void	ft_starthidden(const char **starthidden)
 {
-	int32_t	i;
-	char	**arr;
-	char	temp[4096];
-	t_list	*envp_cpy;
+	t_var	*temp;
+
+	while (*starthidden)
+	{
+		temp = ft_env_get((char *)*starthidden);
+		if (temp)
+			temp->hidden = true;
+		starthidden++;
+	}
+}
+
+char	**ft_lst_to_arr(t_var *lst)
+{
+	int32_t		i;
+	size_t		size;
+	char		**arr;
+	const t_var	*lstcpy = lst;
 
 	i = 0;
-	arr = malloc(ft_lstsize(envp) * sizeof(char *));
-	if (!arr)
-		return (NULL);
-	envp_cpy = envp;
-	while (envp_cpy)
+	arr = (char **)ft_calloc(ft_envsize() + 1, sizeof(char *));
+	while (arr && lstcpy)
 	{
-		ft_env_cpy(envp_cpy->content, temp, sizeof(temp));
-		arr[i] = ft_strdup(temp);
-		if (!arr[i])
+		if (!lstcpy->hidden)
 		{
-			//TODO: Free arr
-			free(arr);
-			return (NULL);
+			size = ft_strlen(lstcpy->key) + 2 + ft_strlen(lstcpy->value);
+			arr[i] = ft_calloc(size + 1, sizeof(char));
+			if (!arr[i])
+				return (ft_cleanup(arr), NULL);
+			ft_strlcat(arr[i], lstcpy->key, size);
+			ft_strlcat(arr[i], "=", size);
+			ft_strlcat(arr[i], lstcpy->value, size);
+			i++;
 		}
-		envp_cpy = envp_cpy->next;
+		lstcpy = lstcpy->next;
 	}
+	arr[++i] = NULL;
 	return (arr);
 }

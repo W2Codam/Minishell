@@ -6,7 +6,7 @@
 /*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 19:10:21 by w2wizard      #+#    #+#                 */
-/*   Updated: 2022/02/03 02:40:34 by w2wizard      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:54:42 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,14 @@ bool	ft_valid_file(t_file *file)
  * @param isoutput Is the file meant to be an output file, aka written to.
  * @return The file descriptor.
  */
-int32_t	ft_openfile(char *path, bool isoutput)
+int32_t	ft_openfile(char *path, bool isoutput, bool append)
 {
 	int32_t	fd;
 
-	if (isoutput)
+	if (isoutput && append)
+		fd = open(path, O_CREAT | O_WRONLY | O_APPEND, \
+		S_IRUSR | S_IWUSR | S_IROTH);
+	else if (isoutput)
 	{
 		fd = open(path, O_CREAT | O_WRONLY | O_TRUNC, \
 		S_IRUSR | S_IWUSR | S_IROTH);

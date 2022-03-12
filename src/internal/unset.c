@@ -6,11 +6,18 @@
 /*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 13:28:32 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/02/11 15:37:53 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:03:34 by pvan-dij      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	printfunc(char *str)
+{
+	ft_putstr_fd("unset: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd(": invalid parameter name", STDERR_FILENO);
+}
 
 /**
  * Unsets multiple variables
@@ -18,24 +25,32 @@
  * 
  * @param argc 
  * @param argv 
- * @param env 
  * @return int32_t 
  */
-int32_t	ft_unset(int argc, char **argv, t_list *env)
+int32_t	ft_unset(int argc, char **argv)
 {
-	t_var	*envvar;
+	t_var	*env;
 
 	if (argc == 1)
+		return (ft_putendl_fd("unset: not enough arguments", STDERR_FILENO), \
+			EXIT_FAILURE);
+	if (g_shell->child == 0)
 		return (EXIT_SUCCESS);
-	while (++argv)
-	{
-		while (env)
+	argv++;
+	while (*argv)
+	{	
+		if (ft_isdigit(*argv[0]) || !ft_isvalidkey(*argv))
 		{
-			envvar = env->content;
-			if (ft_strncmp(*argv, envvar->key, PATH_MAX) && !envvar->hidden)
-				envvar->unset = true;
-			env = env->next;
+			printfunc(*argv++);
+			continue ;
 		}
+		env = ft_env_get(*argv);
+		if (!env)
+		{
+			argv++;
+			continue ;
+		}
+		env->hidden = true;
 		argv++;
 	}
 	return (EXIT_SUCCESS);

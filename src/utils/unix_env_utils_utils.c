@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env.c                                              :+:    :+:            */
+/*   unix_env_utils_utils.c                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lde-la-h <lde-la-h@student.codam.nl>         +#+                     */
+/*   By: w2wizard <w2wizard@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/09 13:25:20 by lde-la-h      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:44:33 by pvan-dij      ########   odam.nl         */
+/*   Created: 2022/02/02 21:46:36 by w2wizard      #+#    #+#                 */
+/*   Updated: 2022/03/02 15:43:34 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int32_t	ft_env(int argc, char **argv)
+size_t	ft_envsize(void)
 {
-	const t_var	*envcpy = g_shell->environ;
+	size_t	n;
+	t_var	*cpy;
 
-	(void)argc;
-	(void)argv;
-	while (envcpy)
+	n = 0;
+	cpy = g_shell->environ;
+	while (cpy)
 	{
-		if (!envcpy->hidden)
-			printf("%s=%s\n", envcpy->key, envcpy->value);
-		envcpy = envcpy->next;
+		if (!cpy->hidden)
+			n++;
+		cpy = cpy->next;
 	}
-	return (EXIT_SUCCESS);
+	return (n);
 }
